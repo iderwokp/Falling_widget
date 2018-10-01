@@ -1,0 +1,9 @@
+linker.txt
+*.o
+*.dll
+*.exe
+
+gmon.out
+Makefile.win
+
+Falling_widget.layout
