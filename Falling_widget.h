@@ -7,9 +7,9 @@
 #include "aksellerasjon.h"
 #include "velocity.h"
 
-Falling_widget: public Widget {
+class Falling_widget: public Widget {
 	public:
-		Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int bound, int wbound, int scale, double vx0 = 0, double vy0 = 0, double sx0 = 0, double sy0 = 0, int rot= 0):
+		Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int bound=0, int wbound=0, int scale=0, double vx0 = 0, double vy0 = 0, double sx0 = 0, double sy0 = 0, int rot= 0):
 							Widget(fn, rend, p, w, h, vx0, vy0, rot),
 							boundary_{bound}, wall_boundary{wbound}, scale_{scale}, sx0_{sx0}, sy0_{sy0} {
 							
@@ -19,6 +19,7 @@ Falling_widget: public Widget {
 		}
 		
 		//double next_distance(); //I en loop, vil denne gi neste Y-koordinat
+		void updateXY(int windows_width);
 		double next_step();
 		void set_widget_xy();
 		bool& boost() {return boost_;}
@@ -51,7 +52,14 @@ Falling_widget: public Widget {
 	
 	
 };
-
+void Falling_widget::updateXY(int windows_width) {
+			//std::cout << "xPos = " << xPos << "\n";
+			//setXY(xPos);
+			//setXY();
+			set_widget_xy();
+			//handle_side_crash(windows_width);
+			//xPos += widget->deltaX();						
+		}
 void Falling_widget::set_aksellerasjon(float x, float y) {
 	aksellerasjon_.X(x);
 	aksellerasjon_.Y(y);
@@ -74,7 +82,7 @@ void Falling_widget::set_widget_xy() {
 	//std::cout << "x = " << x << "   y = " << y << "\n";
 	auto [xx, yy] = vc.convert_from_virtual(x, y);
 	//std::cout << "xx = " << xx << "   yy = " << yy << "\n\n";
-	Falling_widget.moveTo(xx,yy);
+	moveTo(xx,yy);
 	
 }
 

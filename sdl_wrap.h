@@ -1,6 +1,7 @@
 #ifndef SDL_WRAP_H
 #define SDL_WRAP_H
 #include <string>
+#include <iostream>
 
 class  Sdl_wrap {
 	private:
