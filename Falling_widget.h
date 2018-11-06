@@ -84,18 +84,18 @@ void Falling_widget::set_widget_xy() {
 double Falling_widget::next_Y() {
 	//std::cout << "next_Y(): velocity.vy0_ = " << velocity.vy0_ << "\n";
 	velocity.va_ = aksellerasjon_.Y() * tid_;
-	int s00 = startpos_.Y*scale_;
+	const int s00 = startpos_.Y*scale_;
 	double s = s00 + velocity.vy0_*tid_ + velocity.va_*tid_/2;
-	velocity.vtot_ = velocity.vy0_ + velocity.va_;
+	//velocity.vtot_ = velocity.vy0_ + velocity.va_;
 
 	return s/scale_;
 }
 double Falling_widget::next_X() {
 	//std::cout << "next_X(): velocity.vx0_ = " << velocity.vx0_ << "\n";
 	velocity.va_ = aksellerasjon_.X() * tid_;
-	int s00 = startpos_.X*scale_;
-	double s = s00 + velocity.vx0_*tid_ + velocity.va_*tid_/2; 
-	velocity.vtot_ = velocity.vx0_ + velocity.va_;
+	const int s00 = startpos_.X*scale_;
+	double s = s00 + velocity.vx0_*tid_ + velocity.va_*tid_/2; //TODO: Her bør regnes ut en slags delta s, i stedet for s, for å hindre at endring av
+	//velocity.vtot_ = velocity.vx0_ + velocity.va_;           // aksellerasjonen til motsatt retning, skifter fortegnet til s
 
 	return s/scale_;
 }

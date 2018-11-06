@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <iostream>
 #include "sdl_wrap.h"
 #include "Falling_widget.h"
 
@@ -29,18 +30,19 @@ int main(int argc, char** argv) {
     SDL_Renderer* renderer = sdlwrap.renderer();
     
     //Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int bound, int wbound, int scale, double vx0 = 0, double vy0 = 0,int rot= 0)
-    Falling_widget fw("ball.bmp", renderer, Point{0.0, 650.0}, 30, 20, windows_height, windows_width, 120, 150, -300, 0);
+    Falling_widget fw("ball.bmp", renderer, Point{500.0, 0.0}, 30, 20, windows_height, windows_width, 120, 0, 0, 0);
     fw.set_aksellerasjon(0.0f, 0.98f);
     int index{300};
     while(index >=0 && !quit) {
 	
         EventHandler(event, quit, windows_width, windows_height);
         fw.updateXY();
-        
+        int ypos = fw.current_pos().Y;
+        std::cout << "ypos = " << ypos << "\n";
         SDL_RenderPresent(renderer);
         SDL_RenderClear(renderer); 
 		SDL_Delay(5); 
-        
+        if(ypos > windows_height/2  ) fw.set_aksellerasjon(0.0f, -0.980f);
     }
     
     SDL_Quit();

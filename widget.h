@@ -18,6 +18,7 @@ struct Point {
 class Widget {
 	// Private section
 	Point _startpoint{};
+	Point current_pos_{};
 	int _height{0};
 	int _width{0};
 	double _deltaX{0};
@@ -44,6 +45,7 @@ class Widget {
 		//std::cout << "Widget(....)\n _startpoint = " << _startpoint.X << "," << _startpoint.Y << "\n";
 	        //init();
 	        sutex = SDLSuTexWrap(filename, rend);
+	        current_pos_ = _startpoint;
 	        
 	    }
 
@@ -71,7 +73,7 @@ class Widget {
 //		    std::cout << "~Widget()\n";
 //		    //destroy();
 //		}
-		int& angle()  {
+		int& angle()  { //rotating angle
 		    return _angle;
 		}
 		bool rotating() const {
@@ -79,6 +81,9 @@ class Widget {
 		}
 		void set_rotating(bool r) {
 		    _rotating = r;
+		}
+		Point current_pos() const {
+			return current_pos_;
 		}
 		
 		Point startpoint() const {
@@ -114,6 +119,7 @@ class Widget {
 		}
 		void moveTo(int x, int y) {
 		    startpoint(x, y);
+		    current_pos_ = _startpoint;
 		    make();
 		    show();
 			//std::cout << "y = " << y << "\n";
