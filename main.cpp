@@ -42,7 +42,8 @@ int main(int argc, char** argv) {
         SDL_RenderPresent(renderer);
         SDL_RenderClear(renderer); 
 		SDL_Delay(5); 
-        if(ypos > windows_height/2  ) fw.set_aksellerasjon(0.0f, -0.980f);
+        if(ypos > windows_height/2  ) fw.set_aksellerasjon(0.0f, -0.98f);
+        if(ypos <= 0  ) fw.set_aksellerasjon(0.0f, 0.98f);
     }
     
     SDL_Quit();
