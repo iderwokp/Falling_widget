@@ -10,11 +10,7 @@ struct Point {
     double X{0.0};
     double Y{0.0};
 };
-//struct Rect {
-//    Point P;
-//    int Width{0};
-//    int Height{0};
-//};
+
 class Widget {
 	// Private section
 	Point _startpoint{};
@@ -66,13 +62,10 @@ class Widget {
 	    }
 	    void show() {
 	        //std::cout << "show()\n";
-	        //SDL_RenderCopy(renderer, texture, NULL, &_rect);	
+	       
             SDL_RenderCopyEx(sutex.renderer(), sutex.texture(), NULL, &_rect,_angle,nullptr,SDL_FLIP_NONE);	        
 	    }
-//		~Widget() {
-//		    std::cout << "~Widget()\n";
-//		    //destroy();
-//		}
+
 		int& angle()  { //rotating angle
 		    return _angle;
 		}
@@ -93,15 +86,11 @@ class Widget {
 		    _startpoint.X = x;
 		    _startpoint.Y = y;
 		}
-//		int width() const {
-//		    return _width;
-//		}
+
 		int& width()  {
 		    return _width;
 		}
-//		int height() const {
-//		    return _height;
-//		}
+
 		int& height()  {
 		    return _height;
 		}
@@ -166,10 +155,7 @@ void handle_widget_crash(Widget& w1, Widget& w2) {
         w2.set_rotating(true);// == true;
         move_widget(w1);
         move_widget(w2);
-        //std::cout << "Etter set_deltaX w1.deltaX() == " << w1.deltaX() << "\n";
-//        w1.deltaX() = -w1.deltaX();
-//        w2.deltaX() = -w2.deltaX();
-        //return;
+     
     }
     if(widget_top_bottom_crash(w1, w2) || widget_top_bottom_crash(w2, w1)) {
         //std::cout << "Pang top/bottom \n Før set_DeltaY w1.deltaY() == " << w1.deltaY() << "\n "; 
@@ -179,10 +165,7 @@ void handle_widget_crash(Widget& w1, Widget& w2) {
         w2.set_rotating(true);// == true;
         move_widget(w1);
         move_widget(w2);
-        //std::cout << "Etter set_deltaY w1.deltaY() == " << w1.deltaY() << "\n";
-//        w1.deltaY() = -w1.deltaY();
-//        w2.deltaY() = -w2.deltaY();
-        //return;
+       
     }
 }
 

@@ -28,23 +28,36 @@ int main(int argc, char** argv) {
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
-    
-    //Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int bound, int wbound, int scale, double vx0 = 0, double vy0 = 0,int rot= 0)
-    Falling_widget fw("ball.bmp", renderer, Point{500.0, 0.0}, 30, 20, windows_height, windows_width, 120, 0, 0, 0);
-    fw.set_aksellerasjon(0.0f, 0.98f);
+    bool nedover{true};
+    //Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int bound, int wbound,double vx0 = 0, double vy0 = 0,int rot= 0)
+    Falling_widget fw("ball.bmp", renderer, Point{650.0, 50.0}, 30, 20, windows_height, windows_width, 0, 0, 0);
+    float aksy = 0.98f;
+    float aksx = 0.00f;
+    fw.set_aksellerasjon(aksx, aksy);
     int index{300};
+    
     while(index >=0 && !quit) {
 	
         EventHandler(event, quit, windows_width, windows_height);
         fw.updateXY();
         int ypos = fw.current_pos().Y;
-        std::cout << "ypos = " << ypos << "\n";
+        
         SDL_RenderPresent(renderer);
-        SDL_RenderClear(renderer); 
-		SDL_Delay(5); 
-        if(ypos > windows_height/2  ) fw.set_aksellerasjon(0.0f, -0.98f);
-        if(ypos <= 0  ) fw.set_aksellerasjon(0.0f, 0.98f);
+        SDL_RenderClear(renderer);  
+		SDL_Delay(15); 
+        if(nedover == true && ypos >= windows_height/2  ) {
+			fw.set_aksellerasjon(aksx, -aksy);
+			nedover = false;
+			
+		}
+       if(nedover == false && ypos <= windows_height/2  ) {
+			fw.set_aksellerasjon(aksx, aksy);
+			nedover = true;
+			
+		}
+		
+		 ;
     }
-    
+   
     SDL_Quit();
 }
