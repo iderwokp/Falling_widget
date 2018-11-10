@@ -13,8 +13,8 @@ class Falling_widget: public Widget {
 							Widget(fn, rend, p, w, h, vx0, vy0, rot),
 							yboundary_{ybound}, xboundary{xbound}, scale_{scale}, startpos_{p}  {
 							
-			velocity.vx0_= vx0;
-			velocity.vy0_= vy0; 
+			velocity.vXtot_ = velocity.vx0_= vx0;
+			velocity.vYtot_ = velocity.vy0_= vy0; 
 							
 		}
 		
@@ -41,6 +41,7 @@ class Falling_widget: public Widget {
 		Velocity velocity{0, 0, 0, 0, 0};
 	
 		Point startpos_{};
+		double Ypos{0};
 
 		int tid_{1};
 	
@@ -83,14 +84,18 @@ void Falling_widget::set_widget_xy() {
 
 double Falling_widget::next_Y() {
 	//std::cout << "next_Y(): velocity.vy0_ = " << velocity.vy0_ << "\n";
-	velocity.va_ = aksellerasjon_.Y() * tid_;
-	velocity.vtot_ = velocity.vy0_ + velocity.va_;
-	
+	velocity.vYtot_ += aksellerasjon_.Y();
+//	velocity.va_ = aksellerasjon_.Y() * tid_;
+//	velocity.vtot_ = velocity.vy0_ + velocity.va_;
+//	velocity.vYtot_ = vtot
 	const int s00 = startpos_.Y*scale_;
-	double s = s00 + velocity.vy0_*tid_ + velocity.va_*tid_/2;
-	
+	double deltaS = velocity.vYtot_/2;
+	double s = s00 + velocity.vy0_*tid_ ;//+ velocity.vYtot_*tid_/2;
+	Ypos += s;
+	Ypos += deltaS; 
+	std::cout << "next_Y(): velocity.vYtot_ = " << velocity.vYtot_ << "\n";
 
-	return s/scale_;
+	return Ypos/scale_;
 }
 double Falling_widget::next_X() {
 	//std::cout << "next_X(): velocity.vx0_ = " << velocity.vx0_ << "\n";
