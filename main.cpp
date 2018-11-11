@@ -28,11 +28,12 @@ int main(int argc, char** argv) {
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
-    bool nedover{true};
+    bool nedovery{true};
+    bool nedoverx{true};
     //Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int bound, int wbound,double vx0 = 0, double vy0 = 0,int rot= 0)
-    Falling_widget fw("ball.bmp", renderer, Point{650.0, 50.0}, 30, 20, windows_height, windows_width, 0, 0, 0);
+    Falling_widget fw("ball.bmp", renderer, Point{10.0, 100.0}, 30, 20, windows_height, windows_width, 0, 0, 0);
     float aksy = 0.98f;
-    float aksx = 0.00f;
+    float aksx = 0.98f;
     fw.set_aksellerasjon(aksx, aksy);
     int index{300};
     
@@ -41,22 +42,37 @@ int main(int argc, char** argv) {
         EventHandler(event, quit, windows_width, windows_height);
         fw.updateXY();
         int ypos = fw.current_pos().Y;
+        int xpos = fw.current_pos().X;
         
         SDL_RenderPresent(renderer);
-        SDL_RenderClear(renderer);  
+        //SDL_RenderClear(renderer);  
 		SDL_Delay(15); 
-        if(nedover == true && ypos >= windows_height/2  ) {
-			fw.set_aksellerasjon(aksx, -aksy);
-			nedover = false;
+        if(nedovery == true && ypos >= windows_height/2  ) {
+			//fw.set_aksellerasjon(aksx, -aksy);
+			aksy *=-1;
+			nedovery = false;
 			
 		}
-       if(nedover == false && ypos <= windows_height/2  ) {
-			fw.set_aksellerasjon(aksx, aksy);
-			nedover = true;
+       if(nedovery == false && ypos <= windows_height/2  ) {
+			//fw.set_aksellerasjon(aksx, aksy);
+			aksy *=-1;
+			nedovery = true;
 			
 		}
 		
-		 ;
+		 if(nedoverx == true && xpos >= windows_width/2  ) {
+			//fw.set_aksellerasjon(aksx, -aksy);
+			aksx *= -1;
+			nedoverx = false;
+			
+		}
+       if(nedoverx == false && xpos <= windows_width/2  ) {
+			//fw.set_aksellerasjon(aksx, aksy);
+			aksx *= -1;
+			nedoverx = true;
+			
+		}
+		fw.set_aksellerasjon(aksx, aksy);
     }
    
     SDL_Quit();
