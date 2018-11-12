@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     bool nedovery{true};
     bool nedoverx{true};
     //Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int bound, int wbound,double vx0 = 0, double vy0 = 0,int rot= 0)
-    Falling_widget fw("ball.bmp", renderer, Point{300.0, 300.0}, 30, 20, windows_height, windows_width, 0, 0, 0);
+    Falling_widget fw("ball.bmp", renderer, Point{100.0, 100.0}, 30, 20, windows_height, windows_width, 0, 2, 0);
 //    float aksy = 0.98f;
 //    float aksx = 0.98f;
 //    fw.set_aksellerasjon(aksx, aksy);
@@ -48,13 +48,16 @@ int main(int argc, char** argv) {
         //fw.updateXY();
         int ypos = fw.current_pos().Y;
         int xpos = fw.current_pos().X;
+        
         double vecX = midwinX - xpos;//static_cast<double>(x);
         double vecY = midwinY - ypos;//static_cast<double>(y);
         double length_vecXY = sqrt(vecX*vecX + vecY*vecY);
+        
         double ekspr = (vecX*vecX+vecY*0)/(length_vecXY*vecX);
         double radangl = acos(ekspr);
+        if (ypos > midwinY) radangl *= -1;
         int angle = static_cast<int>(radangl*(180.0/3.1415926));
-        fw.set_aksellerasjon(0.0981, angle);
+        fw.set_aksellerasjon(9.81, angle);
         auto [endX, endY] = endKoord(xpos, ypos, radangl, length_vecXY);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer); 
