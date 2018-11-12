@@ -79,20 +79,22 @@ void Falling_widget::set_widget_xy() {
 }
 
 double Falling_widget::next_Y() {
-	//std::cout << "next_Y(): velocity.vy0_ = " << velocity.vy0_ << "\n";
+	velocity.vYtot_ += velocity.vy0_;
+	velocity.vy0_ = 0;
 	velocity.vYtot_ += aksellerasjon_.Y();
 	double deltaS = velocity.vYtot_/2;
 	double s = velocity.vy0_*tid_ ;
-	currpos.Y += s;
+	//currpos.Y += s;
 	currpos.Y += deltaS; 
 	return (startpos_.Y+currpos.Y);
 }
 double Falling_widget::next_X() {
-
+	velocity.vXtot_ += velocity.vx0_;
+	velocity.vx0_ = 0;
 	velocity.vXtot_ += aksellerasjon_.X();												        
 	double deltaS = velocity.vXtot_/2;
-	double s = velocity.vx0_*tid_ ;
-	currpos.X += s;
+	//double s = velocity.vx0_*tid_ ;
+	//currpos.X += s;
 	currpos.X += deltaS; 
 	return (startpos_.X+currpos.X);
 }
