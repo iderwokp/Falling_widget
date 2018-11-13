@@ -36,9 +36,9 @@ int main(int argc, char** argv) {
     
     
     std::vector<Falling_widget> baller;
-    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, 30, 20, windows_height, windows_width, 0, -10, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, 30, 20, windows_height, windows_width, 0, 5, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, 30, 20, windows_height, windows_width, 0, 12, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, 30, 20, windows_height, windows_width, 0, -0.9, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, 30, 20, windows_height, windows_width, 0, 0.8, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, 30, 20, windows_height, windows_width, 0, 1, 0);
     
 
     
@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     double midwinY = windows_height/2;
     
     int index{300};
-    float gravitasjon{9.81/1};
+    float gravitasjon{9.81/100};
     float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 	
