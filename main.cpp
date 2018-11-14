@@ -54,16 +54,17 @@ int main(int argc, char** argv) {
         EventHandler(event, quit, windows_width, windows_height);
         
         for(auto& ball: baller) {
-        	Vec2d<double> midwin{midwinX, midwinY};
+        	double xPos = ball.current_pos().X;
+        	double yPos = ball.current_pos().X
         	
-       		Vec2d<double> pos_vec{ball.current_pos().X, ball.current_pos().Y};
-
-	        Vec2d<double> vecXY = midwin - pos_vec;
-
+        	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
+      		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
+	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
+			Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
+			
 			double length_vecXY = vecXY.length();
 	        double justert_lengde = length_vecXY/100;
-
-			Vec2d<double> x_axe{500.0, 0.0};
+			
 			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
 		
 	        if (ball.current_pos().Y > midwinY) angle *= -1;
