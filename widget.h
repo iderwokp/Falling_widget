@@ -66,10 +66,13 @@ class Widget {
             SDL_RenderCopyEx(sutex.renderer(), sutex.texture(), NULL, &_rect,_angle,nullptr,SDL_FLIP_NONE);	        
 	    }
 
-		int& angle()  { //rotating angle
+		int rot_angle()  { //rotating angle
 		    return _angle;
 		}
-		bool rotating() const {
+		void set_rot_angle(int a) {
+			_angle = a;
+		}
+		bool is_rotating() const {
 		    return _rotating;
 		}
 		void set_rotating(bool r) {
@@ -91,13 +94,15 @@ class Widget {
 		    return _width;
 		}
 
-		int& height()  {
+		int height() const {
 		    return _height;
 		}
-		double& deltaX() {
+		void set_height(int h) { _height = h;}
+		
+		double deltaX() {
 		    return _deltaX;
 		}
-		int& deltaY() {
+		int deltaY() {
 		    return _deltaY;
 		}
 		void set_deltaX(int x) {
@@ -178,12 +183,14 @@ void move_widget(Widget& w) {
 }
 void handle_top_bottom_crash(Widget& w, int windows_height) {
     if(w.startpoint().Y < 0 || w.startpoint().Y > (windows_height - w.height())) {
-         w.deltaY() = -w.deltaY();
+         //w.deltaY() = -w.deltaY();
+         w.set_deltaY(-w.deltaY());
     }
 }
 void handle_side_crash(Widget& w, int windows_width) {
     if(w.startpoint().X < 0 || w.startpoint().X > (windows_width - w.width())) {
-        w.deltaX() = -w.deltaX();
+        //w.deltaX() = -w.deltaX();
+        w.set_deltaX(-w.deltaX());
     }
 }
 #endif
