@@ -37,38 +37,50 @@ int main(int argc, char** argv) {
     
     
     std::vector<Falling_widget> baller;
-    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, 30, 20, windows_height, windows_width, 0, -0.9, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, 30, 20, windows_height, windows_width, 0, 0.8, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, 30, 20, windows_height, windows_width, 0, 1, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, 15, 10, windows_height, windows_width, 0, -10, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, 15, 10, windows_height, windows_width, 0, 5, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, 15, 10, windows_height, windows_width, 0, 12, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, 15, 10, windows_height, windows_width, -5, 0, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, 15, 10, windows_height, windows_width, -7, 0, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, 15, 10, windows_height, windows_width, 4, 0, 0);
+    
+    baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, 15, 10, windows_height, windows_width, 2, -5, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, 15, 10, windows_height, windows_width, 4, 1, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, 15, 10, windows_height, windows_width, -9, 12, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, 15, 10, windows_height, windows_width, -12, 2, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, 15, 10, windows_height, windows_width, -13, 7, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, 15, 10, windows_height, windows_width, -12, 4, 0);
     
 
     
     double midwinX = windows_width/2;
     double midwinY = windows_height/2;
-    
+    Widget sjerne("ball.bmp", renderer, Point{midwinX, midwinY},32, 20, 0, 0, 0);
+    //double xPos, yPos;
+    //double length_vecXY, radangl;
     int index{300};
-    float gravitasjon{9.81/100};
-    float gravitasjon2{9.81/1500};
+    float gravitasjon{9.81*0.5};
+    //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 	
         EventHandler(event, quit, windows_width, windows_height);
-        
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderer); 
         for(auto& ball: baller) {
         	double xPos = ball.current_pos().X;
-        	double yPos = ball.current_pos().X
+        	double yPos = ball.current_pos().Y;
         	
         	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
       		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
 	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
-			Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
+	        Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
 			
 			double length_vecXY = vecXY.length();
 	        double justert_lengde = length_vecXY/100;
 			
 			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
-		
-	        if (ball.current_pos().Y > midwinY) angle *= -1;
-	        
+			if (ball.current_pos().Y > midwinY) angle *= -1;
+	        	        
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        ball.set_aksellerasjon(grav_rr, angle);
 	        ball.updateXY();
@@ -77,17 +89,26 @@ int main(int argc, char** argv) {
 	        	midwinX = mouse_x;
 	        	midwinY = mouse_y;
 	        }
+	        //Tegne gravitasjonslinjer
+//	        double radangl = angle_rad(vecXY, x_axe);//For gravitasjonslinjene
+//	        if (ball.current_pos().Y > midwinY) radangl *= -1; //For gravitasjonslinjene
+//	        auto [endX, endY] = endKoord(xPos, yPos, radangl, length_vecXY);
+//	        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+//	        SDL_RenderDrawLine(renderer, xPos,yPos, endX, endY);
         }
 
         
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         
-	   
-	    //SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+//       const int marg{10};
+//        SDL_RenderDrawLine(renderer, midwinX,midwinY-marg, midwinX, midwinY+marg);//Loddrett
+//		SDL_RenderDrawLine(renderer, midwinX-marg,midwinY, midwinX+marg,midwinY);//Vannrett
+	    
+	    sjerne.moveTo(midwinX, midwinY);
+	    
         
 		
 		SDL_RenderPresent(renderer);
-		SDL_RenderClear(renderer); 
+		//SDL_RenderClear(renderer); 
 		SDL_Delay(30); 
        
        
