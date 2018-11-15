@@ -59,7 +59,7 @@ std::pair<double, double> Vc_conv::grav_right(double x, double y) {
 }
 
 std::pair<double, double> Vc_conv::grav_left(double x, double y) {
-	
+	return std::make_pair(x, y); //Dummy. Denne funskjonen er ikke implementert. Ikke bruk denne
 }
 std::pair<double, double> Vc_conv::grav_point(double x, double y) {
 	Angl_coord ac{windows_width_, windows_height_};

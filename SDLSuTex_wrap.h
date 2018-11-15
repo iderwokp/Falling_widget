@@ -6,11 +6,14 @@
 
 
 class  SDLSuTexWrap {
+	
+	   std::string filename{};
+	   SDL_Renderer* renderer_{nullptr};
 	   SDL_Surface* surface_{nullptr};
  	   SDL_Texture* texture_{nullptr};
- 	   SDL_Renderer* renderer_{nullptr};
+ 	   
 	
- 	   std::string filename{};
+ 	   
  	   
  	   	void init() {
 	    //std::cout << "init()\n";
@@ -25,7 +28,7 @@ class  SDLSuTexWrap {
 		
     public:
     	SDLSuTexWrap() {/*std::cout << "SDLSuTexWrap()\n";*/}//= default;
-    	SDLSuTexWrap(std::string fn, SDL_Renderer* r) : filename{fn}, renderer_{r} {
+    	SDLSuTexWrap(const std::string& fn, SDL_Renderer* r) : filename{fn}, renderer_{r} {
     		//std::cout << "SDLSuTexWrap(-----)\n";
 			init();
 		}

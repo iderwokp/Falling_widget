@@ -9,7 +9,7 @@
 
 class Falling_widget: public Widget {
 	public:
-		Falling_widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int ybound=0, int xbound=0, double vx0 = 0, double vy0 = 0, int rot= 0): 
+		Falling_widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int ybound=0, int xbound=0, double vx0 = 0, double vy0 = 0, int rot= 0): 
 							Widget(fn, rend, p, w, h, vx0, vy0, rot),
 							yboundary_{ybound}, xboundary{xbound}, startpos_{p}  {
 							
@@ -31,7 +31,7 @@ class Falling_widget: public Widget {
 		double next_Y();
 		double next_X();
 		
-		static constexpr double g_ = 9.81;
+		//static constexpr double g_ = 9.81;
 		
 		//double loss_{};
 		Aksellerasjon aksellerasjon_{0.0f, 0.0f};
@@ -83,7 +83,7 @@ double Falling_widget::next_Y() {
 	velocity.vy0_ = 0;
 	velocity.vYtot_ += aksellerasjon_.Y();
 	double deltaS = velocity.vYtot_/2;
-	double s = velocity.vy0_*tid_ ;
+	//double s = velocity.vy0_*tid_ ;
 	//currpos.Y += s;
 	currpos.Y += deltaS; 
 	return (startpos_.Y+currpos.Y);

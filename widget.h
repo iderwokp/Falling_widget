@@ -13,23 +13,25 @@ struct Point {
 
 class Widget {
 	// Private section
+	std::string filename{};
 	Point _startpoint{};
 	Point current_pos_{};
-	int _height{0};
 	int _width{0};
+	int _height{0};
+	
 	double _deltaX{0};
 	int _deltaY{0};
 	int _angle{0};
 	bool _rotating{false};
 	//Rect _rect;
-	std::string filename{};
+	
 
 	SDLSuTexWrap sutex;
     SDL_Rect _rect{0, 0, 0, 0};
 
 	public:
 	   // Widget() { std::cout << "Widget()\n" ; }
-	    Widget(std::string fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, double dx = 0, int dy = 0, int a= 0 ): filename{fn}, 
+	    Widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, double dx = 0, int dy = 0, int a= 0 ): filename{fn}, 
                                                                                                                     //renderer{rend},
                                                                                                                     _startpoint{p},                                                                                                                    
                                                                                                                     _width{w},
@@ -99,10 +101,10 @@ class Widget {
 		}
 		void set_height(int h) { _height = h;}
 		
-		double deltaX() {
+		double deltaX() const {
 		    return _deltaX;
 		}
-		int deltaY() {
+		int deltaY() const {
 		    return _deltaY;
 		}
 		void set_deltaX(int x) {

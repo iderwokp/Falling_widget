@@ -2,8 +2,10 @@ linker.txt
 *.o
 *.dll
 *.exe
-
+fw-cppcheck-build-dir/*
 gmon.out
 Makefile.win
 
 Falling_widget.layout
+*.gch
+*.cppcheck

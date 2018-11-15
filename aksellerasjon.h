@@ -9,24 +9,25 @@ class Aksellerasjon {
 		Aksellerasjon(double x, double y);
 		Aksellerasjon(double h, int a);
 		
-		double X() {return X_;}
-		double Y() {return Y_;}
-		double hyp() {return hyp_;}
-		int angle() {return angle_;}
+		double X() const {return X_;}
+		double Y() const {return Y_;}
+		double hyp() const {return hyp_;}
+		int angle() const {return angle_;}
 		void X(double x) {X_ = x;}
 		void Y(double y) {Y_ = y;}
 		void hyp(double h) {hyp_ = h;}
 		void angle(int a) {angle_ = a;}
 		
-		calc_XY();
-		calc_hyp_a();
+		void calc_XY();
+		void calc_hyp_a();
 	private:
 		double X_{};
 		double Y_{};
-		int angle_{};
 		double hyp_{};
+		int angle_{};
 		
-		double PI{3.1415926};
+		
+		static constexpr double PI{3.1415926535};
 	
 };
 
@@ -43,15 +44,16 @@ Aksellerasjon::Aksellerasjon(double z, int a): hyp_{z}, angle_{a} {
 
 }
 
-Aksellerasjon::calc_XY(){
-	double rad = (angle_)*(PI/180.0);// angle_+90 pga y har 0 på toppen av koordinatsystemet
+void Aksellerasjon::calc_XY(){
+	double rad = (angle_)*(PI/180.0);
 	X_ = hyp_*cos(rad);
 	Y_ = hyp_*sin(rad);
 	
 	//std::cout << "calc_XY(): X_ = " << X_ << "  Y_ = " << Y_ << "\n";
 }
-	
-Aksellerasjon::calc_hyp_a(){//TODO: Sjekke om denne matematikken holder mål
+
+//Mulig duplikat-kode, siden Vec2d tar seg av mye. Kanskje refaktorere en gang.	
+void Aksellerasjon::calc_hyp_a(){
 	hyp_ = sqrt(X_*X_ + Y_*Y_);
 	double radangl = acos(X_/hyp_);
 	angle_ = static_cast<int>(radangl/(PI/180.0));
