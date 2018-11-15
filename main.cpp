@@ -45,29 +45,33 @@ int main(int argc, char** argv) {
     
     double midwinX = windows_width/2;
     double midwinY = windows_height/2;
-    
+    //double xPos, yPos;
+    //double length_vecXY, radangl;
     int index{300};
     float gravitasjon{9.81/1};
     float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 	
         EventHandler(event, quit, windows_width, windows_height);
-        
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderer); 
         for(auto& ball: baller) {
         	double xPos = ball.current_pos().X;
-        	double yPos = ball.current_pos().X
+        	double yPos = ball.current_pos().Y;
         	
         	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
       		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
 	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
+	        
 			Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
 			
 			double length_vecXY = vecXY.length();
 	        double justert_lengde = length_vecXY/100;
 			
 			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
-		
+			double radangl = angle_rad(vecXY, x_axe);
 	        if (ball.current_pos().Y > midwinY) angle *= -1;
+	        if (ball.current_pos().Y > midwinY) radangl *= -1;
 	        
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        ball.set_aksellerasjon(grav_rr, angle);
@@ -77,17 +81,22 @@ int main(int argc, char** argv) {
 	        	midwinX = mouse_x;
 	        	midwinY = mouse_y;
 	        }
+	        auto [endX, endY] = endKoord(xPos, yPos, radangl, length_vecXY);
+	         SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	        SDL_RenderDrawLine(renderer, xPos,yPos, endX, endY);
         }
 
         
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         
+       
+        SDL_RenderDrawLine(renderer, midwinX,0, midwinX, windows_height);
+		SDL_RenderDrawLine(renderer, 0,midwinY, windows_width,midwinY);
 	   
-	    //SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	    
         
 		
 		SDL_RenderPresent(renderer);
-		SDL_RenderClear(renderer); 
+		//SDL_RenderClear(renderer); 
 		SDL_Delay(30); 
        
        
