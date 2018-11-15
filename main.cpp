@@ -4,6 +4,7 @@
 #include <cmath>
 #include "sdl_wrap.h"
 #include "Falling_widget.h"
+#include "vec2d.h"
 
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde);
 float grav_avstand(double avstand, float g);
@@ -53,21 +54,25 @@ int main(int argc, char** argv) {
         EventHandler(event, quit, windows_width, windows_height);
         
         for(auto& ball: baller) {
-        	int ypos = ball.current_pos().Y;
-       		int xpos = ball.current_pos().X;
-        	double vecX = midwinX - xpos;
-	        double vecY = midwinY - ypos;
-	        double length_vecXY = sqrt(vecX*vecX + vecY*vecY);
+        	double xPos = ball.current_pos().X;
+        	double yPos = ball.current_pos().X
+        	
+        	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
+      		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
+	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
+			Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
+			
+			double length_vecXY = vecXY.length();
 	        double justert_lengde = length_vecXY/100;
-	        double ekspr = (vecX*vecX+vecY*0)/(length_vecXY*vecX);
-	        double radangl = acos(ekspr);
-	        if (ypos > midwinY) radangl *= -1;
-	        int angle = static_cast<int>(radangl*(180.0/3.1415926));
+			
+			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
+		
+	        if (ball.current_pos().Y > midwinY) angle *= -1;
+	        
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        ball.set_aksellerasjon(grav_rr, angle);
 	        ball.updateXY();
-	        //auto [endX, endY] = endKoord(xpos, ypos, radangl, length_vecXY);
-	        
+
 	        if(mouse_x != 0 || mouse_y != 0) {
 	        	midwinX = mouse_x;
 	        	midwinY = mouse_y;
@@ -76,7 +81,7 @@ int main(int argc, char** argv) {
 
         
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-		
+        
 	   
 	    //SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
         
