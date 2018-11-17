@@ -38,6 +38,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     int fwidget_width{3};
     int fwidget_height{2};
     std::vector<Falling_widget> baller;
+    //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
+    
     baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -10, 0);
     baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 5, 0);
     baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 12, 0);
@@ -51,7 +53,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12, 2, 0);
     baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -13, 7, 0);
     baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12, 4, 0);
-    
+//    
 
     
     double midwinX = windows_width/2;
@@ -68,7 +70,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-        //SDL_RenderClear(renderer); 
+        SDL_RenderClear(renderer); 
         for(auto& ball: baller) {
         	double xPos = ball.current_pos().X;
         	double yPos = ball.current_pos().Y;
@@ -100,7 +102,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 //	        SDL_RenderDrawLine(renderer, xPos,yPos, endX, endY);
         }
 
-        
+        // Smågetoppen grendalag: 98656042
         
 //       const int marg{10};
 //        SDL_RenderDrawLine(renderer, midwinX,midwinY-marg, midwinX, midwinY+marg);//Loddrett

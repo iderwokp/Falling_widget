@@ -29,8 +29,9 @@ template <typename T1>
 T1 Vec2d<T1>::length() const {
 	return sqrt(x_*x_ + y_*y_);	
 }
+
 template <typename T1> 
-T1 dot_product(const Vec2d<T1> v1, const Vec2d<T1> v2) {
+T1 operator*(const Vec2d<T1> v1, const Vec2d<T1> v2) { //Dot product
 	return(v1.xVal()*v2.xVal() + v1.yVal()*v2.yVal());
 }
 template <typename T1> 
@@ -60,7 +61,7 @@ template <typename T1>
  template <typename T1> 
  T1 angle_rad(const Vec2d<T1>& v1, const Vec2d<T1>& v2) {
  		
- 	return acos(dot_product(v1, v2)/(v1.length()*v2.length()));
+ 	return acos(v1*v2/(v1.length()*v2.length()));
  }
  template <typename T1> 
  T1 angle_deg(const Vec2d<T1>& v1, const Vec2d<T1>& v2) {

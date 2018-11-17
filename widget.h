@@ -14,108 +14,107 @@ struct Point {
 class Widget {
 	// Private section
 	std::string filename{};
-	Point _startpoint{};
+	Point startpoint_{};
 	Point current_pos_{};
-	int _width{0};
-	int _height{0};
+	int width_{0};
+	int height_{0};
 	
-	double _deltaX{0};
-	int _deltaY{0};
-	int _angle{0};
-	bool _rotating{false};
+	double deltaX_{0};
+	int deltaY_{0};
+	int angle_{0};
+	bool rotating_{false};
 	//Rect _rect;
 	
 
 	SDLSuTexWrap sutex;
-    SDL_Rect _rect{0, 0, 0, 0};
+    SDL_Rect rect_{0, 0, 0, 0};
 
 	public:
 	   // Widget() { std::cout << "Widget()\n" ; }
 	    Widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, double dx = 0, int dy = 0, int a= 0 ): filename{fn}, 
                                                                                                                     //renderer{rend},
-                                                                                                                    _startpoint{p},                                                                                                                    
-                                                                                                                    _width{w},
-                                                                                                                    _height{h},
-                                                                                                                    _deltaX{dx},
-                                                                                                                    _deltaY{dy},
-                                                                                                                    _angle{a} {
-	        //std::cout << "Widget(................)\n";
-		//std::cout << "Widget(....)\n _startpoint = " << _startpoint.X << "," << _startpoint.Y << "\n";
-	        //init();
+                                                                                                                    startpoint_{p},                                                                                                                    
+                                                                                                                    width_{w},
+                                                                                                                    height_{h},
+                                                                                                                    deltaX_{dx},
+                                                                                                                    deltaY_{dy},
+                                                                                                                    angle_{a} {
+	       
 	        sutex = SDLSuTexWrap(filename, rend);
-	        current_pos_ = _startpoint;
+	        current_pos_ = startpoint_;
 	        
 	    }
 
 	    SDL_Rect rect() const {
-	        return SDL_Rect{static_cast<int>(_startpoint.X), static_cast<int>(_startpoint.Y), _width, _height};
+	        return SDL_Rect{static_cast<int>(startpoint_.X), static_cast<int>(startpoint_.Y), width_, height_};
 	    }
 	    
 	    void make(Point p, int w, int h) {
 	        //std::cout << "make(Point, int, int)\n";
-	        _startpoint = p;
-	        _width = w;
-	        _height = h;
-	        _rect = {static_cast<int>(_startpoint.X), static_cast<int>(_startpoint.Y), _width, _height};
+	        startpoint_ = p;
+	        width_ = w;
+	        height_ = h;
+	        rect_ = {static_cast<int>(startpoint_.X), static_cast<int>(startpoint_.Y), width_, height_};
 	    }
 	    void make() {
 	        //std::cout << "make()\n";
-	        _rect = {static_cast<int>(_startpoint.X), static_cast<int>(_startpoint.Y), _width, _height};
+	        rect_ = {static_cast<int>(startpoint_.X), static_cast<int>(startpoint_.Y), width_, height_};
 	    }
-	    void show() {
+	    void show()const {
 	        //std::cout << "show()\n";
 	       
-            SDL_RenderCopyEx(sutex.renderer(), sutex.texture(), NULL, &_rect,_angle,nullptr,SDL_FLIP_NONE);	        
+            SDL_RenderCopyEx(sutex.renderer(), sutex.texture(), NULL, &rect_,angle_,nullptr,SDL_FLIP_NONE);	        
 	    }
 
-		int rot_angle()  { //rotating angle
-		    return _angle;
+		int rot_angle()  const { //rotating angle
+		    return angle_;
 		}
 		void set_rot_angle(int a) {
-			_angle = a;
+			angle_ = a;
 		}
 		bool is_rotating() const {
-		    return _rotating;
+		    return rotating_;
 		}
 		void set_rotating(bool r) {
-		    _rotating = r;
+		    rotating_ = r;
 		}
 		Point current_pos() const {
 			return current_pos_;
 		}
 		
 		Point startpoint() const {
-		    return _startpoint;
+		    return startpoint_;
 		}
 		void startpoint(int x, int y)  {
-		    _startpoint.X = x;
-		    _startpoint.Y = y;
+		    startpoint_.X = x;
+		    startpoint_.Y = y;
 		}
 
-		int& width()  {
-		    return _width;
+		int width() const {
+		    return width_;
 		}
+		void set_width(int w) { width_ = w;}
 
 		int height() const {
-		    return _height;
+		    return height_;
 		}
-		void set_height(int h) { _height = h;}
+		void set_height(int h) { height_ = h;}
 		
 		double deltaX() const {
-		    return _deltaX;
+		    return deltaX_;
 		}
 		int deltaY() const {
-		    return _deltaY;
+		    return deltaY_;
 		}
 		void set_deltaX(int x) {
-		    _deltaX = x;
+		    deltaX_ = x;
 		}
 		void set_deltaY(int y) {
-		    _deltaY = y;
+		    deltaY_ = y;
 		}
 		void moveTo(int x, int y) {
 		    startpoint(x, y);
-		    current_pos_ = _startpoint;
+		    current_pos_ = startpoint_;
 		    make();
 		    show();
 			//std::cout << "y = " << y << "\n";
@@ -129,7 +128,7 @@ class Widget {
 	
 };
 bool operator==(const Widget& w1, const Widget& w2) {//TODO: Bør kanskje sjekke mere enn bare X,Y
-    return (w1._startpoint.X == w2._startpoint.X && w1._startpoint.Y == w2._startpoint.Y) && 
+    return (w1.startpoint_.X == w2.startpoint_.X && w1.startpoint_.Y == w2.startpoint_.Y) && 
 	(w1.filename == w2.filename);
 }
 bool operator!=(const Widget& w1, const Widget& w2) {
@@ -155,7 +154,7 @@ bool widget_top_bottom_crash(Widget& w1, Widget& w2) {
 }
 void handle_widget_crash(Widget& w1, Widget& w2) {
      if(widget_side_crash(w1, w2) || widget_side_crash(w2, w1)) {
-        //std::cout << "Pang side \n Før set_DeltaX w1.deltaX() == " << w1.deltaX() << "\n ";
+        //std::cout << "Pang side \n Før setdeltaX_ w1.deltaX() == " << w1.deltaX() << "\n ";
         w1.set_deltaX(-w1.deltaX());
         w2.set_deltaX(-w2.deltaX());
         w1.set_rotating(true);// == true;
@@ -183,14 +182,14 @@ void move_widget(Widget& w) {
         int dy = w.deltaY();
         w.moveTo(w.startpoint().X + dx, w.startpoint().Y + dy); 
 }
-void handle_top_bottom_crash(Widget& w, int windows_height) {
-    if(w.startpoint().Y < 0 || w.startpoint().Y > (windows_height - w.height())) {
+void handle_top_bottom_crash(Widget& w, int windowsheight_) {
+    if(w.startpoint().Y < 0 || w.startpoint().Y > (windowsheight_ - w.height())) {
          //w.deltaY() = -w.deltaY();
          w.set_deltaY(-w.deltaY());
     }
 }
-void handle_side_crash(Widget& w, int windows_width) {
-    if(w.startpoint().X < 0 || w.startpoint().X > (windows_width - w.width())) {
+void handle_side_crash(Widget& w, int windowswidth_) {
+    if(w.startpoint().X < 0 || w.startpoint().X > (windowswidth_ - w.width())) {
         //w.deltaX() = -w.deltaX();
         w.set_deltaX(-w.deltaX());
     }

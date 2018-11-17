@@ -11,7 +11,7 @@ class Falling_widget: public Widget {
 	public:
 		Falling_widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int ybound=0, int xbound=0, double vx0 = 0, double vy0 = 0, int rot= 0): 
 							Widget(fn, rend, p, w, h, vx0, vy0, rot),
-							yboundary_{ybound}, xboundary{xbound}, startpos_{p}  {
+							yboundary_{ybound}, xboundary_{xbound}, startpos_{p}  {
 							
 			velocity.vx0_= vx0;
 			velocity.vy0_= vy0; 
@@ -31,21 +31,18 @@ class Falling_widget: public Widget {
 		double next_Y();
 		double next_X();
 		
-		//static constexpr double g_ = 9.81;
-		
-		//double loss_{};
 		Aksellerasjon aksellerasjon_{0.0f, 0.0f};
 		int yboundary_{};
-		int xboundary{};
+		int xboundary_{};
 		Velocity velocity{0, 0, 0, 0, 0};
 	
 		Point startpos_{};
-		Point currpos{0.0f, 0.0f};
-		double Ypos{0};
-		double Xpos{0};
-		int tid_{1};
+		Point currpos_{0.0f, 0.0f};
+//		double Ypos_{0};
+//		double Xpos_{0};
+		//int tid_{1};
 	
-		//bool boost_{false};
+		
 		
 	
 	
@@ -68,11 +65,11 @@ void Falling_widget::set_aksellerasjon(float h, int akse) {
 	
 }
 void Falling_widget::set_widget_xy() {
-	Vc_conv vc(Grav_heading::down, xboundary, yboundary_);
+	Vc_conv vc(Grav_heading::down, xboundary_, yboundary_);
 	
 	double y = next_Y();
 	double x = next_X();
-	++tid_;
+//	++tid_;
 	auto [xx, yy] = vc.convert_from_virtual(x, y);
 	moveTo(xx,yy);
 	
@@ -85,8 +82,8 @@ double Falling_widget::next_Y() {
 	double deltaS = velocity.vYtot_/2;
 	//double s = velocity.vy0_*tid_ ;
 	//currpos.Y += s;
-	currpos.Y += deltaS; 
-	return (startpos_.Y+currpos.Y);
+	currpos_.Y += deltaS; 
+	return (startpos_.Y+currpos_.Y);
 }
 double Falling_widget::next_X() {
 	velocity.vXtot_ += velocity.vx0_;
@@ -95,8 +92,8 @@ double Falling_widget::next_X() {
 	double deltaS = velocity.vXtot_/2;
 	//double s = velocity.vx0_*tid_ ;
 	//currpos.X += s;
-	currpos.X += deltaS; 
-	return (startpos_.X+currpos.X);
+	currpos_.X += deltaS; 
+	return (startpos_.X+currpos_.X);
 }
 
 
