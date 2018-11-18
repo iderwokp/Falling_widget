@@ -117,7 +117,7 @@ class Widget {
 		    current_pos_ = startpoint_;
 		    make();
 		    show();
-			//std::cout << "y = " << y << "\n";
+			//std::cout << "Widget::moveTo()  x = " << x << "\ty = " << y << "\n";
 		}
 		void moveTo(Point p) {
 		    moveTo(p.X, p.Y);

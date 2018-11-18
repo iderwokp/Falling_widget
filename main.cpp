@@ -8,19 +8,42 @@
 
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde);
 float grav_avstand(double avstand, float g);
-int mouse_x{0};
-int mouse_y{0};
+void check_limits(Falling_widget& romskip, int wwidth, int wheight);
+//int mouse_x{0};
+//int mouse_y{0};
+int rot_angle{0};
+double trust{0};
 void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT){
         quit = true;
-    }    
-    if(event.type == SDL_MOUSEBUTTONDOWN) {
-        
-        SDL_GetMouseState( &mouse_x, &mouse_y );
-        //check_mouse_click(x, y, w, ww, wh);
-        
     }
+	else if(event.type == SDL_KEYDOWN) {
+        if(event.key.keysym.sym == SDLK_RIGHT ) {
+            rot_angle+=15;
+            if(rot_angle > 360) rot_angle -=360;
+        }
+        if(event.key.keysym.sym == SDLK_LEFT ) {
+            rot_angle-=15;
+            if(rot_angle < 0) rot_angle +=360;
+        }
+        if(event.key.keysym.sym == SDLK_UP ) {
+            trust = 9.81/10000;
+        }
+	}
+    else if(event.type == SDL_KEYUP) {
+        	if(event.key.keysym.sym == SDLK_UP ) {
+           	 trust = 0.0;
+       		 }
+    }
+        
+      
+//    if(event.type == SDL_MOUSEBUTTONDOWN) {
+//        
+//        SDL_GetMouseState( &mouse_x, &mouse_y );
+//        //check_mouse_click(x, y, w, ww, wh);
+//        
+//    }
 }
 int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	
@@ -31,90 +54,51 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     
     SDL_Init(SDL_INIT_VIDEO);
     
-    Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
+    Sdl_wrap sdlwrap{std::string{"Romskip"}, windows_width, windows_height};
     //SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
     
-    int fwidget_width{3};
-    int fwidget_height{2};
-    std::vector<Falling_widget> baller;
+    int fwidget_width{17};
+    int fwidget_height{30};
+    //std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
     
-    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -10, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 5, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 12, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -5, 0, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -7, 0, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 4, 0, 0);
+    Falling_widget romskip("ball2.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
     
-    baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, fwidget_width, fwidget_height, windows_height, windows_width, 2, -5, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 4, 1, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -9, 12, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12, 2, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -13, 7, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12, 4, 0);
 //    
 
     
     double midwinX = windows_width/2;
     double midwinY = windows_height/2;
-    int sjerneW{32};
-    int sjerneH{20};
-    Widget sjerne("ball.bmp", renderer, Point{midwinX-sjerneW/2, midwinY-sjerneH/2},32, 20, 0, 0, 0);
+//    int sjerneW{32};
+//    int sjerneH{20};
+    //Widget sjerne("ball.bmp", renderer, Point{midwinX-sjerneW/2, midwinY-sjerneH/2},32, 20, 0, 0, 0);
     //double xPos, yPos;
     //double length_vecXY, radangl;
     int index{300};
-    float gravitasjon{9.81*1};
+    //float gravitasjon{9.81*1};
     //float gravitasjon2{9.81/1500};
+    romskip.setXY(midwinX-fwidget_width/2, midwinY-fwidget_height/2);
+    //romskip.setXY(midwinX, midwinY);
     while(index >=0 && !quit) {
 	
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer); 
-        for(auto& ball: baller) {
-        	double xPos = ball.current_pos().X;
-        	double yPos = ball.current_pos().Y;
-        	
-        	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
-      		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
-	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
-	        Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
-			
-			double length_vecXY = vecXY.length();
-	        double justert_lengde = length_vecXY/100;
-			
-			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
-			if (ball.current_pos().Y > midwinY) angle *= -1;
-	        	        
-	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
-	        ball.set_aksellerasjon(grav_rr, angle);
-	        ball.updateXY();
-
-	        if(mouse_x != 0 || mouse_y != 0) {
-	        	midwinX = mouse_x;
-	        	midwinY = mouse_y;
-	        }
-	        //Tegne gravitasjonslinjer
-//	        double radangl = angle_rad(vecXY, x_axe);//For gravitasjonslinjene
-//	        if (ball.current_pos().Y > midwinY) radangl *= -1; //For gravitasjonslinjene
-//	        auto [endX, endY] = endKoord(xPos, yPos, radangl, length_vecXY);
-//	        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-//	        SDL_RenderDrawLine(renderer, xPos,yPos, endX, endY);
-        }
-
-        // Smågetoppen grendalag: 98656042
-        
-//       const int marg{10};
-//        SDL_RenderDrawLine(renderer, midwinX,midwinY-marg, midwinX, midwinY+marg);//Loddrett
-//		SDL_RenderDrawLine(renderer, midwinX-marg,midwinY, midwinX+marg,midwinY);//Vannrett
+        check_limits(romskip, windows_width, windows_height);
+		
+	    romskip.updateXY();
+	    romskip.set_rot_angle(rot_angle);
+	    romskip.set_aksellerasjon(trust, rot_angle-90);
 	    
-	    sjerne.moveTo(midwinX-sjerneW/2, midwinY-sjerneH/2);
-	    
+	    //std::cout << "velocityX() = " << romskip.velocityX() << "\tvelocityY() = " << romskip.velocityY() << "\n";
+	    //std::cout << "romskip.current_pos().X = " << romskip.current_pos().X << "\tromskip.current_pos().Y = " << romskip.current_pos().Y << "\n";
+	    //++rot_angle;
         
 		
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
-		SDL_Delay(30); 
+		SDL_Delay(3); 
        
        
        
@@ -122,6 +106,19 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
    
     SDL_Quit();
     return 0;
+}
+void check_limits(Falling_widget& romskip, int windows_width, int windows_height) { 
+//En slags samleprosedyre
+//Tar seg av hva som skjer når romskipet kommer utenfor kanten eller kjører veldig sakte
+//Ikke helt stuerent å ha flere oppgaver i en funksjon men...
+	int yPos = romskip.current_pos().Y;
+    int xPos = romskip.current_pos().X;
+    if (xPos < 0) 			   	{romskip.setXY(windows_width, yPos); }
+    if (xPos > windows_width)	 {romskip.setXY(0, yPos); }
+    if (yPos < 0) 				{romskip.setXY(xPos, windows_height);}
+    if (yPos > windows_height)	 {romskip.setXY(xPos, 0);}
+    if(fabs(romskip.velocityX()) < 0.003 && trust == 0.0) romskip.set_velocityX(0.0);
+    if(fabs(romskip.velocityY()) < 0.003 && trust == 0.0) romskip.set_velocityY(0.0);
 }
 
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde) {
@@ -197,3 +194,41 @@ float grav_avstand(double avstand, float g) {
 //		fw2.updateXY();
 //		fw3.updateXY();
         
+        
+        //        for(auto& ball: baller) {
+//        	double xPos = ball.current_pos().X;
+//        	double yPos = ball.current_pos().Y;
+//        	
+//        	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
+//      		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
+//	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
+//	        Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
+//			
+//			double length_vecXY = vecXY.length();
+//	        double justert_lengde = length_vecXY/100;
+//			
+//			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
+//			if (ball.current_pos().Y > midwinY) angle *= -1;
+//	        	        
+//	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
+//	        ball.set_aksellerasjon(grav_rr, angle);
+//	        ball.updateXY();
+//
+//	        if(mouse_x != 0 || mouse_y != 0) {
+//	        	midwinX = mouse_x;
+//	        	midwinY = mouse_y;
+//	        }
+	        //Tegne gravitasjonslinjer
+//	        double radangl = angle_rad(vecXY, x_axe);//For gravitasjonslinjene
+//	        if (ball.current_pos().Y > midwinY) radangl *= -1; //For gravitasjonslinjene
+//	        auto [endX, endY] = endKoord(xPos, yPos, radangl, length_vecXY);
+//	        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+//	        SDL_RenderDrawLine(renderer, xPos,yPos, endX, endY);
+ //       }
+
+        // Smågetoppen grendalag: 98656042
+        
+//       const int marg{10};
+//        SDL_RenderDrawLine(renderer, midwinX,midwinY-marg, midwinX, midwinY+marg);//Loddrett
+//		SDL_RenderDrawLine(renderer, midwinX-marg,midwinY, midwinX+marg,midwinY);//Vannrett
+	    

@@ -5,6 +5,7 @@
 #include <SDL.h>
 
 
+
 class  SDLSuTexWrap {
 	
 	   std::string filename{};
@@ -17,7 +18,13 @@ class  SDLSuTexWrap {
  	   
  	   	void init() {
 	    //std::cout << "init()\n";
+//	      int imgFlags = IMG_INIT_PNG;
+//	  	  IMG_Init( imgFlags ) & imgFlags;
+//	  	  surface_ = IMG_Load(filename.c_str());
 	  	  surface_ = SDL_LoadBMP(filename.c_str());
+	  	  
+//	  	  surface_->format->Amask = 0xff000000; 
+//		  surface_->format->Ashift = 32; 
 	  	  texture_ = SDL_CreateTextureFromSurface(renderer_, surface_);
 		}
 		

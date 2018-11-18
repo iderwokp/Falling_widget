@@ -25,7 +25,11 @@ class Falling_widget: public Widget {
 		//double& loss() { return loss_;}
 		void set_aksellerasjon(float x, float y);
 		void set_aksellerasjon(float h, int akse);
-		
+		void setXY(double x, double y);
+		double velocityX() {return velocity.vXtot_;}
+		double velocityY() {return velocity.vYtot_;}
+		void set_velocityX(double v) {velocity.vXtot_ = v;}
+		void set_velocityY(double v) {velocity.vYtot_ = v;}
 	private:
 		void set_widget_xy();
 		double next_Y();
@@ -74,7 +78,16 @@ void Falling_widget::set_widget_xy() {
 	moveTo(xx,yy);
 	
 }
-
+void Falling_widget::setXY(double x, double y) {
+	Vc_conv vc(Grav_heading::down, xboundary_, yboundary_);
+	auto [xx, yy] = vc.convert_from_virtual(x, y);
+	moveTo(xx,yy);
+	
+	//Siden x,y koordinatene er oppdatert uten op next_X() og next_Y()
+	//må det gjøres manuelt her
+	currpos_.X = xx-startpos_.X;
+	currpos_.Y = yy-startpos_.Y;
+}
 double Falling_widget::next_Y() {
 	velocity.vYtot_ += velocity.vy0_;
 	velocity.vy0_ = 0;
