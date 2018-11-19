@@ -7,13 +7,17 @@ namespace Iderwok{
 const double m_PI{3.1415926535};
  template <typename T1> 
 class Vec2d {
-		T1 x_{0};
-		T1 y_{0};
-		
-		
+		T1 x_{};
+		T1 y_{};
+		T1 magn_{};
+		int angle_{};
+		static constexpr double PI{3.1415926535};
+		void calc_XY();
+		void calc_hyp_a();
 	public:
 		Vec2d() = default;
-		Vec2d(T1 x, T1 y): x_{x}, y_{y} {}
+		Vec2d(T1 x, T1 y): x_{x}, y_{y} {calc_hyp_a();}
+		Vec2d(T1 m, int angl): magn_{m}, angle_{angl}{calc_XY();}
 		Vec2d& operator+=(const Vec2d& other);	
 		Vec2d& operator-=(const Vec2d& other);	
 		
@@ -26,7 +30,19 @@ class Vec2d {
 		//friend T1 dot_product(Vec2d v1, Vec2d v2);
 
 };
-
+template <typename T1> 
+void Vec2d<T1>::calc_hyp_a(){
+	magn_ = sqrt(x_*x_ + y_*y_);
+	double radangl = acos(y_/magn_);
+	angle_ = static_cast<int>(radangl/(PI/180.0));
+}
+template <typename T1> 
+void Vec2d<T1>::calc_XY(){
+	double rad = (angle_)*(PI/180.0);
+	x_ = angle_*cos(rad);
+	y_ = angle_*sin(rad);
+	
+	}
 template <typename T1> 
 T1 Vec2d<T1>::length() const {
 	return sqrt(x_*x_ + y_*y_);	
