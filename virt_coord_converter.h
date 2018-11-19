@@ -5,6 +5,8 @@
 
 #include <utility>  //std::pair()
 #include "angl_coord.h"
+
+namespace Iderwok {
 enum class Grav_heading {down, up, right, left, point};
 
 class Vc_conv { 
@@ -67,6 +69,7 @@ std::pair<double, double> Vc_conv::grav_point(double x, double y) {
 	return ac.polXY(x, y);
 }
 
+}//namespace
 #endif//VIRT_COORD_CONVERTER_H
 
 

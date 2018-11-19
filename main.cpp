@@ -2,39 +2,53 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <array>
 #include "sdl_wrap.h"
 #include "Falling_widget.h"
 #include "vec2d.h"
 
+using namespace Iderwok;
+
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde);
 float grav_avstand(double avstand, float g);
-void check_limits(Falling_widget& romskip, int wwidth, int wheight);
+void check_limits(Falling_widget& romskip, int wwidth, int wheight, int fwidget_width, int fwidget_height); 
+void animate(Falling_widget& fw, const std::array<std::string, 2>& s);
+
 //int mouse_x{0};
 //int mouse_y{0};
 int rot_angle{0};
 double trust{0};
+bool changeSpr{false};
 void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT){
         quit = true;
     }
 	else if(event.type == SDL_KEYDOWN) {
-        if(event.key.keysym.sym == SDLK_RIGHT ) {
-            rot_angle+=15;
-            if(rot_angle > 360) rot_angle -=360;
-        }
-        if(event.key.keysym.sym == SDLK_LEFT ) {
-            rot_angle-=15;
-            if(rot_angle < 0) rot_angle +=360;
-        }
-        if(event.key.keysym.sym == SDLK_UP ) {
-            trust = 9.81/10000;
-        }
+	        if(event.key.keysym.sym == SDLK_RIGHT ) {
+	            rot_angle+=5;
+	            if(rot_angle > 360) rot_angle -=360;
+	        }
+	        if(event.key.keysym.sym == SDLK_LEFT ) {
+	            rot_angle-=5;
+	            if(rot_angle < 0) rot_angle +=360;
+	        }
+	        if(event.key.keysym.sym == SDLK_UP ) {
+	            trust = 9.81/400;
+	            changeSpr = true;
+	        }
+	        if(event.key.keysym.sym == SDLK_DOWN ) {
+	            
+	        }
 	}
     else if(event.type == SDL_KEYUP) {
         	if(event.key.keysym.sym == SDLK_UP ) {
            	 trust = 0.0;
+           	 changeSpr = false;
        		 }
+       		 if(event.key.keysym.sym == SDLK_DOWN ) {
+           		 rot_angle += 90;
+        }
     }
         
       
@@ -64,20 +78,17 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
     
     Falling_widget romskip("ball2.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
+    std::array<std::string, 2> sprites = {"ball2.bmp", "ball2_2.bmp"};//, "ball2_3.bmp"};
     
+    Vec2d<double> tyngdekraft{0.0, 9.81/800};
 //    
 
     
     double midwinX = windows_width/2;
     double midwinY = windows_height/2;
-//    int sjerneW{32};
-//    int sjerneH{20};
-    //Widget sjerne("ball.bmp", renderer, Point{midwinX-sjerneW/2, midwinY-sjerneH/2},32, 20, 0, 0, 0);
-    //double xPos, yPos;
-    //double length_vecXY, radangl;
+
     int index{300};
-    //float gravitasjon{9.81*1};
-    //float gravitasjon2{9.81/1500};
+   
     romskip.setXY(midwinX-fwidget_width/2, midwinY-fwidget_height/2);
     //romskip.setXY(midwinX, midwinY);
     while(index >=0 && !quit) {
@@ -85,12 +96,18 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer); 
-        check_limits(romskip, windows_width, windows_height);
+        check_limits(romskip, windows_width, windows_height, fwidget_width, fwidget_height);
 		
 	    romskip.updateXY();
 	    romskip.set_rot_angle(rot_angle);
-	    romskip.set_aksellerasjon(trust, rot_angle-90);
-	    
+	    Aksellerasjon akslr(trust, rot_angle-90);
+	    Vec2d<double> aksvec(akslr.X(), akslr.Y());
+	  //  std::cout << "akslr.X() = " << akslr.X() << "\takslr.Y() = " << akslr.Y() << "\n";
+	    Vec2d<double> tot_aks = aksvec + tyngdekraft;
+	   // std::cout << "tot_aks.xVal() = " << tot_aks.xVal() << "\ttot_aks.yVal() = " << tot_aks.yVal() << "\n\n";
+	    romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));
+	    if(changeSpr) animate(romskip, sprites);
+	    else romskip.change_sprite("ball2.bmp");
 	    //std::cout << "velocityX() = " << romskip.velocityX() << "\tvelocityY() = " << romskip.velocityY() << "\n";
 	    //std::cout << "romskip.current_pos().X = " << romskip.current_pos().X << "\tromskip.current_pos().Y = " << romskip.current_pos().Y << "\n";
 	    //++rot_angle;
@@ -98,7 +115,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 		
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
-		SDL_Delay(3); 
+		SDL_Delay(1); 
        
        
        
@@ -107,18 +124,29 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     SDL_Quit();
     return 0;
 }
-void check_limits(Falling_widget& romskip, int windows_width, int windows_height) { 
+
+void animate(Falling_widget& fw, const std::array<std::string, 2>& s) {
+	static int counter{0};
+	fw.change_sprite(s[counter]);
+	++counter;
+	if (counter == 2) counter = 0;
+	
+}
+
+
+void check_limits(Falling_widget& romskip, int windows_width, int windows_height, int /*fwidget_width*/, int fwidget_height) { 
 //En slags samleprosedyre
 //Tar seg av hva som skjer når romskipet kommer utenfor kanten eller kjører veldig sakte
 //Ikke helt stuerent å ha flere oppgaver i en funksjon men...
+	double loss{0.35}; //Evnen til å sprette
 	int yPos = romskip.current_pos().Y;
     int xPos = romskip.current_pos().X;
     if (xPos < 0) 			   	{romskip.setXY(windows_width, yPos); }
     if (xPos > windows_width)	 {romskip.setXY(0, yPos); }
-    if (yPos < 0) 				{romskip.setXY(xPos, windows_height);}
-    if (yPos > windows_height)	 {romskip.setXY(xPos, 0);}
-    if(fabs(romskip.velocityX()) < 0.003 && trust == 0.0) romskip.set_velocityX(0.0);
-    if(fabs(romskip.velocityY()) < 0.003 && trust == 0.0) romskip.set_velocityY(0.0);
+    //if (yPos < 0) 				{romskip.setXY(xPos, windows_height);}
+    if (yPos > windows_height-fwidget_height)	 {romskip.setXY(xPos, windows_height-fwidget_height);romskip.set_velocityY(-romskip.velocityY()*loss);romskip.set_velocityX(romskip.velocityX()*loss);}
+    if(fabs(romskip.velocityX()) < 0.005 && trust == 0.0) romskip.set_velocityX(0.0);
+    if(fabs(romskip.velocityY()) < 0.005 && trust == 0.0) romskip.set_velocityY(0.0);
 }
 
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde) {

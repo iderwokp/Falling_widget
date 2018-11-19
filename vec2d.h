@@ -2,6 +2,8 @@
 #define VEC2D_H
 #include <cmath>
 
+namespace Iderwok{
+
 const double m_PI{3.1415926535};
  template <typename T1> 
 class Vec2d {
@@ -68,7 +70,7 @@ template <typename T1>
  		return angle_rad(v1, v2)*(180.0/m_PI);
  }
  
- 
+}//namespace
 
 #endif
 

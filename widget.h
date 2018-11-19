@@ -5,7 +5,7 @@
 #include <string>
 #include "SDLSuTex_wrap.h"
 
-
+namespace Iderwok {
 struct Point {
     double X{0.0};
     double Y{0.0};
@@ -44,7 +44,9 @@ class Widget {
 	        current_pos_ = startpoint_;
 	        
 	    }
-
+		void change_sprite(const std::string& fn) {
+			sutex.change_sprite(fn);
+		}
 	    SDL_Rect rect() const {
 	        return SDL_Rect{static_cast<int>(startpoint_.X), static_cast<int>(startpoint_.Y), width_, height_};
 	    }
@@ -194,6 +196,8 @@ void handle_side_crash(Widget& w, int windowswidth_) {
         w.set_deltaX(-w.deltaX());
     }
 }
+
+}//namespace
 #endif
 
 

@@ -5,7 +5,7 @@
 #include <SDL.h>
 
 
-
+namespace Iderwok {
 class  SDLSuTexWrap {
 	
 	   std::string filename{};
@@ -34,6 +34,12 @@ class  SDLSuTexWrap {
 		}
 		
     public:
+    	void change_sprite(std::string fn) {
+    		filename = fn;
+    			init();
+    		//surface_ = SDL_LoadBMP(fn.c_str());
+    	}
+    	
     	SDLSuTexWrap() {/*std::cout << "SDLSuTexWrap()\n";*/}//= default;
     	SDLSuTexWrap(const std::string& fn, SDL_Renderer* r) : filename{fn}, renderer_{r} {
     		//std::cout << "SDLSuTexWrap(-----)\n";
@@ -89,5 +95,7 @@ class  SDLSuTexWrap {
 	
 };
 
+
+}//namespace
 #endif //SDLSUTEX_WRAP_H
 

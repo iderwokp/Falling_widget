@@ -3,6 +3,9 @@
 #include <iostream>
 #include <cmath>
 #include <utility>  //std::pair()
+
+namespace Iderwok {
+
 class Aksellerasjon {
 	public:
 		Aksellerasjon() = default;
@@ -62,5 +65,8 @@ void Aksellerasjon::calc_hyp_a(){
 //Aksellerasjon& Aksellerasjon::operator=(const Aksellerasjon& rhs) {
 //	
 //}
+
+
+}//Iderwok
 #endif
 
