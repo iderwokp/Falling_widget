@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+namespace Iderwok {
 class  Sdl_wrap {
 	private:
 		std::string window_name{};
@@ -39,5 +40,6 @@ class  Sdl_wrap {
 	
 };
 
+}//namespace
 #endif//SDL_WRAP_H
 

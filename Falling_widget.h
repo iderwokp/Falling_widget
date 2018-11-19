@@ -7,6 +7,8 @@
 #include "aksellerasjon.h"
 #include "velocity.h"
 
+namespace Iderwok {
+
 class Falling_widget: public Widget {
 	public:
 		Falling_widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int ybound=0, int xbound=0, double vx0 = 0, double vy0 = 0, int rot= 0): 
@@ -99,7 +101,7 @@ double Falling_widget::next_X() {
 
 
 
-
+}//namespace
 
 #endif
 
