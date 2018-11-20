@@ -103,7 +103,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	    //Aksellerasjon akslr(trust, rot_angle-90);
 	    Vec2d<double> aksvec(trust, (int)rot_angle-90);
 	   // Vec2d<double> aksvec(akslr.X(), akslr.Y());
-	    std::cout << "aksvec.x() = " << aksvec.xVal() << "\taksvec.y() = " << aksvec.yVal() << "\n";
+	   // std::cout << "aksvec.x() = " << aksvec.xVal() << "\taksvec.y() = " << aksvec.yVal() << "\n";
 	    Vec2d<double> tot_aks = aksvec + tyngdekraft;
 	   // std::cout << "tot_aks.xVal() = " << tot_aks.xVal() << "\ttot_aks.yVal() = " << tot_aks.yVal() << "\n\n";
 	    romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));

@@ -38,10 +38,10 @@ void Vec2d<T1>::calc_hyp_a(){
 }
 template <typename T1> 
 void Vec2d<T1>::calc_XY(){
-	double rad = (angle_)*(PI/180.0);
-	x_ = angle_*cos(rad);
-	y_ = angle_*sin(rad);
-	
+	double rad = (angle_)*(m_PI/180.0);
+	x_ = magn_*cos(rad);
+	y_ = magn_*sin(rad);
+	//std::cout <<"rad = " << rad <<  "\tx_ = " << x_ << "\ty_ = " << y_ << "\n";
 	}
 template <typename T1> 
 T1 Vec2d<T1>::length() const {
