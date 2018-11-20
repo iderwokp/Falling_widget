@@ -20,7 +20,8 @@ class  Ammo: public Falling_widget {
 							  	
 							  }
 							//Falling_widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int ybound=0, int xbound=0, double vx0 = 0, double vy0 = 0, int rot= 0)
-	
+		int levetid() const {return m_levetid;}
+		void dec_levetid() {--m_levetid;}
 };
 
 }//namespace

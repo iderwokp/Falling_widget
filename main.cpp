@@ -13,14 +13,17 @@ using namespace Iderwok;
 
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde);
 float grav_avstand(double avstand, float g);
-void check_limits(Falling_widget& romskip, int wwidth, int wheight, int fwidget_width, int fwidget_height); 
+template <typename T>
+void check_limits(T& romskip, int wwidth, int wheight, int fwidget_width, int fwidget_height); 
 void animate(Falling_widget& fw, const std::array<std::string, 2>& s);
-
+void update_ammo(std::vector<Ammo>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height);
 //int mouse_x{0};
 //int mouse_y{0};
 int rot_angle{0};
 double trust{0};
 bool changeSpr{false};
+bool shoot{false};
+
 void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT){
@@ -42,6 +45,9 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
 	        if(event.key.keysym.sym == SDLK_DOWN ) {
 	            
 	        }
+	        if(event.key.keysym.sym == SDLK_a ) {
+	            shoot = true;
+	        }
 	}
     else if(event.type == SDL_KEYUP) {
         	if(event.key.keysym.sym == SDLK_UP ) {
@@ -50,7 +56,10 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
        		 }
        		 if(event.key.keysym.sym == SDLK_DOWN ) {
            		 rot_angle += 180;
-        }
+      	     }
+      		  if(event.key.keysym.sym == SDLK_a ) {
+	            shoot = false;
+	          }
     }
         
       
@@ -76,14 +85,15 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     
     int fwidget_width{17};
     int fwidget_height{30};
-    //std::vector<Falling_widget> baller;
-    //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
-    Vec2d ammo_fart(10.0, 45); 
-    Ammo ammo("ball.bmp", renderer, 0, ammo_fart, Point{850.0, 350.0}, 5, 3, windows_height, windows_width,0);
+    std::vector<Ammo> ammo;
+    //Vec2d ammo_fart(1.0, 180);
+    //ammo.emplace_back("ball.bmp", renderer, 800, ammo_fart, Point{850.0, 350.0}, 5, 3, windows_height, windows_width,0);
+     
+    //Ammo ammo("ball.bmp", renderer, 1000, ammo_fart, Point{850.0, 350.0}, 5, 3, windows_height, windows_width,0);
     Falling_widget romskip("ball2.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
     std::array<std::string, 2> sprites = {"ball2.bmp", "ball2_2.bmp"};//, "ball2_3.bmp"};
     
-    Vec2d<double> tyngdekraft{0.0, 9.81/800};
+    Vec2d<double> tyngdekraft{0.0, 0.0};//9.81/800};
 //    
 
     
@@ -99,28 +109,28 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer); 
-        check_limits(romskip, windows_width, windows_height, fwidget_width, fwidget_height);
+        check_limits<Falling_widget>(romskip, windows_width, windows_height, fwidget_width, fwidget_height);
 		
 	    romskip.updateXY();
-	    ammo.updateXY();
+	    
 	    romskip.set_rot_angle(rot_angle);
-	    //Aksellerasjon akslr(trust, rot_angle-90);
 	    Vec2d<double> aksvec(trust, (int)rot_angle-90);
-	   // Vec2d<double> aksvec(akslr.X(), akslr.Y());
-	   // std::cout << "aksvec.x() = " << aksvec.xVal() << "\taksvec.y() = " << aksvec.yVal() << "\n";
 	    Vec2d<double> tot_aks = aksvec + tyngdekraft;
-	   // std::cout << "tot_aks.xVal() = " << tot_aks.xVal() << "\ttot_aks.yVal() = " << tot_aks.yVal() << "\n\n";
 	    romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));
+	    
 	    if(changeSpr) animate(romskip, sprites);
 	    else romskip.change_sprite("ball2.bmp");
-	    //std::cout << "velocityX() = " << romskip.velocityX() << "\tvelocityY() = " << romskip.velocityY() << "\n";
-	    //std::cout << "romskip.current_pos().X = " << romskip.current_pos().X << "\tromskip.current_pos().Y = " << romskip.current_pos().Y << "\n";
-	    //++rot_angle;
-        
-		
+	    if(shoot) {
+	    	
+			ammo.emplace_back("ball.bmp", renderer, 90, Vec2d<double>{15.0,rot_angle-90}, Point{romskip.current_pos().X+fwidget_width/2, romskip.current_pos().Y}, 
+										5, 3, windows_height, windows_width,0);
+	
+		}
+		//std::cout << "ammo.size() = " << ammo.size() << "\n";
+		update_ammo(ammo, windows_width, windows_height, fwidget_width, fwidget_height);
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
-		SDL_Delay(1); 
+		SDL_Delay(5); 
        
        
        
@@ -129,31 +139,56 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     SDL_Quit();
     return 0;
 }
+void update_ammo(std::vector<Ammo>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height ) {
+	auto ammo_it = am.begin();
+	    while(ammo_it != am.end()) {
+	    	ammo_it->updateXY();
+	    	check_limits<Ammo>(*ammo_it, windows_width, windows_height, fwidget_width, fwidget_height);
+	    	ammo_it->dec_levetid();
+	    	if(ammo_it->levetid() == 0) ammo_it = am.erase(ammo_it);
+	    	else ++ammo_it;
+	    }
+	    	
+}
 
 void animate(Falling_widget& fw, const std::array<std::string, 2>& s) {
 	static int counter{0};
 	fw.change_sprite(s[counter]);
 	++counter;
-	if (counter == 2) counter = 0;
+	if (counter == 2) counter = 0; 
 	
 }
 
-
-void check_limits(Falling_widget& romskip, int windows_width, int windows_height, int /*fwidget_width*/, int fwidget_height) { 
+template <typename T>
+void check_limits(T& romskip, int windows_width, int windows_height, [[maybe_unused]]int fwidget_width,[[maybe_unused]] int fwidget_height) { 
 //En slags samleprosedyre
 //Tar seg av hva som skjer når romskipet kommer utenfor kanten eller kjører veldig sakte
 //Ikke helt stuerent å ha flere oppgaver i en funksjon men...
-	double loss{0.35}; //Evnen til å sprette
+	//double loss{0.35}; //Evnen til å sprette
 	int yPos = romskip.current_pos().Y;
     int xPos = romskip.current_pos().X;
     if (xPos < 0) 			   	{romskip.setXY(windows_width, yPos); }
     if (xPos > windows_width)	 {romskip.setXY(0, yPos); }
-    //if (yPos < 0) 				{romskip.setXY(xPos, windows_height);}
-    if (yPos > windows_height-fwidget_height)	 {romskip.setXY(xPos, windows_height-fwidget_height);romskip.set_velocityY(-romskip.velocityY()*loss);romskip.set_velocityX(romskip.velocityX()*loss);}
+    if (yPos < 0) 				{romskip.setXY(xPos, windows_height);}
+    if (yPos > windows_height)	 {romskip.setXY(xPos, 0);}
     if(fabs(romskip.velocityX()) < 0.005 && trust == 0.0) romskip.set_velocityX(0.0);
     if(fabs(romskip.velocityY()) < 0.005 && trust == 0.0) romskip.set_velocityY(0.0);
 }
 
+//void check_limits(Falling_widget& romskip, int windows_width, int windows_height, int /*fwidget_width*/, int fwidget_height) { 
+////En slags samleprosedyre
+////Tar seg av hva som skjer når romskipet kommer utenfor kanten eller kjører veldig sakte
+////Ikke helt stuerent å ha flere oppgaver i en funksjon men...
+//	double loss{0.35}; //Evnen til å sprette
+//	int yPos = romskip.current_pos().Y;
+//    int xPos = romskip.current_pos().X;
+//    if (xPos < 0) 			   	{romskip.setXY(windows_width, yPos); }
+//    if (xPos > windows_width)	 {romskip.setXY(0, yPos); }
+//    //if (yPos < 0) 				{romskip.setXY(xPos, windows_height);}
+//    if (yPos > windows_height-fwidget_height)	 {romskip.setXY(xPos, windows_height-fwidget_height);romskip.set_velocityY(-romskip.velocityY()*loss);romskip.set_velocityX(romskip.velocityX()*loss);}
+//    if(fabs(romskip.velocityX()) < 0.005 && trust == 0.0) romskip.set_velocityX(0.0);
+//    if(fabs(romskip.velocityY()) < 0.005 && trust == 0.0) romskip.set_velocityY(0.0);
+//}
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde) {
 	
 	double x = lengde*cos(rad_vinkel);
