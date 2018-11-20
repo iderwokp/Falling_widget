@@ -6,6 +6,8 @@
 #include "Falling_widget.h"
 #include "vec2d.h"
 
+using namespace Iderwok;
+
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde);
 float grav_avstand(double avstand, float g);
 int mouse_x{0};

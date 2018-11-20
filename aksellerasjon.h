@@ -3,11 +3,15 @@
 #include <iostream>
 #include <cmath>
 #include <utility>  //std::pair()
+#include "vec2d.h"
+
+namespace Iderwok {
 class Aksellerasjon {
 	public:
 		Aksellerasjon() = default;
 		Aksellerasjon(double x, double y);
 		Aksellerasjon(double h, int a);
+		Aksellerasjon(Vec2d<double> vec2d);
 		
 		double X() const {return X_;}
 		double Y() const {return Y_;}
@@ -30,7 +34,10 @@ class Aksellerasjon {
 		static constexpr double PI{3.1415926535};
 	
 };
+Aksellerasjon::Aksellerasjon(Vec2d<double> vec2d) {
+	Aksellerasjon(vec2d.xVal(), vec2d.yVal());
 
+}
 Aksellerasjon::Aksellerasjon(double x, double y) : X_{x}, Y_{y} {
 	//Regne ut angle og hyp
 	
@@ -62,5 +69,7 @@ void Aksellerasjon::calc_hyp_a(){
 //Aksellerasjon& Aksellerasjon::operator=(const Aksellerasjon& rhs) {
 //	
 //}
+
+}//namespace
 #endif
 

@@ -5,7 +5,7 @@
 #include <string>
 #include "SDLSuTex_wrap.h"
 
-
+namespace Iderwok {
 struct Point {
     double X{0.0};
     double Y{0.0};
@@ -194,6 +194,8 @@ void handle_side_crash(Widget& w, int windowswidth_) {
         w.set_deltaX(-w.deltaX());
     }
 }
+
+}//namespace
 #endif
 
 

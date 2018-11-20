@@ -4,7 +4,7 @@
 #include <string>
 #include <SDL.h>
 
-
+namespace Iderwok {
 class  SDLSuTexWrap {
 	
 	   std::string filename{};
@@ -82,5 +82,6 @@ class  SDLSuTexWrap {
 	
 };
 
+}//namespace
 #endif //SDLSUTEX_WRAP_H
 
