@@ -6,6 +6,8 @@
 #include "sdl_wrap.h"
 #include "Falling_widget.h"
 #include "vec2d.h"
+#include "ammo.h"
+
 
 using namespace Iderwok;
 
@@ -76,7 +78,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     int fwidget_height{30};
     //std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
-    
+    Vec2d ammo_fart(10.0, 45); 
+    Ammo ammo("ball.bmp", renderer, 0, ammo_fart, Point{850.0, 350.0}, 5, 3, windows_height, windows_width,0);
     Falling_widget romskip("ball2.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
     std::array<std::string, 2> sprites = {"ball2.bmp", "ball2_2.bmp"};//, "ball2_3.bmp"};
     
@@ -99,6 +102,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         check_limits(romskip, windows_width, windows_height, fwidget_width, fwidget_height);
 		
 	    romskip.updateXY();
+	    ammo.updateXY();
 	    romskip.set_rot_angle(rot_angle);
 	    //Aksellerasjon akslr(trust, rot_angle-90);
 	    Vec2d<double> aksvec(trust, (int)rot_angle-90);
