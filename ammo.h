@@ -5,7 +5,7 @@
 #include "Vec2d.h"
 namespace Iderwok {
 class  Ammo: public Falling_widget {
-	// Private section
+	
 	private:
 		
 		int m_levetid{};
