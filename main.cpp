@@ -25,6 +25,7 @@ bool changeSpr{false};
 bool shoot{false};
 
 void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
+	//SDL_EnableKeyRepeat(500, 100);
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT){
         quit = true;
@@ -46,7 +47,9 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
 	            
 	        }
 	        if(event.key.keysym.sym == SDLK_a ) {
-	            shoot = true;
+	        	if (!event.key.repeat) shoot = true;
+	        	//std::cout << "event.key.repeat = " << event.key.repeat << "\n";
+	        	
 	        }
 	}
     else if(event.type == SDL_KEYUP) {
@@ -59,6 +62,8 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
       	     }
       		  if(event.key.keysym.sym == SDLK_a ) {
 	            shoot = false;
+	            
+	            
 	          }
     }
         
@@ -122,8 +127,9 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	    else romskip.change_sprite("ball2.bmp");
 	    if(shoot) {
 	    	
-			ammo.emplace_back("ball.bmp", renderer, 90, Vec2d<double>{15.0,rot_angle-90}, Point{romskip.current_pos().X+fwidget_width/2, romskip.current_pos().Y}, 
+			ammo.emplace_back("ball.bmp", renderer, 90, Vec2d<double>{15.0,rot_angle-90}, Point{romskip.current_pos().X+fwidget_width/2, romskip.current_pos().Y+fwidget_height/2}, 
 										5, 3, windows_height, windows_width,0);
+			shoot = false;
 	
 		}
 		//std::cout << "ammo.size() = " << ammo.size() << "\n";
@@ -160,7 +166,7 @@ void animate(Falling_widget& fw, const std::array<std::string, 2>& s) {
 }
 
 template <typename T>
-void check_limits(T& romskip, int windows_width, int windows_height, [[maybe_unused]]int fwidget_width,[[maybe_unused]] int fwidget_height) { 
+void check_limits(T& romskip, int windows_width, int windows_height, int /*fwidget_width*/, int /*fwidget_height*/) { 
 //En slags samleprosedyre
 //Tar seg av hva som skjer når romskipet kommer utenfor kanten eller kjører veldig sakte
 //Ikke helt stuerent å ha flere oppgaver i en funksjon men...
