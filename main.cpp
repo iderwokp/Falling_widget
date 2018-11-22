@@ -227,7 +227,22 @@ float grav_avstand(double avstand, float g) {
 	
 }
 
-
+//void check_mouse_click(int x, int y, std::vector<Widget>& widg, int wwidth, int wheight) {
+//    auto hit = [](Widget& wi, int mx, int my) -> bool{
+//         if(mx > wi.startpoint().X+wi.width()) {return false;}
+//         if(mx < wi.startpoint().X) {return false;}
+//         if(my > wi.startpoint().Y+wi.height()) {return false;}
+//         if(my < wi.startpoint().Y) {return false;}
+//    return true;        
+//    };
+//    
+//    for(auto& w: widg) {
+//        if(hit(w, x, y)) {
+//            w.moveTo(wwidth/2, wheight/2);
+//        }
+//    }
+//    
+//}
 
 //        int ypos = fw.current_pos().Y;
 //        int xpos = fw.current_pos().X;
