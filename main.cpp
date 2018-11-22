@@ -106,7 +106,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     double midwinY = windows_height/2;
 
     int index{300};
-   
+   	bool normal_sprite{true}; //Hjelpe å styre valg mellom sprites
     romskip.setXY(midwinX-fwidget_width/2, midwinY-fwidget_height/2);
     //romskip.setXY(midwinX, midwinY);
     while(index >=0 && !quit) {
@@ -123,8 +123,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	    Vec2d<double> tot_aks = aksvec + tyngdekraft;
 	    romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));
 	    
-	    if(changeSpr) animate(romskip, sprites);
-	    else romskip.change_sprite("ball2.bmp");
+	    if(changeSpr) {animate(romskip, sprites); normal_sprite = false;}
+	    else if (normal_sprite == false) {romskip.change_sprite("ball2.bmp"); normal_sprite = true;}
 	    if(shoot) {
 	    	
 			ammo.emplace_back("ball.bmp", renderer, 90, Vec2d<double>{15.0,rot_angle-90}, Point{romskip.current_pos().X+fwidget_width/2, romskip.current_pos().Y+fwidget_height/2}, 

@@ -8,12 +8,9 @@ namespace Iderwok {
 	
 class  Asteroid: public Falling_widget{
 	private:
-		int rand_position(int high_limit )
-		 {
-			 static std::default_random_engine e{};
-			 static std::uniform_int_distribution<int> d{10, high_limit};
-			 return d(e);
-		 }
+		Vec2d<double> m_hastighet{};
+		int rand_position(int high_limit );
+		 
 	public:
 		Asteroid(const std::string& fn, SDL_Renderer* rend, Vec2d<double> v, Point p={0, 0}, int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0): 
 								Falling_widget(fn, rend, p, widget_width, widget_height, ybound, xbound, v.xVal(), v.yVal(), rot),m_hastighet{v} {}		
@@ -30,10 +27,19 @@ class  Asteroid: public Falling_widget{
 }//namespace
 #endif
 
-#include <random>
-int rand_position( )
- {
- static std::default_random_engine e{};
- static std::uniform_int_distribution<int> d{1, 6};
- return d(e);
+int Asteroid::rand_position(int high_limit )  {
+	 static std::default_random_engine e{};
+	 static std::uniform_int_distribution<int> d{10, high_limit};
+	 return d(e);
  }
+
+
+
+
+//#include <random>
+//int rand_position( )
+// {
+// static std::default_random_engine e{};
+// static std::uniform_int_distribution<int> d{1, 6};
+// return d(e);
+// }
