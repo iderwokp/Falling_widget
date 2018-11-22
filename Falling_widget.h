@@ -1,7 +1,8 @@
 #ifndef FALLING_WIDGET_H
 #define FALLING_WIDGET_H
 
-
+#include <random>
+#include <chrono>
 #include "widget.h"
 #include "virt_coord_converter.h"
 #include "aksellerasjon.h"
@@ -32,7 +33,9 @@ class Falling_widget: public Widget {
 		double velocityY() {return velocity.vYtot_;}
 		void set_velocityX(double v) {velocity.vXtot_ = v;}
 		void set_velocityY(double v) {velocity.vYtot_ = v;}
+		void set_random_velocity(int m = 1);
 	private:
+		int rand_position(int high_limit );
 		void set_widget_xy();
 		double next_Y();
 		double next_X();
@@ -53,6 +56,26 @@ class Falling_widget: public Widget {
 	
 	
 };
+void Falling_widget::set_random_velocity(int m) {
+	int ang = rand_position(359 );
+//	int magn = rand_position( m );
+	//std::cout << "m = " << m << "    ang = " << ang << "\tmagn = " << magn << "\n";
+	Vec2d<double> vec(m,ang);
+	velocity.vx0_ = vec.xVal();
+	velocity.vy0_ = vec.yVal();
+	//std::cout << "velocity.vx0 = " << velocity.vx0_ << "velocity.vy0 = " << velocity.vy0_ << "\n";
+	
+}
+
+int Falling_widget::rand_position(int high_limit )  {
+	std::default_random_engine                  rand_dev;
+	rand_dev.seed(std::chrono::system_clock::now().time_since_epoch().count());
+	std::mt19937                        generator(rand_dev());
+	std::uniform_int_distribution<int>  distr(0, high_limit);
+	 return distr(generator);
+ }
+
+
 void Falling_widget::updateXY() {
 			//std::cout << "xPos = " << xPos << "\n";
 			set_widget_xy();

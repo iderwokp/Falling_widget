@@ -7,6 +7,7 @@
 #include "Falling_widget.h"
 #include "vec2d.h"
 #include "ammo.h"
+#include "asteroids.h"
 
 
 using namespace Iderwok;
@@ -17,6 +18,7 @@ template <typename T>
 void check_limits(T& romskip, int wwidth, int wheight, int fwidget_width, int fwidget_height); 
 void animate(Falling_widget& fw, const std::array<std::string, 2>& s);
 void update_ammo(std::vector<Ammo>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height);
+void update_asteroids(std::vector<Asteroid>& as, int windows_width, int windows_height, int fwidget_width, int fwidget_height);
 //int mouse_x{0};
 //int mouse_y{0};
 int rot_angle{0};
@@ -91,15 +93,20 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     int fwidget_width{17};
     int fwidget_height{30};
     std::vector<Ammo> ammo;
+    std::vector<Asteroid> asteroids;
     //Vec2d ammo_fart(1.0, 180);
     //ammo.emplace_back("ball.bmp", renderer, 800, ammo_fart, Point{850.0, 350.0}, 5, 3, windows_height, windows_width,0);
      
     //Ammo ammo("ball.bmp", renderer, 1000, ammo_fart, Point{850.0, 350.0}, 5, 3, windows_height, windows_width,0);
     Falling_widget romskip("ball2.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
+    Asteroid asteroid ("brick.bmp", renderer, 30, 15, windows_height, windows_width, 0);
     std::array<std::string, 2> sprites = {"ball2.bmp", "ball2_2.bmp"};//, "ball2_3.bmp"};
     
     Vec2d<double> tyngdekraft{0.0, 0.0};//9.81/800};
-//    
+   
+   	for(int i = 0;i<4;++i) {
+   		asteroids.emplace_back("brick.bmp", renderer, 30, 15, windows_height, windows_width, 0);
+   	}
 
     
     double midwinX = windows_width/2;
@@ -117,6 +124,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         check_limits<Falling_widget>(romskip, windows_width, windows_height, fwidget_width, fwidget_height);
 		
 	    romskip.updateXY();
+	    asteroid.updateXY();
 	    
 	    romskip.set_rot_angle(rot_angle);
 	    Vec2d<double> aksvec(trust, (int)rot_angle-90);
@@ -130,13 +138,13 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 			ammo.emplace_back("ball.bmp", renderer, 90, Vec2d<double>{15.0,rot_angle-90}, Point{romskip.current_pos().X+fwidget_width/2, romskip.current_pos().Y+fwidget_height/2}, 
 										5, 3, windows_height, windows_width,0);
 			shoot = false;
-	
 		}
+		update_asteroids(asteroids, windows_width, windows_height, fwidget_width, fwidget_height);
 		//std::cout << "ammo.size() = " << ammo.size() << "\n";
 		update_ammo(ammo, windows_width, windows_height, fwidget_width, fwidget_height);
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
-		SDL_Delay(5); 
+		SDL_Delay(4); 
        
        
        
@@ -155,6 +163,16 @@ void update_ammo(std::vector<Ammo>& am, int windows_width, int windows_height, i
 	    	else ++ammo_it;
 	    }
 	    	
+}
+void update_asteroids(std::vector<Asteroid>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height ) {
+	auto ast_it = am.begin();
+    while(ast_it != am.end()) {
+    	ast_it->updateXY();
+    	check_limits<Asteroid>(*ast_it, windows_width, windows_height, fwidget_width, fwidget_height);
+//    	ammo_it->dec_levetid();
+//    	if(ammo_it->levetid() == 0) ammo_it = am.erase(ammo_it);
+    	++ast_it;
+    }
 }
 
 void animate(Falling_widget& fw, const std::array<std::string, 2>& s) {
