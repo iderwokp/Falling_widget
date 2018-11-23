@@ -19,6 +19,7 @@ void check_limits(T& romskip, int wwidth, int wheight, int fwidget_width, int fw
 void animate(Falling_widget& fw, const std::array<std::string, 2>& s);
 void update_ammo(std::vector<Ammo>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height);
 void update_asteroids(std::vector<Asteroid>& as, int windows_width, int windows_height, int fwidget_width, int fwidget_height);
+void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_Renderer* r, int w, int h);
 //int mouse_x{0};
 //int mouse_y{0};
 int rot_angle{0};
@@ -99,13 +100,13 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
      
     //Ammo ammo("ball.bmp", renderer, 1000, ammo_fart, Point{850.0, 350.0}, 5, 3, windows_height, windows_width,0);
     Falling_widget romskip("ball2.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
-    Asteroid asteroid ("brick.bmp", renderer, 30, 15, windows_height, windows_width, 0);
+    
     std::array<std::string, 2> sprites = {"ball2.bmp", "ball2_2.bmp"};//, "ball2_3.bmp"};
     
     Vec2d<double> tyngdekraft{0.0, 0.0};//9.81/800};
    
-   	for(int i = 0;i<4;++i) {
-   		asteroids.emplace_back("brick.bmp", renderer, 30, 15, windows_height, windows_width, 0);
+   	for(int i = 0;i<7;++i) {
+   		asteroids.emplace_back("brick.bmp", renderer, 1, 30, 30, windows_height, windows_width, 0, 2);
    	}
 
     
@@ -124,7 +125,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         check_limits<Falling_widget>(romskip, windows_width, windows_height, fwidget_width, fwidget_height);
 		
 	    romskip.updateXY();
-	    asteroid.updateXY();
+	    
 	    
 	    romskip.set_rot_angle(rot_angle);
 	    Vec2d<double> aksvec(trust, (int)rot_angle-90);
@@ -142,6 +143,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 		update_asteroids(asteroids, windows_width, windows_height, fwidget_width, fwidget_height);
 		//std::cout << "ammo.size() = " << ammo.size() << "\n";
 		update_ammo(ammo, windows_width, windows_height, fwidget_width, fwidget_height);
+		if(ammo.size() != 0) check_hit(ammo, asteroids, renderer, windows_width, windows_height);
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
 		SDL_Delay(4); 
@@ -153,16 +155,52 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     SDL_Quit();
     return 0;
 }
+void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_Renderer* r, int windows_width, int windows_height ) {
+	
+	auto hit = [](Asteroid& a, int mx, int my) -> bool{
+		int yPos = a.current_pos().Y;
+  	    int xPos = a.current_pos().X;
+         if(mx > xPos+a.width()) {return false;}
+         if(mx < xPos) {return false;}
+         if(my > yPos+a.height()) {return false;}
+         if(my < yPos) {return false;}
+    return true;        
+    };
+	for(auto & am: ammo) {
+		auto ast_it = asteroids.begin();
+	    while(ast_it != asteroids.end()) {
+	    	if(hit(*ast_it, am.current_pos().X, am.current_pos().Y)) {
+//	    		int xpos = ast_it->current_pos().X;
+//				int ypos = ast_it->current_pos().Y;
+				//Vec2d<double> v = ast_it->get_hastighet();
+				int start_fart = ast_it->get_start_speed()*2;
+				ast_it = asteroids.erase(ast_it); 
+				if (ast_it->get_generasjon()>0) {
+					int gen  = ast_it->get_generasjon(); gen--;
+					int fw = ast_it->width()/2;
+					int fh = ast_it->height()/2;
+					asteroids.emplace_back("brick.bmp", r, start_fart,fw ,fh , windows_height, windows_width, 0, gen);
+					asteroids.emplace_back("brick.bmp", r, start_fart, fw, fh, windows_height, windows_width, 0, gen);
+					return;
+				}
+				std::cout << "HIT " << "\n";
+				
+				}
+	    	else ++ast_it;
+	    }
+	}
+}
 void update_ammo(std::vector<Ammo>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height ) {
 	auto ammo_it = am.begin();
-	    while(ammo_it != am.end()) {
-	    	ammo_it->updateXY();
-	    	check_limits<Ammo>(*ammo_it, windows_width, windows_height, fwidget_width, fwidget_height);
-	    	ammo_it->dec_levetid();
-	    	if(ammo_it->levetid() == 0) ammo_it = am.erase(ammo_it);
-	    	else ++ammo_it;
-	    }
-	    	
+    while(ammo_it != am.end()) {
+    	ammo_it->updateXY();
+    	
+    	check_limits<Ammo>(*ammo_it, windows_width, windows_height, fwidget_width, fwidget_height);
+    	ammo_it->dec_levetid();
+    	if(ammo_it->levetid() == 0) ammo_it = am.erase(ammo_it);
+    	else ++ammo_it;
+    }
+    	
 }
 void update_asteroids(std::vector<Asteroid>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height ) {
 	auto ast_it = am.begin();

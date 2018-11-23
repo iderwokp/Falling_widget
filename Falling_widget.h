@@ -33,7 +33,7 @@ class Falling_widget: public Widget {
 		double velocityY() {return velocity.vYtot_;}
 		void set_velocityX(double v) {velocity.vXtot_ = v;}
 		void set_velocityY(double v) {velocity.vYtot_ = v;}
-		void set_random_velocity(int m = 1);
+		Vec2d<double> set_random_velocity(int m = 1);
 	private:
 		int rand_position(int high_limit );
 		void set_widget_xy();
@@ -56,7 +56,7 @@ class Falling_widget: public Widget {
 	
 	
 };
-void Falling_widget::set_random_velocity(int m) {
+Vec2d<double> Falling_widget::set_random_velocity(int m) {
 	int ang = rand_position(359 );
 //	int magn = rand_position( m );
 	//std::cout << "m = " << m << "    ang = " << ang << "\tmagn = " << magn << "\n";
@@ -64,7 +64,7 @@ void Falling_widget::set_random_velocity(int m) {
 	velocity.vx0_ = vec.xVal();
 	velocity.vy0_ = vec.yVal();
 	//std::cout << "velocity.vx0 = " << velocity.vx0_ << "velocity.vy0 = " << velocity.vy0_ << "\n";
-	
+	return vec;
 }
 
 int Falling_widget::rand_position(int high_limit )  {
