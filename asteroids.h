@@ -9,9 +9,10 @@ namespace Iderwok {
 	
 class  Asteroid: public Falling_widget{
 	private:
-		int m_start_speed{};
+		double m_start_speed{};
 		int m_generasjon{};
-		int rand_position(int high_limit );
+		int rand_position(int high_limit);
+		int posisjon(int h, int alternative );
 		//Vec2d<double> m_hastighet{10.0, (int)rand_position(360 )};
 		Vec2d<double> m_hastighet{};
 		 
@@ -20,10 +21,10 @@ class  Asteroid: public Falling_widget{
 								Falling_widget(fn, rend, p, widget_width, widget_height, ybound, xbound, v.xVal(), v.yVal(), rot),m_hastighet{v} {}		
 		
 		//Ctor med random plasseringer
-		Asteroid(const std::string& fn, SDL_Renderer* rend, int ss, int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0, int gen = 2): 
-										 m_start_speed{ss}, m_generasjon{gen},
-										Falling_widget(fn, rend, {static_cast<double>(rand_position(xbound-10 )), static_cast<double>(rand_position(ybound-10 ))}, widget_width, widget_height, ybound, xbound, rot) 
-										
+		Asteroid(const std::string& fn, SDL_Renderer* rend, double ss, int xpos=0, int ypos = 0,int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0, int gen = 2): 
+										 
+										Falling_widget(fn, rend, {static_cast<double>(posisjon(xbound-10, xpos )), static_cast<double>(posisjon(ybound-10, ypos ))}, widget_width, widget_height, ybound, xbound, rot) 
+										,m_start_speed{ss}, m_generasjon{gen}
 										{
 											m_hastighet = set_random_velocity(m_start_speed);
 											//std::cout << "m_hastighet.xVal() = " << m_hastighet.xVal() << "\tm_hastighet.yVal() = " << m_hastighet.yVal() << "\n";
@@ -32,15 +33,18 @@ class  Asteroid: public Falling_widget{
 							  
 	int get_start_speed() { return m_start_speed;}
 	void set_start_speed(int s) {m_start_speed = s;}
-	Vec2d<double> get_hastighet() {return m_hastighet;}
+	//Vec2d<double> get_hastighet() {return m_hastighet;}
 	int get_generasjon() { return m_generasjon;}
 	void set_generasjon(int g){ m_generasjon  = g;}
 };
 
 #endif
-
+int Asteroid::posisjon(int h, int a) {
+	if (a == 0) return rand_position(h);
+	else return a;
+}
 int Asteroid::rand_position(int high_limit )  {
-	 	std::default_random_engine                  rand_dev;
+	std::default_random_engine                  rand_dev;
 	rand_dev.seed(std::chrono::system_clock::now().time_since_epoch().count());
 	std::mt19937                        generator(rand_dev());
 	std::uniform_int_distribution<int>  distr(0, high_limit);

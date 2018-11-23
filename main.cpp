@@ -105,8 +105,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     
     Vec2d<double> tyngdekraft{0.0, 0.0};//9.81/800};
    
-   	for(int i = 0;i<7;++i) {
-   		asteroids.emplace_back("brick.bmp", renderer, 1, 30, 30, windows_height, windows_width, 0, 2);
+   	for(int i = 0;i<2;++i) {
+   		asteroids.emplace_back("brick.bmp", renderer, 0.5, 0, 0, 50, 50, windows_height, windows_width, 0, 2);
    	}
 
     
@@ -170,8 +170,8 @@ void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_R
 		auto ast_it = asteroids.begin();
 	    while(ast_it != asteroids.end()) {
 	    	if(hit(*ast_it, am.current_pos().X, am.current_pos().Y)) {
-//	    		int xpos = ast_it->current_pos().X;
-//				int ypos = ast_it->current_pos().Y;
+	    		int xpos = ast_it->current_pos().X;
+				int ypos = ast_it->current_pos().Y;
 				//Vec2d<double> v = ast_it->get_hastighet();
 				int start_fart = ast_it->get_start_speed()*2;
 				ast_it = asteroids.erase(ast_it); 
@@ -179,8 +179,8 @@ void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_R
 					int gen  = ast_it->get_generasjon(); gen--;
 					int fw = ast_it->width()/2;
 					int fh = ast_it->height()/2;
-					asteroids.emplace_back("brick.bmp", r, start_fart,fw ,fh , windows_height, windows_width, 0, gen);
-					asteroids.emplace_back("brick.bmp", r, start_fart, fw, fh, windows_height, windows_width, 0, gen);
+					asteroids.emplace_back("brick.bmp", r, start_fart, xpos, ypos,fw ,fh , windows_height, windows_width, 0, gen);
+					asteroids.emplace_back("brick.bmp", r, start_fart, xpos, ypos, fw, fh, windows_height, windows_width, 0, gen);
 					return;
 				}
 				std::cout << "HIT " << "\n";
