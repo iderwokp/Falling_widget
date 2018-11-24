@@ -34,8 +34,11 @@ class Falling_widget: public Widget {
 		void set_velocityX(double v) {velocity.vXtot_ = v;}
 		void set_velocityY(double v) {velocity.vYtot_ = v;}
 		Vec2d<double> set_random_velocity(int m = 1);
+	
+	protected:
+			int rand_position(int high_limit );
 	private:
-		int rand_position(int high_limit );
+		
 		void set_widget_xy();
 		double next_Y();
 		double next_X();

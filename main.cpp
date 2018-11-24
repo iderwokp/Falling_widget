@@ -20,6 +20,8 @@ void animate(Falling_widget& fw, const std::array<std::string, 2>& s);
 void update_ammo(std::vector<Ammo>& am, int windows_width, int windows_height, int fwidget_width, int fwidget_height);
 void update_asteroids(std::vector<Asteroid>& as, int windows_width, int windows_height, int fwidget_width, int fwidget_height);
 void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_Renderer* r, int w, int h);
+template <typename T>
+bool hit(T& a, int mx, int my);
 //int mouse_x{0};
 //int mouse_y{0};
 int rot_angle{0};
@@ -105,8 +107,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     
     Vec2d<double> tyngdekraft{0.0, 0.0};//9.81/800};
    
-   	for(int i = 0;i<2;++i) {
-   		asteroids.emplace_back("brick.bmp", renderer, 0.5, 0, 0, 50, 50, windows_height, windows_width, 0, 2);
+   	for(int i = 0;i<7;++i) {
+   		asteroids.emplace_back("brick.bmp", renderer, 1.0, 0, 0, 50, 50, windows_height, windows_width, 0, 2);
    	}
 
     
@@ -155,17 +157,20 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     SDL_Quit();
     return 0;
 }
-void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_Renderer* r, int windows_width, int windows_height ) {
-	
-	auto hit = [](Asteroid& a, int mx, int my) -> bool{
-		int yPos = a.current_pos().Y;
+template <typename T>
+bool hit(T& a, int mx, int my) { // sjekker om en koordinat ligger inom en widget
+	int yPos = a.current_pos().Y;
   	    int xPos = a.current_pos().X;
          if(mx > xPos+a.width()) {return false;}
          if(mx < xPos) {return false;}
          if(my > yPos+a.height()) {return false;}
          if(my < yPos) {return false;}
-    return true;        
-    };
+    return true;     
+	
+}
+void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_Renderer* r, int windows_width, int windows_height ) {
+	
+
 	for(auto & am: ammo) {
 		auto ast_it = asteroids.begin();
 	    while(ast_it != asteroids.end()) {
@@ -179,11 +184,11 @@ void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_R
 					int gen  = ast_it->get_generasjon(); gen--;
 					int fw = ast_it->width()/2;
 					int fh = ast_it->height()/2;
-					asteroids.emplace_back("brick.bmp", r, start_fart, xpos, ypos,fw ,fh , windows_height, windows_width, 0, gen);
-					asteroids.emplace_back("brick.bmp", r, start_fart, xpos, ypos, fw, fh, windows_height, windows_width, 0, gen);
+					asteroids.emplace_back("brick.bmp", r, start_fart, xpos+30, ypos-30,fw ,fh , windows_height, windows_width, 0, gen);
+					asteroids.emplace_back("brick.bmp", r, start_fart, xpos-30, ypos+30, fw, fh, windows_height, windows_width, 0, gen);
 					return;
 				}
-				std::cout << "HIT " << "\n";
+				//std::cout << "HIT " << "\n";
 				
 				}
 	    	else ++ast_it;
@@ -264,6 +269,18 @@ float grav_avstand(double avstand, float g) {
 	return g/(avstand*avstand);
 	
 }
+
+
+//	auto hit = [](Asteroid& a, int mx, int my) -> bool{
+//		int yPos = a.current_pos().Y;
+//  	    int xPos = a.current_pos().X;
+//         if(mx > xPos+a.width()) {return false;}
+//         if(mx < xPos) {return false;}
+//         if(my > yPos+a.height()) {return false;}
+//         if(my < yPos) {return false;}
+//    return true;        
+//    };
+
 
 //void check_mouse_click(int x, int y, std::vector<Widget>& widg, int wwidth, int wheight) {
 //    auto hit = [](Widget& wi, int mx, int my) -> bool{
