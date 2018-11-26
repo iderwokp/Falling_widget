@@ -22,6 +22,11 @@ void update_asteroids(std::vector<Asteroid>& as, int windows_width, int windows_
 void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_Renderer* r, int w, int h);
 template <typename T>
 bool hit(T& a, int mx, int my);
+template <typename T>
+bool chrash_test(T& as, Point p, int fw, int fh);// Kræsjer romskipet i en av asteroidene?
+void winner(SDL_Renderer* renderer, int wi, int he);
+void loose(SDL_Renderer* renderer, int wi, int he);
+
 //int mouse_x{0};
 //int mouse_y{0};
 int rot_angle{0};
@@ -45,7 +50,7 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
 	            if(rot_angle < 0) rot_angle +=360;
 	        }
 	        if(event.key.keysym.sym == SDLK_UP ) {
-	            trust = 9.81/400;
+	            trust = 9.81/600;
 	            changeSpr = true;
 	        }
 	        if(event.key.keysym.sym == SDLK_DOWN ) {
@@ -107,7 +112,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     
     Vec2d<double> tyngdekraft{0.0, 0.0};//9.81/800};
    
-   	for(int i = 0;i<7;++i) {
+   	for(int i = 0;i<2;++i) {
    		asteroids.emplace_back("brick.bmp", renderer, 1.0, 0, 0, 50, 50, windows_height, windows_width, 0, 2);
    	}
 
@@ -124,10 +129,16 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer); 
+        
         check_limits<Falling_widget>(romskip, windows_width, windows_height, fwidget_width, fwidget_height);
-		
-	    romskip.updateXY();
+		romskip.updateXY();
 	    
+		bool pang = chrash_test(asteroids, romskip.current_pos(),fwidget_width, fwidget_height); //Kræsjer romskipet i en asteroide?
+	    if(pang) {
+			std::cout << "PANG!\n";
+			loose(renderer, windows_width, windows_height);
+			quit = true;
+		}
 	    
 	    romskip.set_rot_angle(rot_angle);
 	    Vec2d<double> aksvec(trust, (int)rot_angle-90);
@@ -143,12 +154,17 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 			shoot = false;
 		}
 		update_asteroids(asteroids, windows_width, windows_height, fwidget_width, fwidget_height);
+		if(asteroids.size()== 0) {
+			std::cout << "WIN!\n";		
+			winner(renderer, windows_width, windows_height);
+			quit = true;
+		}
 		//std::cout << "ammo.size() = " << ammo.size() << "\n";
 		update_ammo(ammo, windows_width, windows_height, fwidget_width, fwidget_height);
 		if(ammo.size() != 0) check_hit(ammo, asteroids, renderer, windows_width, windows_height);
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
-		SDL_Delay(4); 
+		SDL_Delay(2); 
        
        
        
@@ -157,6 +173,34 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     SDL_Quit();
     return 0;
 }
+void winner(SDL_Renderer* rend, int windows_width, int windows_height) {
+	Widget w ("winner.bmp", rend, {50, 50}, windows_width-300, windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
+	w.moveTo(100,100);
+	SDL_RenderPresent(rend);
+	SDL_Delay(4000);
+}
+void loose(SDL_Renderer* rend, int windows_width, int windows_height) {
+	Widget w ("pang.bmp", rend, {100, 100}, windows_width-300, windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
+	w.moveTo(100,100);
+	SDL_RenderPresent(rend);
+	SDL_Delay(4000);
+}
+
+template <typename T>
+bool chrash_test(T& as, Point p, int fwidget_width, int fwidget_height) {
+	std::vector<Point> points;
+	points.push_back({p.X+fwidget_width/2, p.Y}); //spissen
+	points.push_back({p.X, p.Y+fwidget_height});//venstre hjørne
+	points.push_back({p.X+fwidget_width, p.Y+fwidget_height});//høyre hjørne
+	
+	for(auto& a: as) {
+		for(auto po: points) {
+			if(hit(a, po.X, po.Y)) return true;
+		}
+	}
+	return false;
+}
+
 template <typename T>
 bool hit(T& a, int mx, int my) { // sjekker om en koordinat ligger inom en widget
 	int yPos = a.current_pos().Y;
@@ -178,7 +222,7 @@ void check_hit(std::vector<Ammo>& ammo, std::vector <Asteroid>& asteroids, SDL_R
 	    		int xpos = ast_it->current_pos().X;
 				int ypos = ast_it->current_pos().Y;
 				//Vec2d<double> v = ast_it->get_hastighet();
-				int start_fart = ast_it->get_start_speed()*2;
+				int start_fart = ast_it->get_start_speed()*1;
 				ast_it = asteroids.erase(ast_it); 
 				if (ast_it->get_generasjon()>0) {
 					int gen  = ast_it->get_generasjon(); gen--;

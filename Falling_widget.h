@@ -49,7 +49,7 @@ class Falling_widget: public Widget {
 		Velocity velocity{0, 0, 0, 0, 0};
 	
 		Point startpos_{};
-		Point currpos_{0.0f, 0.0f};
+		Point currpos_{0.0, 0.0};
 //		double Ypos_{0};
 //		double Xpos_{0};
 		//int tid_{1};
