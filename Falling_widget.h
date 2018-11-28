@@ -12,6 +12,7 @@ namespace Iderwok {
 	
 class Falling_widget: public Widget {
 	public:
+		Falling_widget() = default;
 		Falling_widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, int ybound=0, int xbound=0, double vx0 = 0, double vy0 = 0, int rot= 0): 
 							Widget(fn, rend, p, w, h, vx0, vy0, rot),
 							yboundary_{ybound}, xboundary_{xbound}, startpos_{p}  {

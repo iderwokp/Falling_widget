@@ -32,7 +32,7 @@ class Widget {
     SDL_Rect rect_{0, 0, 0, 0};
 
 	public:
-	   // Widget() { std::cout << "Widget()\n" ; }
+	    Widget() { std::cout << "Widget()\n" ; }
 	    Widget(const std::string& fn, SDL_Renderer* rend, Point p={0, 0}, int w = 0, int h = 0, double dx = 0, int dy = 0, int a= 0 ): filename{fn}, 
                                                                                                                     //renderer{rend},
                                                                                                                     startpoint_{p},                                                                                                                    

@@ -41,6 +41,7 @@ class Asteroid_game {
 		double m_midwinX{}; //Midt i vinduet i X-retning
 		double m_midwinY{}; //Midt i vinduet i Y-retning
 		SDL_Event m_event;
+		Vec2d<double> m_tyngdekraft{0.0, 0.0};//9.81/800};//Ekstra tyngdekraft som skal påvirke
 		int m_rot_angle{0};
 		bool m_changeSpr{false};
 		bool m_normal_sprite{true}; //Hjelpe å styre valg mellom sprites
@@ -112,11 +113,11 @@ void Asteroid_game::EventHandler() {
     }
 	else if(m_event.type == SDL_KEYDOWN) {
 	        if(m_event.key.keysym.sym == SDLK_RIGHT ) {
-	            m_rot_angle+=5;
+	            m_rot_angle+=1;
 	            if(m_rot_angle > 360) m_rot_angle -=360;
 	        }
 	        if(m_event.key.keysym.sym == SDLK_LEFT ) {
-	            m_rot_angle-=5;
+	            m_rot_angle-=1;
 	            if(m_rot_angle < 0) m_rot_angle +=360;
 	        }
 	        if(m_event.key.keysym.sym == SDLK_UP ) {
@@ -168,7 +169,7 @@ void Asteroid_game::enter_game_loop() {
 	    
 	    m_romskip.set_rot_angle(m_rot_angle);
 	    Vec2d<double> aksvec(m_trust, (int)m_rot_angle-90);
-	    Vec2d<double> tot_aks = aksvec;// + tyngdekraft;
+	    Vec2d<double> tot_aks = aksvec + m_tyngdekraft;
 	    m_romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));
 	    
 	    if(m_changeSpr) {animate_romskip(); m_normal_sprite = false;}
