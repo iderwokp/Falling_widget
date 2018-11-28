@@ -20,7 +20,7 @@ namespace Iderwok {
 class Asteroid_game {
 	
 	public:
-		Asteroid_game(std::string& wn, int ww, int wh);
+		Asteroid_game(const std::string& wn, int ww, int wh);
 		~Asteroid_game() {
 			SDL_Quit();
 		}
@@ -28,15 +28,14 @@ class Asteroid_game {
 	private:
 		Uint32 m_delay_time{2}; //Pause i ms mellom hver frame
 		std::string m_window_name{};
-		constexpr std::string m_romskip_widget{"ball2.bmp"};
-		constexpr std::string m_asteroid_widget{"brick.bmp"};
+		const std::string m_romskip_widget{"ball2.bmp"};
+		const std::string m_asteroid_widget{"brick.bmp"};
 		std::array<std::string, 2> m_sprites = {"ball2.bmp", "ball2_2.bmp"};
 		int m_windows_width{};
 		int m_windows_height{};
 		bool m_quit{false};
-		const Sdl_wrap m_sdlwrap{};
-		const SDL_Renderer* m_renderer{};
-		Falling_widget m_romskip{};
+		SDL_Renderer* m_renderer;
+		Falling_widget m_romskip;
 		std::vector<Asteroid> m_asteroids;
 		std::vector<Ammo> m_ammo;
 		double m_midwinX{}; //Midt i vinduet i X-retning
@@ -47,51 +46,54 @@ class Asteroid_game {
 		bool m_normal_sprite{true}; //Hjelpe å styre valg mellom sprites
 		double m_trust{0};
 		bool m_shoot{false};
-		
-		constexpr int m_romskipwidget_width{17};
-    	constexpr int m_romskipwidget_height{30};
-    	constexpr int m_asteroidwidget_width{50};
-    	constexpr int m_asteroidwidget_height{50};
-    	constexpr int m_asteroide_generasjon{2};
-    	constexpr int m_antall_asteroider{2};
+		const Sdl_wrap m_sdlwrap;
+		const int m_romskipwidget_width{17};
+    	const int m_romskipwidget_height{30};
+    	const int m_asteroidwidget_width{50};
+    	const int m_asteroidwidget_height{50};
+    	const int m_asteroide_generasjon{2};
+    	const int m_antall_asteroider{2};
     	
-		void EventHandler()
+		void EventHandler();
 		void init_SDL();
 		void init_widgets();
 		void enter_game_loop();
 		void update_ammo( );
-		void update_asteroids( );
-		void update_asteroids( );
+		void update_asteroids();
 		void animate_romskip();
 		void winner();//Midlertidig winner-funksjon
 		void loose();//Midlertidig looser-funksjon
+		template <typename T>
+		void check_limits(T& romskip);
 		
 };
 
 
 #endif
 
-Asteroid_game::Asteroid_game(const std::string& wn, int ww, int wh): m_window_name{wn}, m_windows_width{ww}, m_windows_height{wh}, m_midwinX{m_windows_width/2}, m_midwinY{m_windows_height/2} {
+Asteroid_game::Asteroid_game(const std::string& wn, int ww, int wh): m_window_name{wn}, m_windows_width{ww}, m_windows_height{wh}, 
+			m_midwinX{m_windows_width/2}, m_midwinY{m_windows_height/2}, m_sdlwrap{m_window_name, m_windows_width, m_windows_height} 
+{
 	init_SDL();
 	
 }
 
 void Asteroid_game::init_SDL() {
-	m_sdlwrap = {m_windows_name, m_windows_width, m_windows_height};
-	m_renderer  sdlwrap.renderer();
+	//m_sdlwrap = Sdl_wrap(m_windows_name, m_windows_width, m_windows_height);
+	m_renderer = m_sdlwrap.renderer();
 }
 
 void Asteroid_game::init_widgets() {
-	romskip = (m_romskip_widget, renderer, Point{m_midwinX, m_midwinY}, m_romskipwidget__width, m_romskipwidget__height, m_windows_height, m_windows_width, 0, 0, 0);
+	m_romskip = Falling_widget(m_romskip_widget, m_renderer, Point{m_midwinX, m_midwinY}, m_romskipwidget_width, m_romskipwidget_height, m_windows_height, m_windows_width, 0, 0, 0);
 	
 	for(int i = 0;i<m_antall_asteroider;++i) {
-   		m_asteroids.emplace_back(m_asteroid_widget, renderer, 1.0, 0, 0, m_asteroidwidget_width, m_asteroidwidget_height, m_windows_height, m_windows_width, 0, m_asteroide_generasjon);
+   		m_asteroids.emplace_back(m_asteroid_widget, m_renderer, 1.0, 0, 0, m_asteroidwidget_width, m_asteroidwidget_height, m_windows_height, m_windows_width, 0, m_asteroide_generasjon);
    	}
    	
 }
 
 void Asteroid_game::start_game() {
-	romskip.setXY(midwinX-fwidget_width/2, midwinY-fwidget_height/2);
+	m_romskip.setXY(m_midwinX-m_romskipwidget_width/2, m_midwinY-m_romskipwidget_height/2);
 	enter_game_loop();
 	
 }
@@ -99,53 +101,53 @@ void Asteroid_game::start_game() {
 void Asteroid_game::EventHandler() {
 	
     SDL_PollEvent(&m_event);
-    if(event.type == SDL_QUIT){
-        quit = true;
+    if(m_event.type == SDL_QUIT){
+        m_quit = true;
     }
-	else if(event.type == SDL_KEYDOWN) {
-	        if(event.key.keysym.sym == SDLK_RIGHT ) {
+	else if(m_event.type == SDL_KEYDOWN) {
+	        if(m_event.key.keysym.sym == SDLK_RIGHT ) {
 	            m_rot_angle+=5;
 	            if(m_rot_angle > 360) m_rot_angle -=360;
 	        }
-	        if(event.key.keysym.sym == SDLK_LEFT ) {
+	        if(m_event.key.keysym.sym == SDLK_LEFT ) {
 	            m_rot_angle-=5;
 	            if(m_rot_angle < 0) m_rot_angle +=360;
 	        }
-	        if(event.key.keysym.sym == SDLK_UP ) {
+	        if(m_event.key.keysym.sym == SDLK_UP ) {
 	            m_trust = 9.81/600;
 	            m_changeSpr = true;
 	        }
-	        if(event.key.keysym.sym == SDLK_DOWN ) {
+	        if(m_event.key.keysym.sym == SDLK_DOWN ) {
 	            
 	        }
-	        if(event.key.keysym.sym == SDLK_a ) {
-	        	if (!event.key.repeat) m_shoot = true;
+	        if(m_event.key.keysym.sym == SDLK_a ) {
+	        	if (!m_event.key.repeat) m_shoot = true;
 	        	//std::cout << "event.key.repeat = " << event.key.repeat << "\n";
 	        	
 	        }
 	}
-    else if(event.type == SDL_KEYUP) {
-        	if(event.key.keysym.sym == SDLK_UP ) {
-           	 trust = 0.0;
+    else if(m_event.type == SDL_KEYUP) {
+        	if(m_event.key.keysym.sym == SDLK_UP ) {
+           	 m_trust = 0.0;
            	 m_changeSpr = false;
        		 }
-       		 if(event.key.keysym.sym == SDLK_DOWN ) {
+       		 if(m_event.key.keysym.sym == SDLK_DOWN ) {
            		 m_rot_angle += 180;
       	     }
-      		  if(event.key.keysym.sym == SDLK_a ) {
+      		  if(m_event.key.keysym.sym == SDLK_a ) {
 	            m_shoot = false;
 	            
 	            
 	          }
     }
       
-
+}
 void Asteroid_game::enter_game_loop() {
 	
-	while(index >=0 && !quit) {
+	while(!m_quit) {
 	
         EventHandler();//, windows_width, windows_height);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer); 
         
         check_limits<Falling_widget>(m_romskip);
@@ -155,19 +157,19 @@ void Asteroid_game::enter_game_loop() {
 	    if(pang) {
 			std::cout << "PANG!\n";
 			loose();
-			quit = true;
+			m_quit = true;
 		}
 	    
 	    romskip.set_rot_angle(m_rot_angle);
-	    Vec2d<double> aksvec(trust, (int)rot_angle-90);
-	    Vec2d<double> tot_aks = aksvec + tyngdekraft;
+	    Vec2d<double> aksvec(m_trust, (int)m_rot_angle-90);
+	    Vec2d<double> tot_aks = aksvec;// + tyngdekraft;
 	    m_romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));
 	    
 	    if(m_changeSpr) {animate_romskip(); m_normal_sprite = false;}
 	    else if (m_normal_sprite == false) {m_romskip.change_sprite("ball2.bmp"); m_normal_sprite = true;}
 	    if(m_shoot) {
 	    	
-			m_ammo.emplace_back("ball.bmp", renderer, 90, Vec2d<double>{15.0,rot_angle-90}, Point{romskip.current_pos().X+fwidget_width/2, romskip.current_pos().Y+fwidget_height/2}, 
+			m_ammo.emplace_back("ball.bmp", renderer, 90, Vec2d<double>{15.0,m_rot_angle-90}, Point{romskip.current_pos().X+fwidget_width/2, romskip.current_pos().Y+fwidget_height/2}, 
 										5, 3, windows_height, windows_width,0);
 			m_shoot = false;
 		}
