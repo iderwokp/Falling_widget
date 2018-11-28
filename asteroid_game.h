@@ -47,6 +47,7 @@ class Asteroid_game {
 		bool m_normal_sprite{true}; //Hjelpe å styre valg mellom sprites
 		double m_trust{0};
 		bool m_shoot{false};
+		
 		constexpr int m_romskipwidget_width{17};
     	constexpr int m_romskipwidget_height{30};
     	constexpr int m_asteroidwidget_width{50};
@@ -62,6 +63,8 @@ class Asteroid_game {
 		void update_asteroids( );
 		void update_asteroids( );
 		void animate_romskip();
+		void winner();//Midlertidig winner-funksjon
+		void loose();//Midlertidig looser-funksjon
 		
 };
 
@@ -141,7 +144,7 @@ void Asteroid_game::enter_game_loop() {
 	
 	while(index >=0 && !quit) {
 	
-        EventHandler(event, quit);//, windows_width, windows_height);
+        EventHandler();//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer); 
         
@@ -174,11 +177,11 @@ void Asteroid_game::enter_game_loop() {
 			winner();
 			quit = true;
 		}
-		//std::cout << "ammo.size() = " << ammo.size() << "\n";
+		
 		update_ammo();
 		if(m_ammo.size() != 0) check_hit();
 		SDL_RenderPresent(m_renderer);
-		//SDL_RenderClear(renderer); 
+		
 		SDL_Delay(m_delay_time); 
        
        
@@ -230,6 +233,18 @@ void Asteroid_game::check_limits(T& romskip) {
     if (yPos > windows_height)	 {romskip.setXY(xPos, 0);}
     if(fabs(romskip.velocityX()) < 0.005 && trust == 0.0) romskip.set_velocityX(0.0);
     if(fabs(romskip.velocityY()) < 0.005 && trust == 0.0) romskip.set_velocityY(0.0);
+}
+void Asteroid_game::winner() {
+	Widget w ("winner.bmp", rend, {50, 50}, m_windows_width-300, m_windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
+	w.moveTo(100,100);
+	SDL_RenderPresent(m_renderer);
+	SDL_Delay(2000);
+}
+void Asteroid_game::loose() {
+	Widget w ("pang.bmp", rend, {100, 100}, m_windows_width-300, m_windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
+	w.moveTo(100,100);
+	SDL_RenderPresent(m_renderer);
+	SDL_Delay(2000);
 }
 
 

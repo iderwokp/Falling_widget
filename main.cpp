@@ -177,13 +177,13 @@ void winner(SDL_Renderer* rend, int windows_width, int windows_height) {
 	Widget w ("winner.bmp", rend, {50, 50}, windows_width-300, windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
 	w.moveTo(100,100);
 	SDL_RenderPresent(rend);
-	SDL_Delay(4000);
+	SDL_Delay(2000);
 }
 void loose(SDL_Renderer* rend, int windows_width, int windows_height) {
 	Widget w ("pang.bmp", rend, {100, 100}, windows_width-300, windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
 	w.moveTo(100,100);
 	SDL_RenderPresent(rend);
-	SDL_Delay(4000);
+	SDL_Delay(2000);
 }
 
 template <typename T>
