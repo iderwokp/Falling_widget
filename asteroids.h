@@ -23,7 +23,7 @@ class  Asteroid: public Falling_widget{
 		//Ctor med random plasseringer
 		Asteroid(const std::string& fn, SDL_Renderer* rend, double ss, int xpos=0, int ypos = 0,int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0, int gen = 2): 
 										 
-										Falling_widget(fn, rend, {static_cast<double>(posisjon(xbound-10, xpos )), static_cast<double>(posisjon(ybound-10, ypos ))}, widget_width, widget_height, ybound, xbound,0.0,0.0, rot) 
+										Falling_widget(fn, rend, {static_cast<double>(posisjon(xbound-10, widget_width )), static_cast<double>(posisjon(ybound-10, ypos ))}, widget_width, widget_height, ybound, xbound,0.0,0.0, rot) 
 										,m_start_speed{ss}, m_generasjon{gen}
 										{
 											m_hastighet = set_random_velocity(m_start_speed);
@@ -43,21 +43,7 @@ int Asteroid::posisjon(int h, int a) {
 	if (a == 0) return rand_position(h);
 	else return a;
 }
-//int Asteroid::rand_position(int high_limit )  {
-//	std::default_random_engine                  rand_dev;
-//	rand_dev.seed(std::chrono::system_clock::now().time_since_epoch().count());
-//	std::mt19937                        generator(rand_dev());
-//	std::uniform_int_distribution<int>  distr(0, high_limit);
-//	 return distr(generator);
-// }
-
 
 }//namespace
 
-//#include <random>
-//int rand_position( )
-// {
-// static std::default_random_engine e{};
-// static std::uniform_int_distribution<int> d{1, 6};
-// return d(e);
-// }
+
