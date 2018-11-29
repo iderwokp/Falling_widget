@@ -8,6 +8,7 @@
 #include <cmath>
 #include <array>
 #include <string>
+#include <algorithm>
 #include "Falling_widget.h"
 #include "vec2d.h"
 #include "ammo.h"
@@ -71,6 +72,8 @@ class Asteroid_game {
 		void check_hit();
 		template <typename T>
 		bool hit(T& a, int mx, int my);
+		template <typename T>
+		bool hit(T& a, Point p);
 		
 };
 
@@ -263,10 +266,11 @@ bool Asteroid_game::chrash_test(T& as, Point p) {
 	points.push_back({p.X, p.Y+m_asteroidwidget_height});//venstre hjørne
 	points.push_back({p.X+m_asteroidwidget_width, p.Y+m_asteroidwidget_height});//høyre hjørne
 	
-	for(auto& a: as) {//Kan bruke std::any_of her?
-		for(auto po: points) {
-			if(hit(a, po.X, po.Y)) return true;
-		}
+	for(auto& a: as) {
+		if(std::any_of(begin(points), end(points),[&a, this](Point p) {return hit(a, p);})) return true;
+//		for(auto po: points) {//Kan bruke std::any_of her?
+//			if(hit(a, po.X, po.Y)) return true;
+//		}
 	}
 	return false;
 }
@@ -281,6 +285,10 @@ bool Asteroid_game::hit(T& a, int mx, int my) { // sjekker om en koordinat ligge
          if(my < yPos) {return false;}
     return true;     
 	
+}
+template <typename T>
+bool Asteroid_game::hit(T& a, Point p) { // sjekker om en koordinat ligger inom en widget
+	return hit(a, p.X, p.Y);
 }
 void Asteroid_game::check_hit( ) {
 	
