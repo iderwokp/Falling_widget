@@ -81,7 +81,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     std::array<std::string, 2> sprites = {"ball2.bmp", "ball2_2.bmp"};//, "ball2_3.bmp"};
     
     Vec2d<double> tyngdekraft{0.0, 9.81/800};
-//    
+  
 
     
     double midwinX = windows_width/2;
