@@ -11,7 +11,7 @@ class Aksellerasjon {
 		Aksellerasjon() = default;
 		Aksellerasjon(double x, double y);
 		Aksellerasjon(double h, int a);
-		Aksellerasjon(Vec2d<double> vec2d);
+		explicit Aksellerasjon(const Vec2d<double>& vec2d);
 		
 		double X() const {return X_;}
 		double Y() const {return Y_;}
@@ -34,7 +34,7 @@ class Aksellerasjon {
 		static constexpr double PI{3.1415926535};
 	
 };
-Aksellerasjon::Aksellerasjon(Vec2d<double> vec2d) {
+Aksellerasjon::Aksellerasjon(const Vec2d<double>& vec2d) {
 	Aksellerasjon(vec2d.xVal(), vec2d.yVal());
 
 }
