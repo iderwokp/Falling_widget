@@ -34,7 +34,7 @@ class  SDLSuTexWrap {
 		}
 		
     public:
-    	void change_sprite(std::string fn) {
+    	void change_sprite(const std::string& fn) {
     		filename = fn;
     			init();
     		//surface_ = SDL_LoadBMP(fn.c_str());
