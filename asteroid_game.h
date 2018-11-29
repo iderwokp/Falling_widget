@@ -263,7 +263,7 @@ bool Asteroid_game::chrash_test(T& as, Point p) {
 	points.push_back({p.X, p.Y+m_asteroidwidget_height});//venstre hjørne
 	points.push_back({p.X+m_asteroidwidget_width, p.Y+m_asteroidwidget_height});//høyre hjørne
 	
-	for(auto& a: as) {
+	for(auto& a: as) {//Kan bruke std::any_of her?
 		for(auto po: points) {
 			if(hit(a, po.X, po.Y)) return true;
 		}

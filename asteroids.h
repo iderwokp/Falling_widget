@@ -17,7 +17,7 @@ class  Asteroid: public Falling_widget{
 		Vec2d<double> m_hastighet{};
 		 
 	public:
-		Asteroid(const std::string& fn, SDL_Renderer* rend, Vec2d<double> v, Point p={0, 0}, int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0): 
+		Asteroid(const std::string& fn, SDL_Renderer* rend, const Vec2d<double>& v, Point p={0, 0}, int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0): 
 								Falling_widget(fn, rend, p, widget_width, widget_height, ybound, xbound, v.xVal(), v.yVal(), rot),m_hastighet{v} {}		
 		
 		//Ctor med random plasseringer

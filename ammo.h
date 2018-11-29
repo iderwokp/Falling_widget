@@ -13,7 +13,7 @@ class  Ammo: public Falling_widget {
 		
 	public:
 		//Ammo() = default;
-		Ammo(const std::string& fn, SDL_Renderer* rend, int lv, Vec2d<double> v, Point p={0, 0}, int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0): 
+		Ammo(const std::string& fn, SDL_Renderer* rend, int lv, const Vec2d<double>& v, Point p={0, 0}, int widget_width = 0, int widget_height = 0, int ybound=0, int xbound=0, int rot= 0): 
 								Falling_widget(fn, rend, p, widget_width, widget_height, ybound, xbound, v.xVal(), v.yVal(), rot),m_levetid{lv}, m_hastighet{v}
 								
 							  {
