@@ -27,7 +27,7 @@ class Asteroid_game {
 		}
 		void start_game();
 	private:
-		Uint32 m_delay_time{2}; //Pause i ms mellom hver frame
+		const Uint32 m_delay_time{2}; //Pause i ms mellom hver frame
 		std::string m_window_name{};
 		const std::string m_romskip_widget{"ball2.bmp"};
 		const std::string m_asteroid_widget{"brick.bmp"};
@@ -63,8 +63,8 @@ class Asteroid_game {
 		void update_ammo( );
 		void update_asteroids();
 		void animate_romskip();
-		void winner();//Midlertidig winner-funksjon
-		void loose();//Midlertidig looser-funksjon
+		void winner() const;//Midlertidig winner-funksjon
+		void loose() const;//Midlertidig looser-funksjon
 		template <typename T>
 		void check_limits(T& romskip);
 		template <typename T>
@@ -243,16 +243,16 @@ void Asteroid_game::check_limits(T& romskip) {
     if (xPos > m_windows_width)	 {romskip.setXY(0, yPos); }
     if (yPos < 0) 				{romskip.setXY(xPos, m_windows_height);}
     if (yPos > m_windows_height)	 {romskip.setXY(xPos, 0);}
-    if(fabs(romskip.velocityX()) < 0.005 && m_trust == 0.0) romskip.set_velocityX(0.0);
-    if(fabs(romskip.velocityY()) < 0.005 && m_trust == 0.0) romskip.set_velocityY(0.0);
+    if(fabs(romskip.velocityX()) < 0.007 && m_trust == 0.0) romskip.set_velocityX(0.0);
+    if(fabs(romskip.velocityY()) < 0.007 && m_trust == 0.0) romskip.set_velocityY(0.0);
 }
-void Asteroid_game::winner() {
+void Asteroid_game::winner() const {
 	Widget w ("winner.bmp", m_renderer, {50, 50}, m_windows_width-300, m_windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
 	w.moveTo(100,100);
 	SDL_RenderPresent(m_renderer);
 	SDL_Delay(2000);
 }
-void Asteroid_game::loose() {
+void Asteroid_game::loose() const {
 	Widget w ("pang.bmp", m_renderer, {100, 100}, m_windows_width-300, m_windows_height-300);//, double dx = 0, int dy = 0, int a= 0 )
 	w.moveTo(100,100);
 	SDL_RenderPresent(m_renderer);
@@ -267,12 +267,13 @@ bool Asteroid_game::chrash_test(T& as, Point p) {
 	points.push_back({p.X+m_asteroidwidget_width, p.Y+m_asteroidwidget_height});//høyre hjørne
 	
 	for(auto& a: as) {
-		if(std::any_of(begin(points), end(points),[&a, this](Point p) {return hit(a, p);})) return true;
+		return std::any_of(begin(points), end(points),[&a, this](Point p) {return hit(a, p);});
+	//	if(std::any_of(begin(points), end(points),[&a, this](Point p) {return hit(a, p);})) return true;
 //		for(auto po: points) {//Kan bruke std::any_of her?
 //			if(hit(a, po.X, po.Y)) return true;
 //		}
 	}
-	return false;
+	return false; //For å slippe Warning: 277	[Warning] control reaches end of non-void function [-Wreturn-type]
 }
 
 template <typename T>

@@ -31,10 +31,10 @@ class  Asteroid: public Falling_widget{
 										}							
 															
 							  
-	int get_start_speed() { return m_start_speed;}
+	int get_start_speed() const { return m_start_speed;}
 	void set_start_speed(int s) {m_start_speed = s;}
 	//Vec2d<double> get_hastighet() {return m_hastighet;}
-	int get_generasjon() { return m_generasjon;}
+	int get_generasjon() const { return m_generasjon;}
 	void set_generasjon(int g){ m_generasjon  = g;}
 };
 
