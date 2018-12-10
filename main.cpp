@@ -36,9 +36,9 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     //SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
-    const int speed_konstant{2};
-    int fwidget_width{12};
-    int fwidget_height{8};
+    const float speed_konstant{0.2};
+    int fwidget_width{3};
+    int fwidget_height{2};
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
     
@@ -72,7 +72,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(renderer); 
+        //SDL_RenderClear(renderer); 
         for(auto& ball: baller) {
         	double xPos = ball.current_pos().X;
         	double yPos = ball.current_pos().Y;
