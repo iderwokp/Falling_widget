@@ -36,25 +36,25 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     //SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
-    const float speed_konstant{0.2};
+    const float speed_konstant{0.5};
     int fwidget_width{3};
     int fwidget_height{2};
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
     
-    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -10*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 5*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 12*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -5*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -7*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 4*speed_konstant, 0*speed_konstant, 0);
-    
-    baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, fwidget_width, fwidget_height, windows_height, windows_width, 2*speed_konstant, -5*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 4*speed_konstant, 1*speed_konstant, 0);
+ //   baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -29.8*speed_konstant, 0);
+ //   baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 35*speed_konstant, 0); 
+ //  baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 22*speed_konstant, 0);
+ //   baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -33*speed_konstant, 0*speed_konstant, 0);
+ //   baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -27*speed_konstant, 0*speed_konstant, 0);
+ //   baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 0*speed_konstant, 0);
+//    
+ //   baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, fwidget_width, fwidget_height, windows_height, windows_width, 15*speed_konstant, -15*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -9*speed_konstant, 12*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12*speed_konstant, 2*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -13*speed_konstant, 7*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12*speed_konstant, 4*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12*speed_konstant, 2*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -13*speed_konstant, 7*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -12*speed_konstant, 4*speed_konstant, 0);
 //    
 
     
@@ -66,7 +66,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     //double xPos, yPos;
     //double length_vecXY, radangl;
     int index{300};
-    float gravitasjon{9.81*speed_konstant*speed_konstant};
+    float gravitasjon{59.81*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 	
@@ -116,7 +116,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 		
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
-		SDL_Delay(30); 
+		SDL_Delay(3); 
        
        
        
