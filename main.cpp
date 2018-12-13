@@ -36,7 +36,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     //SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
-    const float speed_konstant{0.1};
+    const float speed_konstant{0.5};
     int fwidget_width{3};
     int fwidget_height{2};
     std::vector<Falling_widget> baller;

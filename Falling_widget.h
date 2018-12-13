@@ -40,6 +40,7 @@ class Falling_widget: public Widget {
 	
 		Point startpos_{};
 		Point currpos_{0.0f, 0.0f};
+		const float drag_{0.9999f} ; //Motstand/friksjon. 1.0 er friksjonsfritt 0.0 er 100% friksjon
 //		double Ypos_{0};
 //		double Xpos_{0};
 		//int tid_{1};
@@ -81,6 +82,7 @@ double Falling_widget::next_Y() {
 	velocity.vYtot_ += velocity.vy0_;
 	velocity.vy0_ = 0;
 	velocity.vYtot_ += aksellerasjon_.Y();
+	velocity.vYtot_*=drag_;
 	double deltaS = velocity.vYtot_/2;
 	//double s = velocity.vy0_*tid_ ;
 	//currpos.Y += s;
@@ -90,7 +92,8 @@ double Falling_widget::next_Y() {
 double Falling_widget::next_X() {
 	velocity.vXtot_ += velocity.vx0_;
 	velocity.vx0_ = 0;
-	velocity.vXtot_ += aksellerasjon_.X();												        
+	velocity.vXtot_ += aksellerasjon_.X();	
+	velocity.vXtot_*=drag_;											        
 	double deltaS = velocity.vXtot_/2;
 	//double s = velocity.vx0_*tid_ ;
 	//currpos.X += s;
