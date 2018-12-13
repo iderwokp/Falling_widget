@@ -29,6 +29,7 @@ class Asteroid_game {
 	private:
 		const Uint32 m_delay_time{2}; //Pause i ms mellom hver frame
 		std::string m_window_name{};
+		const std::string m_bakgrunn_widget{"bakgrunn.bmp"};
 		const std::string m_romskip_widget{"ball2.bmp"};
 		const std::string m_asteroid_widget{"brick.bmp"};
 		std::array<std::string, 2> m_sprites = {"ball2.bmp", "ball2_2.bmp"};
@@ -37,6 +38,7 @@ class Asteroid_game {
 		bool m_quit{false};
 		SDL_Renderer* m_renderer;
 		Falling_widget m_romskip;
+		Widget m_bakgrunn;
 		std::vector<Asteroid> m_asteroids;
 		std::vector<Ammo> m_ammo;
 		double m_midwinX{}; //Midt i vinduet i X-retning
@@ -95,7 +97,7 @@ void Asteroid_game::init_SDL() {
 
 void Asteroid_game::init_widgets() {
 	m_romskip = Falling_widget(m_romskip_widget, m_renderer, Point{m_midwinX, m_midwinY}, m_romskipwidget_width, m_romskipwidget_height, m_windows_height, m_windows_width, 0, 0, 0);
-	
+	m_bakgrunn = Widget(m_bakgrunn_widget, m_renderer,Point{0,0}, m_windows_width, m_windows_height, 0, 0, 0);
 	for(int i = 0;i<m_antall_asteroider;++i) {
    		m_asteroids.emplace_back(m_asteroid_widget, m_renderer, 1.0, 0, 0, m_asteroidwidget_width, m_asteroidwidget_height, m_windows_height, m_windows_width, 0, m_asteroide_generasjon);
    	}
@@ -159,7 +161,7 @@ void Asteroid_game::enter_game_loop() {
         EventHandler();//, windows_width, windows_height);
         SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(m_renderer); 
-        
+        m_bakgrunn.moveTo(0,0);
         check_limits<Falling_widget>(m_romskip);
 		m_romskip.updateXY();
 	    
