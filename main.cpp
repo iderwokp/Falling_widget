@@ -78,21 +78,24 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 			clearscreen = false;	
         }
         //SDL_RenderClear(renderer); 
+        Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
         for(auto& gjeldende_ball: baller) {
         	double xPos = gjeldende_ball.current_pos().X;
         	double yPos = gjeldende_ball.current_pos().Y;
-        	Vec2d<double> acc_vec{xPos, yPos};
-        	Vec2d<double> start_vec {acc_vec};
-        	Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
+        	Vec2d<double> acc_vec{0.0, 0.0};
+        	Vec2d<double> start_vec {xPos, yPos};
+        	
 	        double sjekke_mot_ball_Y{0};
         	for(const auto& sjekke_mot_ball: baller) {
         		double xPos2 = sjekke_mot_ball.current_pos().X;
         		double yPos2 = sjekke_mot_ball.current_pos().Y;
-        		sjekke_mot_ball_Y = yPos2;
+        		
         		Vec2d<double> sjekke_mot_ball_vec{xPos2, yPos2};
-        		acc_vec += sjekke_mot_ball_vec;
+        		acc_vec += (sjekke_mot_ball_vec-start_vec);
         	}
-        	Vec2d<double> vecXY = start_vec - acc_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
+        	
+        	Vec2d<double> vecXY = acc_vec - start_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
+        	sjekke_mot_ball_Y = vecXY.yVal();
         	double length_vecXY = vecXY.length();
 	        double justert_lengde = length_vecXY/100;
 			
