@@ -40,7 +40,7 @@ class Falling_widget: public Widget {
 	
 		Point startpos_{};
 		Point currpos_{0.0f, 0.0f};
-		const float drag_{0.9999f} ; //Motstand/friksjon. 1.0 er friksjonsfritt 0.0 er 100% friksjon
+		const float drag_{0.999f} ; //Motstand/friksjon. 1.0 er friksjonsfritt 0.0 er 100% friksjon
 //		double Ypos_{0};
 //		double Xpos_{0};
 		//int tid_{1};

@@ -12,13 +12,14 @@ std::pair<double, double> endKoord(double startX, double startY, double rad_vink
 float grav_avstand(double avstand, float g);
 int mouse_x{0};
 int mouse_y{0};
+bool clearscreen{false};
 void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT){
         quit = true;
     }    
     if(event.type == SDL_MOUSEBUTTONDOWN) {
-        
+        clearscreen = true;
         SDL_GetMouseState( &mouse_x, &mouse_y );
         //check_mouse_click(x, y, w, ww, wh);
         
@@ -72,7 +73,11 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(renderer); 
+        if(clearscreen) {
+        	SDL_RenderClear(renderer); 
+			clearscreen = false;	
+        }
+        //SDL_RenderClear(renderer); 
         for(auto& ball: baller) {
         	double xPos = ball.current_pos().X;
         	double yPos = ball.current_pos().Y;
@@ -116,7 +121,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 		
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer); 
-		SDL_Delay(70); 
+		SDL_Delay(10); 
        
        
        
