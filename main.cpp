@@ -45,8 +45,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     
 //    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -2.8*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 3*speed_konstant, 0); 
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -27*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 0*speed_konstant, 0);
 //    
@@ -87,11 +87,12 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	
 	        double sjekke_mot_ball_Y{0};
         	for(const auto& sjekke_mot_ball: baller) {
+        		if(gjeldende_ball == sjekke_mot_ball) continue;
         		double xPos2 = sjekke_mot_ball.current_pos().X;
         		double yPos2 = sjekke_mot_ball.current_pos().Y;
         		
         		Vec2d<double> sjekke_mot_ball_vec{xPos2, yPos2};
-        		acc_vec += (sjekke_mot_ball_vec-start_vec);
+        		acc_vec += (sjekke_mot_ball_vec);
         	}
         	
         	Vec2d<double> vecXY = acc_vec - start_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
