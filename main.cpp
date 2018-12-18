@@ -45,8 +45,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     
 //    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -2.8*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 3*speed_konstant, 0); 
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 270.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -27*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 0*speed_konstant, 0);
 //    
@@ -101,7 +101,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	        double justert_lengde = length_vecXY/100;
 			
 			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
-			if (gjeldende_ball.current_pos().Y > sjekke_mot_ball_Y) angle *= -1;
+			if (gjeldende_ball.current_pos().Y > 2*sjekke_mot_ball_Y) angle *= -1;
 	        	        
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        gjeldende_ball.set_aksellerasjon(grav_rr, angle);
