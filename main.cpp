@@ -43,7 +43,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
     
-    baller.emplace_back("ball.bmp", renderer, Point{400.0, 133.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{500.0, 133.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{500.0, 433.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0); 
  //   baller.emplace_back("ball.bmp", renderer, Point{800.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{550.0, 270.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
@@ -93,12 +93,12 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         		double yPos2 = sjekke_mot_ball.current_pos().Y;
         		
         		Vec2d<double> sjekke_mot_ball_vec{xPos2, yPos2};
-        		acc_vec += (sjekke_mot_ball_vec - start_vec);
+        		acc_vec += (sjekke_mot_ball_vec);// - start_vec);
         		//acc_vec += justerings_vec;
         		
         	}
         	
-        	Vec2d<double> vecXY = acc_vec;// + start_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
+        	Vec2d<double> vecXY = acc_vec - start_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
         	
         	sjekke_mot_ball_Y = vecXY.yVal();
         	double length_vecXY = vecXY.length();
