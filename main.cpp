@@ -87,6 +87,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	//Vec2d<double> justerings_vec {0.1, 180};
         	
 	        double sjekke_mot_ball_Y{0};
+	       
         	for(const auto& sjekke_mot_ball: baller) {
         		if(gjeldende_ball == sjekke_mot_ball) continue;
         		double xPos2 = sjekke_mot_ball.current_pos().X;
