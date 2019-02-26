@@ -13,7 +13,8 @@ std::pair<double, double> endKoord(double startX, double startY, double rad_vink
 float grav_avstand(double avstand, float g);
 void check_limits(Falling_widget& romskip, int wwidth, int wheight, int fwidget_width, int fwidget_height); 
 void animate(Falling_widget& fw, const std::array<std::string, 2>& s);
-const int aksellerasjons_justering{6000};
+const int aksellerasjons_justering{100};
+const int trust_vs_aksjust{2};
 //int mouse_x{0};
 //int mouse_y{0};
 int rot_angle{0};
@@ -34,7 +35,7 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
 	            if(rot_angle < 0) rot_angle +=360;
 	        }
 	        if(event.key.keysym.sym == SDLK_UP ) {
-	            trust = 9.81/(aksellerasjons_justering/4);
+	            trust = 9.81/(aksellerasjons_justering/trust_vs_aksjust);
 	            changeSpr = true;
 	        }
 	        if(event.key.keysym.sym == SDLK_DOWN ) {
