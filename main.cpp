@@ -17,23 +17,29 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT){
         quit = true;
-    }    
+    }
     if(event.type == SDL_MOUSEBUTTONDOWN) {
         clearscreen = true;
         SDL_GetMouseState( &mouse_x, &mouse_y );
         //check_mouse_click(x, y, w, ww, wh);
-        
+
     }
 }
-int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
+double sanitize_angle(Point gjeldende, Point sjekke_mot, double angl) {
+	if(gjeldende.X > sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;//-90;
+	if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl-90;
+	return angl;
 	
+}
+int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
+
 	SDL_Event event;
 	bool quit{false};
     const int windows_width {1300};
     const int windows_height {700};
-    
+
     SDL_Init(SDL_INIT_VIDEO);
-    
+
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     //SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
@@ -42,23 +48,23 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     int fwidget_height{20};
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
-    
-    baller.emplace_back("ball.bmp", renderer, Point{500.0, 133.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{500.0, 433.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0); 
- //   baller.emplace_back("ball.bmp", renderer, Point{800.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+
+    //baller.emplace_back("ball.bmp", renderer, Point{200.0, 333.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{400.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{300.0, 300.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{550.0, 270.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
-////    
+////
 //    baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, fwidget_width, fwidget_height, windows_height, windows_width, 15*speed_konstant, -15*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 1*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -5*speed_konstant, 33*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -36*speed_konstant, -15*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -33*speed_konstant, 33*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -29*speed_konstant, 29*speed_konstant, 0);
-//    
+//
 
-    
+
  //   double midwinX = windows_width/2;
  //   double midwinY = windows_height/2;
 //    int sjerneW{16};
@@ -70,14 +76,14 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     float gravitasjon{0.0981*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
-	
+
         EventHandler(event, quit);//, windows_width, windows_height);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         if(clearscreen) {
-        	SDL_RenderClear(renderer); 
-			clearscreen = false;	
+        	SDL_RenderClear(renderer);
+			clearscreen = false;
         }
-        SDL_RenderClear(renderer); 
+        SDL_RenderClear(renderer);
         Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
         for(auto& gjeldende_ball: baller) {
         	double xPos = gjeldende_ball.current_pos().X;
@@ -85,33 +91,41 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	Vec2d<double> acc_vec{0.0, 0.0};
         	Vec2d<double> start_vec {xPos, yPos};
         	//Vec2d<double> justerings_vec {0.1, 180};
-        	
+
 	        double sjekke_mot_ball_Y{0};
-	       
+	        double sjekke_mot_ball_X{0};
+
         	for(const auto& sjekke_mot_ball: baller) {
         		if(gjeldende_ball == sjekke_mot_ball) continue;
         		double xPos2 = sjekke_mot_ball.current_pos().X;
         		double yPos2 = sjekke_mot_ball.current_pos().Y;
-        		
+
         		Vec2d<double> sjekke_mot_ball_vec{xPos2, yPos2};
         		acc_vec += (sjekke_mot_ball_vec);// - start_vec);
-        		//acc_vec += justerings_vec;
-        		
+
+        		sjekke_mot_ball_X = sjekke_mot_ball_vec.xVal();//acc_vec += justerings_vec;
+        		sjekke_mot_ball_Y = sjekke_mot_ball_vec.yVal();
+
         	}
-        	
+
         	Vec2d<double> vecXY = acc_vec - start_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
-        	
-        	sjekke_mot_ball_Y = vecXY.yVal();
+
+        	//sjekke_mot_ball_Y = vecXY.yVal();
         	double length_vecXY = vecXY.length();
 	        double justert_lengde = length_vecXY/10;
 	        //Gravitasjonsvektor
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 	        SDL_RenderDrawLine(renderer, xPos,yPos, (vecXY+ start_vec).xVal(), (vecXY+ start_vec).yVal());
 	        //std::cout << "xPos=" << xPos << ", yPos=" << yPos << " -> acc_vec.xVal()=" << acc_vec.xVal() << ", acc_vec.yVal()=" << acc_vec.yVal() << std::endl;
-			
-			double angle = angle_deg(vecXY, x_axe);
-			if (gjeldende_ball.current_pos().Y > sjekke_mot_ball_Y) angle *= -1;
-	        	        
+
+			double anglea = angle_deg(vecXY, x_axe);
+			double angle = sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{sjekke_mot_ball_X, sjekke_mot_ball_Y}, anglea);
+			//std::cout << "angle = " << angle << std::endl;
+            if (gjeldende_ball.current_pos().X > sjekke_mot_ball_X) anglea -= 90;
+			if (gjeldende_ball.current_pos().Y > sjekke_mot_ball_Y) anglea -= 180;
+//            if (anglea < 0) {
+//                std::cout << "Nuh!\n";
+//			}
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        gjeldende_ball.set_aksellerasjon(grav_rr, static_cast<int>(angle));
 	        gjeldende_ball.updateXY();
@@ -119,18 +133,18 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 //        for(auto& ball: baller) {
 //        	double xPos = ball.current_pos().X;
 //        	double yPos = ball.current_pos().Y;
-//        	
+//
 //        	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
 //      		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
 //	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
 //	        Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
-//			
+//
 //			double length_vecXY = vecXY.length();
 //	        double justert_lengde = length_vecXY/100;
-//			
+//
 //			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
 //			if (ball.current_pos().Y > midwinY) angle *= -1;
-//	        	        
+//
 //	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 //	        ball.set_aksellerasjon(grav_rr, angle);
 //	        ball.updateXY();
@@ -148,33 +162,33 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 //        }
 
         // Smågetoppen grendalag: 98656042
-        
+
 //       const int marg{10};
 //        SDL_RenderDrawLine(renderer, midwinX,midwinY-marg, midwinX, midwinY+marg);//Loddrett
 //		SDL_RenderDrawLine(renderer, midwinX-marg,midwinY, midwinX+marg,midwinY);//Vannrett
-	    
+
 	   // sjerne.moveTo(midwinX-sjerneW/2, midwinY-sjerneH/2);
-	    
-        
-		
+
+
+
 		SDL_RenderPresent(renderer);
-		//SDL_RenderClear(renderer); 
-		SDL_Delay(10); 
-       
-       
-       
+		//SDL_RenderClear(renderer);
+		SDL_Delay(10);
+
+
+
     }
-   
+
     SDL_Quit();
     return 0;
 }
 
 std::pair<double, double> endKoord(double startX, double startY, double rad_vinkel, double lengde) {
-	
+
 	double x = lengde*cos(rad_vinkel);
 	double y = lengde*sin(rad_vinkel);
 	return std::make_pair(x+startX, y+startY);
-	
+
 }
 
 float grav_avstand(double avstand, float g) {
@@ -207,7 +221,7 @@ float grav_avstand(double avstand, float g) {
 //        double justert_lengde = length_vecXY/100;
 //        double justert_lengde2 = length_vecXY2/100;
 //        double justert_lengde3 = length_vecXY3/100;
-//        
+//
 //        double ekspr = (vecX*vecX+vecY*0)/(length_vecXY*vecX);
 //        double ekspr2 = (vecX2*vecX2+vecY2*0)/(length_vecXY2*vecX2);
 //        double ekspr3 = (vecX3*vecX3+vecY3*0)/(length_vecXY3*vecX3);
@@ -217,11 +231,11 @@ float grav_avstand(double avstand, float g) {
 //        if (ypos > ypos2) radangl *= -1;
 //        if (ypos2 > ypos) radangl2 *= -1;
 //        if (ypos3 > ypos2) radangl3 *= -1;
-//        
+//
 //        int angle = static_cast<int>(radangl*(180.0/3.1415926));
 //        int angle2 = static_cast<int>(radangl2*(180.0/3.1415926));
 //        int angle3 = static_cast<int>(radangl3*(180.0/3.1415926));
-//        
+//
 //        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 //        float grav_rr2 = grav_avstand(justert_lengde2, gravitasjon2);
 //        float grav_rr3 = grav_avstand(justert_lengde3, gravitasjon);
@@ -229,7 +243,7 @@ float grav_avstand(double avstand, float g) {
 //        fw.set_aksellerasjon(grav_rr, angle);
 //        fw2.set_aksellerasjon(grav_rr2, angle2);
 //        fw3.set_aksellerasjon(grav_rr3, angle3);
-//        
+//
 //        auto [endX, endY] = endKoord(xpos, ypos, radangl, length_vecXY);
 //        auto [endX2, endY2] = endKoord(xpos2, ypos2, radangl2, length_vecXY2);
 //        auto [endX3, endY3] = endKoord(xpos3, ypos3, radangl3, length_vecXY3);
@@ -241,4 +255,5 @@ float grav_avstand(double avstand, float g) {
 //		fw.updateXY();
 //		fw2.updateXY();
 //		fw3.updateXY();
-        
+
+
