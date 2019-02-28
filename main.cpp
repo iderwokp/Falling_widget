@@ -27,33 +27,36 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
 }
 double sanitize_angle(Point gjeldende, Point sjekke_mot, double angl) {
 	if(gjeldende.X == sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+180;
-	if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+270;
-	if(gjeldende.X > sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+2*angl;
+	//if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+270;
+	if(gjeldende.X > sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+2*(180-angl);
+	if(gjeldende.X > sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;
+	if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return -1*angl;
+	if(gjeldende.X < sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;
 	return angl;
-	
+
 }
 int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
 	SDL_Event event;
 	bool quit{false};
-    const int windows_width {1300};
-    const int windows_height {700};
+    constexpr int windows_width {1300};
+    constexpr int windows_height {700};
 
     SDL_Init(SDL_INIT_VIDEO);
 
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     //SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
-    const float speed_konstant{0.1};
-    int fwidget_width{30};
-    int fwidget_height{20};
+    constexpr float speed_konstant{0.1};
+    constexpr int fwidget_width{30};
+    constexpr int fwidget_height{20};
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
 
     //baller.emplace_back("ball.bmp", renderer, Point{200.0, 333.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{100.0, 00.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{600.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
-//    baller.emplace_back("ball.bmp", renderer, Point{550.0, 270.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    //baller.emplace_back("ball.bmp", renderer, Point{400.0, 400.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{500.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{600.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
 ////
@@ -74,7 +77,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     //double xPos, yPos;
     //double length_vecXY, radangl;
     int index{300};
-    float gravitasjon{0.0981*speed_konstant*speed_konstant};
+    constexpr float gravitasjon{0.0981*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 
