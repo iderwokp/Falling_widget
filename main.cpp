@@ -26,8 +26,9 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
     }
 }
 double sanitize_angle(Point gjeldende, Point sjekke_mot, double angl) {
-	if(gjeldende.X > sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;//-90;
-	if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl-90;
+	if(gjeldende.X == sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+180;
+	if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+270;
+	if(gjeldende.X > sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+2*angl;
 	return angl;
 	
 }
@@ -50,8 +51,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
 
     //baller.emplace_back("ball.bmp", renderer, Point{200.0, 333.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{400.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{300.0, 300.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{100.0, 00.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{600.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{550.0, 270.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
@@ -126,7 +127,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 //            if (anglea < 0) {
 //                std::cout << "Nuh!\n";
 //			}
-	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
+	        float grav_rr = gravitasjon;//grav_avstand(justert_lengde, gravitasjon);
 	        gjeldende_ball.set_aksellerasjon(grav_rr, static_cast<int>(angle));
 	        gjeldende_ball.updateXY();
         }
