@@ -56,12 +56,12 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
     
 //    baller.emplace_back("ball.bmp", renderer, Point{500.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -start_fart*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{600.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{700.0, 600.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
+    //baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
+  //  baller.emplace_back("ball.bmp", renderer, Point{700.0, 400.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{600.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -0*speed_konstant, 0);
+    //baller.emplace_back("ball.bmp", renderer, Point{650.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
+  //  baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0); 
 //    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
@@ -69,7 +69,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 //    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 
 
-//TODO: Ser ut til å ha en bug med vektorregningen når de to første ballene er øverst på skjermen?
+
 
 
  //   double midwinX = windows_width/2;
@@ -97,36 +97,30 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	double yPos = gjeldende_ball.current_pos().Y;
         	Vec2d<double> acc_vec{0.0, 0.0};
         	Vec2d<double> start_vec {xPos, yPos};
-        	//Vec2d<double> justerings_vec {0.1, 180};
-
-	        double sjekke_mot_ball_Y{0};
-	        double sjekke_mot_ball_X{0};
+        	
+	        double acc_vec_Y{0};
+	        double acc_vec_X{0};
 
         	for(const auto& sjekke_mot_ball: baller) {
         		if(gjeldende_ball == sjekke_mot_ball) continue;
-//        		double xPos2 = sjekke_mot_ball.current_pos().X;
-//        		double yPos2 = sjekke_mot_ball.current_pos().Y;
 
         		Vec2d<double> sjekke_mot_ball_vec{sjekke_mot_ball.current_pos().X, sjekke_mot_ball.current_pos().Y};
         		acc_vec += (sjekke_mot_ball_vec - start_vec);
-
-        		sjekke_mot_ball_X = sjekke_mot_ball_vec.xVal();//acc_vec += justerings_vec;
-        		sjekke_mot_ball_Y = sjekke_mot_ball_vec.yVal();
-
         	}
 
-        	//Vec2d<double> vecXY = acc_vec;// - start_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
-
-        	//sjekke_mot_ball_Y = vecXY.yVal();
+        	
+        	acc_vec_X = acc_vec.xVal();
+        	acc_vec_Y = acc_vec.yVal();
+        	
         	double length_acc_vec = acc_vec.length();
 	        double justert_lengde = length_acc_vec/10;
-	        //Gravitasjonsvektor
+	        
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 	        SDL_RenderDrawLine(renderer, xPos,yPos, (acc_vec+ start_vec).xVal(), (acc_vec+ start_vec).yVal());
 	        //std::cout << "xPos=" << xPos << ", yPos=" << yPos << " -> acc_vec.xVal()=" << acc_vec.xVal() << ", acc_vec.yVal()=" << acc_vec.yVal() << std::endl;
 
 			double anglea = angle_deg(acc_vec, x_axe);
-			double angle = sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{sjekke_mot_ball_X, sjekke_mot_ball_Y}, anglea);
+			double angle = anglea;//sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{acc_vec_X, acc_vec_Y}, anglea);
 			//std::cout << "angle = " << angle << std::endl;
 //            if (gjeldende_ball.current_pos().X > sjekke_mot_ball_X) anglea -= 90;
 //			if (gjeldende_ball.current_pos().Y > sjekke_mot_ball_Y) anglea -= 180;
