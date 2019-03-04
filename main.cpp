@@ -57,8 +57,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     //baller.emplace_back("ball.bmp", renderer, Point{200.0, 333.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{500.0, 300.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -start_fart*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{600.0, 300.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{500.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{600.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
+   // baller.emplace_back("ball.bmp", renderer, Point{500.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
+   // baller.emplace_back("ball.bmp", renderer, Point{600.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
 ////
 //    baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -0*speed_konstant, 0);
