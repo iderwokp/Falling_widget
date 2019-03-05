@@ -26,12 +26,12 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
     }
 }
 double sanitize_angle(Point gjeldende, Point sjekke_mot, double angl) {
-	if(gjeldende.X == sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+180;
+	if(gjeldende.X == (gjeldende.X+sjekke_mot.X) && gjeldende.Y > (gjeldende.Y+sjekke_mot.Y)) {/*std::cout << 0 << std::endl;*/return angl+180;}
 	//if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+270;
-	if(gjeldende.X > sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+2*(180-angl); 
-	if(gjeldende.X > sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;
-	if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return -1*angl;
-	if(gjeldende.X < sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;
+	if(gjeldende.X > (gjeldende.X+sjekke_mot.X) && gjeldende.Y > (gjeldende.Y+sjekke_mot.Y)) {/*std::cout << 1 << std::endl; */return 180+(180-angl);}//+2*(180-angl);
+	if(gjeldende.X > (gjeldende.X+sjekke_mot.X) && gjeldende.Y < (gjeldende.Y+sjekke_mot.Y)) {/*std::cout << 2 << std::endl; */return angl;}
+	if(gjeldende.X < (gjeldende.X+sjekke_mot.X) && gjeldende.Y > (gjeldende.Y+sjekke_mot.Y)) {/*std::cout << 3 << std::endl;*/ return 360-angl;}
+	if(gjeldende.X < (gjeldende.X+sjekke_mot.X) && gjeldende.Y < (gjeldende.Y+sjekke_mot.Y)) {/*std::cout << 4 << std::endl; */return angl;}
 	return angl;
 
 }
@@ -54,16 +54,16 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
 
-    
+
 //    baller.emplace_back("ball.bmp", renderer, Point{500.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -start_fart*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 300.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{550.0, 500.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
     //baller.emplace_back("ball.bmp", renderer, Point{650.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
   //  baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
-//    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0); 
+//    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
@@ -72,7 +72,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
 
 
- 
+
     int index{1};
     constexpr float gravitasjon{0.0981*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
@@ -92,7 +92,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	Vec2d<double> acc_vec{0.0, 0.0};
         	//Vec2d<double> acc_vec_deb{0.0, 0.0};
         	Vec2d<double> start_vec {xPos, yPos};
-        	
+
 	        double acc_vec_Y{0};
 	        double acc_vec_X{0};
 
@@ -104,20 +104,20 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         		acc_vec += (sjekke_mot_ball_vec - start_vec);
         	}
 
-        	
+
         	acc_vec_X = acc_vec.xVal();
         	acc_vec_Y = acc_vec.yVal();
-        	
+
         	double length_acc_vec = acc_vec.length();
 	        double justert_lengde = length_acc_vec/10;
-	        
+
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 	        SDL_RenderDrawLine(renderer, xPos,yPos, (acc_vec+ start_vec).xVal(), (acc_vec+ start_vec).yVal());
 	        //std::cout << "xPos=" << xPos << ", yPos=" << yPos << " -> acc_vec.xVal()=" << acc_vec.xVal() << ", acc_vec.yVal()=" << acc_vec.yVal() << std::endl;
 
 			double anglea = angle_deg(acc_vec, x_axe);
 			double angle = sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{acc_vec_X, acc_vec_Y}, anglea);
-		    std::cout << "anglea = " << anglea << "\tangle = " << angle << std::endl;
+		    //std::cout << "anglea = " << anglea << "\tangle = " << angle << std::endl;
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        gjeldende_ball.set_aksellerasjon(grav_rr, static_cast<int>(angle));
 	        gjeldende_ball.updateXY();
