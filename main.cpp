@@ -121,10 +121,10 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        gjeldende_ball.set_aksellerasjon(grav_rr, static_cast<int>(angle));
 	        gjeldende_ball.updateXY();
-	        index--;
+	        //index--;
         }
 
-Sdl_wrap();
+//Sdl_wrap()
 //anglea = 45     		  angle = 315
 //anglea = 135.144        angle = 224.856
 //anglea = 45.4286        angle = 314.571
