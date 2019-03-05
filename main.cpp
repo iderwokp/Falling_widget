@@ -28,7 +28,7 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
 double sanitize_angle(Point gjeldende, Point sjekke_mot, double angl) {
 	if(gjeldende.X == sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+180;
 	//if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+270;
-	if(gjeldende.X > sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+2*(180-angl);
+	if(gjeldende.X > sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return angl+2*(180-angl); 
 	if(gjeldende.X > sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;
 	if(gjeldende.X < sjekke_mot.X && gjeldende.Y > sjekke_mot.Y) return -1*angl;
 	if(gjeldende.X < sjekke_mot.X && gjeldende.Y < sjekke_mot.Y) return angl;
@@ -56,10 +56,10 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
     
 //    baller.emplace_back("ball.bmp", renderer, Point{500.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -start_fart*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
-    //baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
-  //  baller.emplace_back("ball.bmp", renderer, Point{700.0, 400.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{600.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 500.0}, fwidget_width+10, fwidget_height+10, windows_height, windows_width, -start_fart*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
     //baller.emplace_back("ball.bmp", renderer, Point{650.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
   //  baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -0*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
@@ -72,14 +72,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
 
 
- //   double midwinX = windows_width/2;
- //   double midwinY = windows_height/2;
-//    int sjerneW{16};
-//    int sjerneH{10};
-//    Widget sjerne("ball.bmp", renderer, Point{midwinX-sjerneW/2, midwinY-sjerneH/2},sjerneW, sjerneH, 0, 0, 0);
-    //double xPos, yPos;
-    //double length_vecXY, radangl;
-    int index{3};
+ 
+    int index{1};
     constexpr float gravitasjon{0.0981*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
@@ -96,6 +90,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	double xPos = gjeldende_ball.current_pos().X;
         	double yPos = gjeldende_ball.current_pos().Y;
         	Vec2d<double> acc_vec{0.0, 0.0};
+        	//Vec2d<double> acc_vec_deb{0.0, 0.0};
         	Vec2d<double> start_vec {xPos, yPos};
         	
 	        double acc_vec_Y{0};
@@ -105,6 +100,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         		if(gjeldende_ball == sjekke_mot_ball) continue;
 
         		Vec2d<double> sjekke_mot_ball_vec{sjekke_mot_ball.current_pos().X, sjekke_mot_ball.current_pos().Y};
+        		//acc_vec_deb += sjekke_mot_ball_vec;
         		acc_vec += (sjekke_mot_ball_vec - start_vec);
         	}
 
@@ -120,58 +116,19 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	        //std::cout << "xPos=" << xPos << ", yPos=" << yPos << " -> acc_vec.xVal()=" << acc_vec.xVal() << ", acc_vec.yVal()=" << acc_vec.yVal() << std::endl;
 
 			double anglea = angle_deg(acc_vec, x_axe);
-			double angle = anglea;//sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{acc_vec_X, acc_vec_Y}, anglea);
-			//std::cout << "angle = " << angle << std::endl;
-//            if (gjeldende_ball.current_pos().X > sjekke_mot_ball_X) anglea -= 90;
-//			if (gjeldende_ball.current_pos().Y > sjekke_mot_ball_Y) anglea -= 180;
-//            if (anglea < 0) {
-//                std::cout << "Nuh!\n";
-//			}
+			double angle = sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{acc_vec_X, acc_vec_Y}, anglea);
+		    std::cout << "anglea = " << anglea << "\tangle = " << angle << std::endl;
 	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
 	        gjeldende_ball.set_aksellerasjon(grav_rr, static_cast<int>(angle));
 	        gjeldende_ball.updateXY();
-	        //index--;
+	        index--;
         }
-//        for(auto& ball: baller) {
-//        	double xPos = ball.current_pos().X;
-//        	double yPos = ball.current_pos().Y;
-//
-//        	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
-//      		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
-//	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
-//	        Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
-//
-//			double length_vecXY = vecXY.length();
-//	        double justert_lengde = length_vecXY/100;
-//
-//			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
-//			if (ball.current_pos().Y > midwinY) angle *= -1;
-//
-//	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
-//	        ball.set_aksellerasjon(grav_rr, angle);
-//	        ball.updateXY();
-//
-//	        if(mouse_x != 0 || mouse_y != 0) {
-//	        	midwinX = mouse_x;
-//	        	midwinY = mouse_y;
-//	        }
-	        //Tegne gravitasjonslinjer
-//	        double radangl = angle_rad(vecXY, x_axe);//For gravitasjonslinjene
-//	        if (ball.current_pos().Y > midwinY) radangl *= -1; //For gravitasjonslinjene
-//	        auto [endX, endY] = endKoord(xPos, yPos, radangl, length_vecXY);
-//	        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-//	        SDL_RenderDrawLine(renderer, xPos,yPos, endX, endY);
-//        }
 
-        // Smågetoppen grendalag: 98656042
-
-//       const int marg{10};
-//        SDL_RenderDrawLine(renderer, midwinX,midwinY-marg, midwinX, midwinY+marg);//Loddrett
-//		SDL_RenderDrawLine(renderer, midwinX-marg,midwinY, midwinX+marg,midwinY);//Vannrett
-
-	   // sjerne.moveTo(midwinX-sjerneW/2, midwinY-sjerneH/2);
-
-
+Sdl_wrap();
+//anglea = 45     		  angle = 315
+//anglea = 135.144        angle = 224.856
+//anglea = 45.4286        angle = 314.571
+//anglea = 134.716        angle = 225.284
 
 		SDL_RenderPresent(renderer);
 		//SDL_RenderClear(renderer);
@@ -199,63 +156,5 @@ float grav_avstand(double avstand, float g) {
 	return g;
 }
 
-
-
-//        int ypos = fw.current_pos().Y;
-//        int xpos = fw.current_pos().X;
-//        int ypos2 = fw2.current_pos().Y;
-//        int xpos2 = fw2.current_pos().X;
-//        int ypos3 = fw3.current_pos().Y;
-//        int xpos3 = fw3.current_pos().X;
-//        double vecX = midwinX - xpos;
-//        double vecY = midwinY - ypos;
-//        double vecX2 = midwinX - xpos2;
-//        double vecY2 = midwinY - ypos2;
-//        double vecX = xpos2 - xpos;
-//        double vecY = ypos2 - ypos;
-//        double vecX2 = xpos - xpos2;
-//        double vecY2 = ypos - ypos2;
-//        double vecX3 = xpos2 - xpos3;
-//        double vecY3 = ypos2 - ypos3;
-//        double length_vecXY = sqrt(vecX*vecX + vecY*vecY);
-//        double length_vecXY2 = sqrt(vecX2*vecX2 + vecY2*vecY2);
-//        double length_vecXY3 = sqrt(vecX3*vecX3 + vecY3*vecY3);
-//        double justert_lengde = length_vecXY/100;
-//        double justert_lengde2 = length_vecXY2/100;
-//        double justert_lengde3 = length_vecXY3/100;
-//
-//        double ekspr = (vecX*vecX+vecY*0)/(length_vecXY*vecX);
-//        double ekspr2 = (vecX2*vecX2+vecY2*0)/(length_vecXY2*vecX2);
-//        double ekspr3 = (vecX3*vecX3+vecY3*0)/(length_vecXY3*vecX3);
-//        double radangl = acos(ekspr);
-//        double radangl2 = acos(ekspr2);
-//        double radangl3 = acos(ekspr3);
-//        if (ypos > ypos2) radangl *= -1;
-//        if (ypos2 > ypos) radangl2 *= -1;
-//        if (ypos3 > ypos2) radangl3 *= -1;
-//
-//        int angle = static_cast<int>(radangl*(180.0/3.1415926));
-//        int angle2 = static_cast<int>(radangl2*(180.0/3.1415926));
-//        int angle3 = static_cast<int>(radangl3*(180.0/3.1415926));
-//
-//        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
-//        float grav_rr2 = grav_avstand(justert_lengde2, gravitasjon2);
-//        float grav_rr3 = grav_avstand(justert_lengde3, gravitasjon);
-//        //std::cout << "grav_rr = " << grav_rr << "\tjustert_lengde^2 = " << justert_lengde * justert_lengde<<"\n";
-//        fw.set_aksellerasjon(grav_rr, angle);
-//        fw2.set_aksellerasjon(grav_rr2, angle2);
-//        fw3.set_aksellerasjon(grav_rr3, angle3);
-//
-//        auto [endX, endY] = endKoord(xpos, ypos, radangl, length_vecXY);
-//        auto [endX2, endY2] = endKoord(xpos2, ypos2, radangl2, length_vecXY2);
-//        auto [endX3, endY3] = endKoord(xpos3, ypos3, radangl3, length_vecXY3);
-
-//SDL_RenderDrawLine(renderer, 0,midwinY, windows_width,midwinY);
-		//SDL_RenderDrawLine(renderer, midwinX,0, midwinX, windows_height);
-		//SDL_RenderDrawLine(renderer, xpos,ypos, endX, endY);
-		//SDL_RenderDrawLine(renderer, xpos2,ypos2, endX2, endY2);
-//		fw.updateXY();
-//		fw2.updateXY();
-//		fw3.updateXY();
 
 
