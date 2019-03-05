@@ -74,7 +74,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
 
     int index{1};
-    constexpr float gravitasjon{0.0981*speed_konstant*speed_konstant};
+    constexpr float gravitasjon{9.81*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 
@@ -103,7 +103,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         		//acc_vec_deb += sjekke_mot_ball_vec;
         		acc_vec += (sjekke_mot_ball_vec - start_vec);
         	}
-
+//TODO: Avstanden mellom to objekter bør bestemme magnituden på vektorene, og ikke bare på resultant vektoren.
 
         	acc_vec_X = acc_vec.xVal();
         	acc_vec_Y = acc_vec.yVal();
@@ -152,8 +152,8 @@ std::pair<double, double> endKoord(double startX, double startY, double rad_vink
 
 float grav_avstand(double avstand, float g) {
 	if(avstand< 5.0f) avstand = 5.0f;
-	//return g/(avstand*avstand);
-	return g;
+	return g/(avstand*avstand);
+	//return g;
 }
 
 
