@@ -95,13 +95,17 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
 	        double acc_vec_Y{0};
 	        double acc_vec_X{0};
-
+			std::cout << " --------------------------------------------------------------------------------------------------------- " << std::endl;
         	for(const auto& sjekke_mot_ball: baller) {
         		if(gjeldende_ball == sjekke_mot_ball) continue;
 
         		Vec2d<double> sjekke_mot_ball_vec{sjekke_mot_ball.current_pos().X, sjekke_mot_ball.current_pos().Y};
-        		//acc_vec_deb += sjekke_mot_ball_vec;
-        		acc_vec += (sjekke_mot_ball_vec - start_vec);
+        		Vec2d<double> temp_vec = sjekke_mot_ball_vec - start_vec;
+        		double r = temp_vec.length();
+        		temp_vec.set_magnitude(200.0/r*r);
+        		std::cout << "r = " << r << " temp_vec.length() = " << temp_vec.length() << "  200/r*r = " << 200.0/r*r << std::endl;
+        		
+        		acc_vec += (temp_vec);
         	}
 //TODO: Avstanden mellom to objekter bør bestemme magnituden på vektorene, og ikke bare på resultant vektoren.
 
@@ -152,8 +156,8 @@ std::pair<double, double> endKoord(double startX, double startY, double rad_vink
 
 float grav_avstand(double avstand, float g) {
 	if(avstand< 5.0f) avstand = 5.0f;
-	return g/(avstand*avstand);
-	//return g;
+	//return g/(avstand*avstand);
+	return g;
 }
 
 
