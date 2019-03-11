@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -110,7 +110,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         		double temp_angle = angle_deg(temp_vec, x_axe);
         		double temp_angle_sanitized = sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{temp_x, temp_y}, temp_angle);
         		temp_vec = {40000.0/(r*r), static_cast<int> (temp_angle_sanitized)};
-        		//NB husk å sette Falling_widget::drag_til noe sånt som f.eks 0.997
+        	
         		//temp_vec = {40000.0/(r*r), temp_angle_sanitized, true};
         		//temp_vec.set_magnitude(40000.0/(r*r));
         		//std::cout << "r = " << r << " temp_vec.length() = " << temp_vec.length() << "  4000/(r*r) = " << 4000.0/(r*r) << std::endl;
