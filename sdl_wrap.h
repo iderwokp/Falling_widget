@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace Iderwok {
-class  Sdl_wrap {
+class  Sdl_wrap { 
 	private:
 		std::string window_name{};
 		int xPos{SDL_WINDOWPOS_UNDEFINED};
