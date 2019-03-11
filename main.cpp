@@ -102,8 +102,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         		Vec2d<double> sjekke_mot_ball_vec{sjekke_mot_ball.current_pos().X, sjekke_mot_ball.current_pos().Y};
         		Vec2d<double> temp_vec = sjekke_mot_ball_vec - start_vec;
         		double r = temp_vec.length();
-        		temp_vec.set_magnitude(200.0/r*r);
-        		std::cout << "r = " << r << " temp_vec.length() = " << temp_vec.length() << "  200/r*r = " << 200.0/r*r << std::endl;
+        		temp_vec.set_magnitude(500000.0/(r*r));
+        		std::cout << "r = " << r << " temp_vec.length() = " << temp_vec.length() << "  500000/(r*r) = " << 500000.0/(r*r) << std::endl;
         		
         		acc_vec += (temp_vec);
         	}
