@@ -80,8 +80,8 @@ std::pair<double, double> Gravity_interaksjon::endKoord(double startX, double st
 
 float Gravity_interaksjon::grav_avstand(double avstand, float g) {
 	if(avstand< 5.0f) avstand = 5.0f;
-	std::cout << "g = " << g << "\n";
-	return g/(avstand*avstand);
+	//std::cout << "g = " << g << "\n";
+	return g/(avstand*avstand); 
 	//return g;
 }
 
@@ -104,7 +104,7 @@ void Gravity_interaksjon::start() {
         	double xPos = gjeldende_ball.current_pos().X;
         	double yPos = gjeldende_ball.current_pos().Y;
         	Vec2d<double> acc_vec{0.0, 0.0};
-        	//Vec2d<double> acc_vec_deb{0.0, 0.0};
+        	
         	Vec2d<double> start_vec {xPos, yPos};
 
 	        double acc_vec_Y{0};
