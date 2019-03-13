@@ -39,10 +39,10 @@ class  Gravity_interaksjon{
 		SDL_Renderer* renderer;
 	    
 	    const float speed_konstant{0.1};
-	    const int fwidget_width{30};
-	    const int fwidget_height{20};
+	    const int fwidget_width{3};
+	    const int fwidget_height{2};
 	    const int start_fart{35};
-	    const double gravitasjon{14*9.81*speed_konstant*speed_konstant};
+	    const double gravitasjon{24*9.81*speed_konstant*speed_konstant};
 };
 
 double Gravity_interaksjon::sanitize_angle(Point gjeldende, Point sjekke_mot, double angl) {
@@ -98,7 +98,7 @@ void Gravity_interaksjon::start() {
         	SDL_RenderClear(renderer);
 			clearscreen = false;
         }
-        SDL_RenderClear(renderer);
+        //SDL_RenderClear(renderer);
         Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
         for(auto& gjeldende_ball: baller) {
         	double xPos = gjeldende_ball.current_pos().X;
@@ -134,9 +134,9 @@ void Gravity_interaksjon::start() {
         	double length_acc_vec = acc_vec.length();
 	        double justert_lengde = length_acc_vec/10;
 
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-	        SDL_RenderDrawLine(renderer, xPos,yPos, (acc_vec+ start_vec).xVal(), (acc_vec+ start_vec).yVal());
-	        //std::cout << "xPos=" << xPos << ", yPos=" << yPos << " -> acc_vec.xVal()=" << acc_vec.xVal() << ", acc_vec.yVal()=" << acc_vec.yVal() << std::endl;
+//			SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+//	        SDL_RenderDrawLine(renderer, xPos,yPos, (acc_vec+ start_vec).xVal(), (acc_vec+ start_vec).yVal());
+//	        //std::cout << "xPos=" << xPos << ", yPos=" << yPos << " -> acc_vec.xVal()=" << acc_vec.xVal() << ", acc_vec.yVal()=" << acc_vec.yVal() << std::endl;
 
 			double anglea = angle_deg(acc_vec, x_axe);
 			double angle = sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{acc_vec_X, acc_vec_Y}, anglea);
@@ -165,17 +165,17 @@ void Gravity_interaksjon::start() {
 }
 void Gravity_interaksjon::init_baller() {
 	
-	baller.emplace_back("ball.bmp", renderer, Point{250.0, 200.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 0*speed_konstant, 0);
+	baller.emplace_back("ball.bmp", renderer, Point{250.0, 200.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -start_fart*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{550.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{150.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, start_fart*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{850.0, 200.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, -0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -0*speed_konstant, 0*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{850.0, 200.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -1*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, -1*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, 1*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -1*speed_konstant, 1*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -1*speed_konstant, -1*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, 1*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, 1*speed_konstant, 0);
 	
 	
 }
