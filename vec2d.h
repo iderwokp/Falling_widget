@@ -26,10 +26,17 @@ class Vec2d {
 		T1 yVal() const { return y_;}
 		void set_xVal(T1 val) { xVal = val;}
 		void set_yVal(T1 val) { yVal = val;}
+		void draw_vec2d(SDL_Renderer* renderer, Point from_point);
 		
 		//friend T1 dot_product(Vec2d v1, Vec2d v2);
 
 };
+template <typename T1>
+void Vec2d<T1>::draw_vec2d(SDL_Renderer* renderer, Point from_point) {
+	
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderDrawLine(renderer, from_point.X, from_point.Y, x_, y_);
+}
 template <typename T1> 
 void Vec2d<T1>::calc_hyp_a(){
 	magn_ = sqrt(x_*x_ + y_*y_);

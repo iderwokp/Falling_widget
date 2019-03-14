@@ -37,37 +37,39 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     Sdl_wrap sdlwrap{std::string{"Falling"}, windows_width, windows_height};
     //SDL_Window* window = sdlwrap.window();
     SDL_Renderer* renderer = sdlwrap.renderer();
-    const float speed_konstant{0.5};
-    int fwidget_width{3};
-    int fwidget_height{2};
+    constexpr float speed_konstant{0.5};
+    int fwidget_width{30};
+    int fwidget_height{20};
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
     
-    baller.emplace_back("ball.bmp", renderer, Point{850.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, -29.8*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 35*speed_konstant, 0); 
-   baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 22*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -33*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -27*speed_konstant, 0*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 0*speed_konstant, 0);
-    
-    baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, fwidget_width, fwidget_height, windows_height, windows_width, 15*speed_konstant, -15*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 1*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -5*speed_konstant, 33*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -36*speed_konstant, -15*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -33*speed_konstant, 33*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -29*speed_konstant, 29*speed_konstant, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{400.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 35*speed_konstant, 0); 
+//   baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 22*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -33*speed_konstant, 0*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{650.0, 150.0}, fwidget_width, fwidget_height, windows_height, windows_width, -27*speed_konstant, 0*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{650.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 0*speed_konstant, 0);
+//    
+//    baller.emplace_back("ball.bmp", renderer, Point{750.0, 450.0}, fwidget_width, fwidget_height, windows_height, windows_width, 15*speed_konstant, -15*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 34*speed_konstant, 1*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -5*speed_konstant, 33*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -36*speed_konstant, -15*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -33*speed_konstant, 33*speed_konstant, 0);
+//    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, -29*speed_konstant, 29*speed_konstant, 0);
 //    
 
     
-    double midwinX = windows_width/2;
-    double midwinY = windows_height/2;
-    int sjerneW{16};
-    int sjerneH{10};
-    Widget sjerne("ball.bmp", renderer, Point{midwinX-sjerneW/2, midwinY-sjerneH/2},sjerneW, sjerneH, 0, 0, 0);
+//    double midwinX = windows_width/2;
+//    double midwinY = windows_height/2;
+    double snorfesteX = windows_width/2;
+    double snorfesteY = 0.0;
+//    int sjerneW{16};
+//    int sjerneH{10};
+//    Widget sjerne("ball.bmp", renderer, Point{midwinX-sjerneW/2, midwinY-sjerneH/2},sjerneW, sjerneH, 0, 0, 0);
     //double xPos, yPos;
     //double length_vecXY, radangl;
     int index{300};
-    float gravitasjon{79.81*speed_konstant*speed_konstant};
+    float gravitasjon{9.81*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 	
@@ -82,25 +84,29 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	double xPos = ball.current_pos().X;
         	double yPos = ball.current_pos().Y;
         	
-        	Vec2d<double> midwin{midwinX, midwinY};		    //Vektor som representerer gravitasjonspunktet
-      		Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
-	        Vec2d<double> vecXY = midwin - pos_vec; 		//Vektor som representerer fra ball til gravitasjonspunktet
-	        Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
+        	Vec2d<double> snorfeste_vec{snorfesteX, snorfesteY};		    //Vektor som representerer punktet som pendelen er festet til
+        	Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
+        	Vec2d<double> ball_til_snorfeste_vec {snorfeste_vec - pos_vec};
+	        double length_snor_vec = ball_til_snorfeste_vec.length();
+	        std::cout << "length_snor_vec = " << length_snor_vec << std::endl;
+	        Vec2d<double> nedover_grav_vec{0.0, -length_snor_vec}; 				
+			Vec2d<double> resultant_grav_vec {ball_til_snorfeste_vec + nedover_grav_vec};
+			ball_til_snorfeste_vec.draw_vec2d(renderer, Point{xPos, yPos});
+			resultant_grav_vec.draw_vec2d(renderer, Point{xPos, yPos});
+			nedover_grav_vec.draw_vec2d(renderer, Point{xPos, yPos});
+	        //double justert_lengde = length_vecXY/100;
 			
-			double length_vecXY = vecXY.length();
-	        double justert_lengde = length_vecXY/100;
-			
-			int angle = static_cast<int>(angle_deg(vecXY, x_axe));
-			if (ball.current_pos().Y > midwinY) angle *= -1;
+			//int angle = static_cast<int>(angle_deg(vecXY, x_axe));
+			//if (ball.current_pos().Y > snorfesteY) angle *= -1;
 	        	        
-	        float grav_rr = grav_avstand(justert_lengde, gravitasjon);
-	        ball.set_aksellerasjon(grav_rr, angle);
+	        //float grav_rr = grav_avstand(justert_lengde, gravitasjon);
+	        ball.set_aksellerasjon(static_cast<float>(resultant_grav_vec.xVal()/1000), static_cast<float>(resultant_grav_vec.yVal()/1000));
 	        ball.updateXY();
 
-	        if(mouse_x != 0 || mouse_y != 0) {
-	        	midwinX = mouse_x;
-	        	midwinY = mouse_y;
-	        }
+//	        if(mouse_x != 0 || mouse_y != 0) {
+//	        	midwinX = mouse_x;
+//	        	midwinY = mouse_y;
+//	        }
 	        //Tegne gravitasjonslinjer
 //	        double radangl = angle_rad(vecXY, x_axe);//For gravitasjonslinjene
 //	        if (ball.current_pos().Y > midwinY) radangl *= -1; //For gravitasjonslinjene
@@ -109,13 +115,13 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 //	        SDL_RenderDrawLine(renderer, xPos,yPos, endX, endY);
         }
 
-        // Smågetoppen grendalag: 98656042
+        
         
 //       const int marg{10};
 //        SDL_RenderDrawLine(renderer, midwinX,midwinY-marg, midwinX, midwinY+marg);//Loddrett
 //		SDL_RenderDrawLine(renderer, midwinX-marg,midwinY, midwinX+marg,midwinY);//Vannrett
 	    
-	    sjerne.moveTo(midwinX-sjerneW/2, midwinY-sjerneH/2);
+	    //sjerne.moveTo(midwinX-sjerneW/2, midwinY-sjerneH/2);
 	    
         
 		
