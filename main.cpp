@@ -67,7 +67,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     //double xPos, yPos;
     //double length_vecXY, radangl;
     int index{300};
-    float gravitasjon{59.81*speed_konstant*speed_konstant};
+    float gravitasjon{79.81*speed_konstant*speed_konstant};
     //float gravitasjon2{9.81/1500};
     while(index >=0 && !quit) {
 	
