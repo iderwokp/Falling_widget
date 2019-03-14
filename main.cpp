@@ -77,7 +77,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	SDL_RenderClear(renderer); 
 			clearscreen = false;	
         }
-        //SDL_RenderClear(renderer); 
+        SDL_RenderClear(renderer); 
         for(auto& ball: baller) {
         	double xPos = ball.current_pos().X;
         	double yPos = ball.current_pos().Y;
