@@ -83,15 +83,17 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         for(auto& ball: baller) {
         	double xPos = ball.current_pos().X;
         	double yPos = ball.current_pos().Y;
-        	
+        	//std::cout << "[xPos, yPos] = [" << xPos << ", " << yPos << "]\n";
         	Vec2d<double> snorfeste_vec{snorfesteX, snorfesteY};		    //Vektor som representerer punktet som pendelen er festet til
+        	//std::cout << "[snorfesteX, snorfesteY] = [" << snorfesteX << ", " << snorfesteY << "]\n";
         	Vec2d<double> pos_vec{xPos, yPos};				//Vektor som representerer posisjonen til ballen
         	Vec2d<double> ball_til_snorfeste_vec {snorfeste_vec - pos_vec};
+        	//std::cout << "[ball_til_snorfeste_vec.xVal(), ball_til_snorfeste_vec.yVal()] = [" << ball_til_snorfeste_vec.xVal() << ", " << ball_til_snorfeste_vec.yVal() << "]\n";
 	        double length_snor_vec = ball_til_snorfeste_vec.length();
-	        std::cout << "length_snor_vec = " << length_snor_vec << std::endl;
-	        Vec2d<double> nedover_grav_vec{0.0, -length_snor_vec}; 				
+	        //std::cout << "length_snor_vec = " << length_snor_vec << std::endl;
+	        Vec2d<double> nedover_grav_vec{xPos, length_snor_vec}; 				
 			Vec2d<double> resultant_grav_vec {ball_til_snorfeste_vec + nedover_grav_vec};
-			ball_til_snorfeste_vec.draw_vec2d(renderer, Point{xPos, yPos});
+			(ball_til_snorfeste_vec+pos_vec).draw_vec2d(renderer, Point{xPos, yPos});
 			resultant_grav_vec.draw_vec2d(renderer, Point{xPos, yPos});
 			nedover_grav_vec.draw_vec2d(renderer, Point{xPos, yPos});
 	        //double justert_lengde = length_vecXY/100;
@@ -100,7 +102,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 			//if (ball.current_pos().Y > snorfesteY) angle *= -1;
 	        	        
 	        //float grav_rr = grav_avstand(justert_lengde, gravitasjon);
-	        ball.set_aksellerasjon(static_cast<float>(resultant_grav_vec.xVal()/1000), static_cast<float>(resultant_grav_vec.yVal()/1000));
+	        ball.set_aksellerasjon(static_cast<float>(resultant_grav_vec.xVal()/100000), static_cast<float>(resultant_grav_vec.yVal()/100000));
+	        //ball.set_aksellerasjon(0.0f,0.0f);
 	        ball.updateXY();
 
 //	        if(mouse_x != 0 || mouse_y != 0) {
