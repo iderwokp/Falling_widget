@@ -30,6 +30,7 @@ class Falling_widget: public Widget {
 		void setXY(double x, double y);
 		double velocityX() {return velocity.vXtot_;}
 		double velocityY() {return velocity.vYtot_;}
+		double velocityTot() {return velocity.vTot();}
 		void set_velocityX(double v) {velocity.vXtot_ = v;}
 		void set_velocityY(double v) {velocity.vYtot_ = v;}
 	private:

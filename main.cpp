@@ -110,7 +110,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 	    romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));
 	    if(changeSpr) animate(romskip, sprites);
 	    else romskip.change_sprite("ball2.bmp");
-	    //std::cout << "velocityX() = " << romskip.velocityX() << "\tvelocityY() = " << romskip.velocityY() << "\n";
+	    //std::cout << "velocityTot() = " << romskip.velocityTot() << "\n";
 	    //std::cout << "romskip.current_pos().X = " << romskip.current_pos().X << "\tromskip.current_pos().Y = " << romskip.current_pos().Y << "\n";
 	    //++rot_angle;
         
@@ -140,13 +140,17 @@ void check_limits(Falling_widget& romskip, int windows_width, int windows_height
 //En slags samleprosedyre
 //Tar seg av hva som skjer når romskipet kommer utenfor kanten eller kjører veldig sakte
 //Ikke helt stuerent å ha flere oppgaver i en funksjon men...
-	double loss{0.05}; //Evnen til å sprette
+	double loss{0.5}; //Evnen til å sprette
+	double safe_speed{5.0};
 	int yPos = romskip.current_pos().Y;
     int xPos = romskip.current_pos().X;
     if (xPos < 0) 			   	{romskip.setXY(windows_width, yPos); }
     if (xPos > windows_width)	 {romskip.setXY(0, yPos); }
     //if (yPos < 0) 				{romskip.setXY(xPos, windows_height);}
-    if (yPos > windows_height-fwidget_height)	 {romskip.setXY(xPos, windows_height-fwidget_height);romskip.set_velocityY(-romskip.velocityY()*loss);romskip.set_velocityX(romskip.velocityX()*loss);}
+    if (yPos > windows_height-fwidget_height)	 {
+    	if(romskip.velocityTot() > safe_speed) std::cout << "CHRASH!!\n";
+		romskip.setXY(xPos, windows_height-fwidget_height);romskip.set_velocityY(-romskip.velocityY()*loss);romskip.set_velocityX(romskip.velocityX()*loss);
+	}
 //    if(fabs(romskip.velocityX()) < 0.005 && trust == 0.0) romskip.set_velocityX(0.0);
 //    if(fabs(romskip.velocityY()) < 0.005 && trust == 0.0) romskip.set_velocityY(0.0);
 }
