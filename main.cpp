@@ -43,7 +43,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
     std::vector<Falling_widget> baller;
     //baller.emplace_back("ball.bmp", renderer, Point{750.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, -2, 0);
     
-    baller.emplace_back("ball.bmp", renderer, Point{400.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
+    baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0, 0, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{350.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 35*speed_konstant, 0); 
 //   baller.emplace_back("ball.bmp", renderer, Point{550.0, 350.0}, fwidget_width, fwidget_height, windows_height, windows_width, 0*speed_konstant, 22*speed_konstant, 0);
 //    baller.emplace_back("ball.bmp", renderer, Point{650.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, -33*speed_konstant, 0*speed_konstant, 0);
@@ -91,7 +91,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
         	//std::cout << "[ball_til_snorfeste_vec.xVal(), ball_til_snorfeste_vec.yVal()] = [" << ball_til_snorfeste_vec.xVal() << ", " << ball_til_snorfeste_vec.yVal() << "]\n";
 	        double length_snor_vec = ball_til_snorfeste_vec.length();
 	        //std::cout << "length_snor_vec = " << length_snor_vec << std::endl;
-	        Vec2d<double> nedover_grav_vec{xPos, length_snor_vec}; 				
+	        Vec2d<double> nedover_grav_vec{xPos, yPos+length_snor_vec}; 				
 			Vec2d<double> resultant_grav_vec {ball_til_snorfeste_vec + nedover_grav_vec};
 			(ball_til_snorfeste_vec+pos_vec).draw_vec2d(renderer, Point{xPos, yPos});
 			resultant_grav_vec.draw_vec2d(renderer, Point{xPos, yPos});
