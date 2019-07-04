@@ -39,8 +39,8 @@ class  Gravity_interaksjon{
 		SDL_Renderer* renderer;
 	    
 	    const float speed_konstant{0.1};
-	    const int fwidget_width{3};
-	    const int fwidget_height{2};
+	    const int fwidget_width{13};
+	    const int fwidget_height{12};
 	    const int start_fart{35};
 	    const double gravitasjon{24*9.81*speed_konstant*speed_konstant};
 };
@@ -98,7 +98,7 @@ void Gravity_interaksjon::start() {
         	SDL_RenderClear(renderer);
 			clearscreen = false;
         }
-        //SDL_RenderClear(renderer);
+        SDL_RenderClear(renderer);
         Vec2d<double> x_axe{500.0, 0.0}; 				//Vektor som representerer x-aksen. Vinkelen er mellom x_axe og vecXY
         for(auto& gjeldende_ball: baller) {
         	double xPos = gjeldende_ball.current_pos().X;
