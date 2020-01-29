@@ -1,7 +1,7 @@
 #ifndef ASTEROID_GAME_H
 #define ASTEROID_GAME_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "sdl_wrap.h"
 #include <iostream>
 #include <vector>
@@ -19,7 +19,7 @@
 namespace Iderwok {
 
 class Asteroid_game {
-	
+
 	public:
 		Asteroid_game(const std::string& wn, int ww, int wh);
 		~Asteroid_game() {
@@ -57,7 +57,7 @@ class Asteroid_game {
     	const int m_asteroidwidget_height{50};
     	const int m_asteroide_generasjon{2};
     	const int m_antall_asteroider{2};
-    	
+
 		void EventHandler();
 		void init_SDL();
 		void init_widgets();
@@ -76,14 +76,14 @@ class Asteroid_game {
 		bool hit(T& a, int mx, int my);
 		template <typename T>
 		bool hit(T& a, Point p);
-		
+
 };
 
 
 #endif
 
-Asteroid_game::Asteroid_game(const std::string& wn, int ww, int wh): m_window_name{wn}, m_windows_width{ww}, m_windows_height{wh}, 
-			m_midwinX{m_windows_width/2}, m_midwinY{m_windows_height/2}, m_sdlwrap{m_window_name, m_windows_width, m_windows_height} 
+Asteroid_game::Asteroid_game(const std::string& wn, int ww, int wh): m_window_name{wn}, m_windows_width{ww}, m_windows_height{wh},
+			m_midwinX{m_windows_width/2}, m_midwinY{m_windows_height/2}, m_sdlwrap{m_window_name, m_windows_width, m_windows_height}
 {
 	init_SDL();
 	init_widgets();
@@ -92,7 +92,7 @@ Asteroid_game::Asteroid_game(const std::string& wn, int ww, int wh): m_window_na
 void Asteroid_game::init_SDL() {
 	//m_sdlwrap = Sdl_wrap(m_windows_name, m_windows_width, m_windows_height);
 	m_renderer = m_sdlwrap.renderer();
-	
+
 }
 
 void Asteroid_game::init_widgets() {
@@ -101,17 +101,17 @@ void Asteroid_game::init_widgets() {
 	for(int i = 0;i<m_antall_asteroider;++i) {
    		m_asteroids.emplace_back(m_asteroid_widget, m_renderer, 1.0, 0, 0, m_asteroidwidget_width, m_asteroidwidget_height, m_windows_height, m_windows_width, 0, m_asteroide_generasjon);
    	}
-   	
+
 }
 
 void Asteroid_game::start_game() {
 	m_romskip.setXY(m_midwinX-m_romskipwidget_width/2, m_midwinY-m_romskipwidget_height/2);
 	enter_game_loop();
-	
+
 }
 
 void Asteroid_game::EventHandler() {
-	
+
     SDL_PollEvent(&m_event);
     if(m_event.type == SDL_QUIT){
         m_quit = true;
@@ -130,12 +130,12 @@ void Asteroid_game::EventHandler() {
 	            m_changeSpr = true;
 	        }
 	        if(m_event.key.keysym.sym == SDLK_DOWN ) {
-	            
+
 	        }
 	        if(m_event.key.keysym.sym == SDLK_a ) {
 	        	if (!m_event.key.repeat) m_shoot = true;
 	        	//std::cout << "event.key.repeat = " << event.key.repeat << "\n";
-	        	
+
 	        }
 	}
     else if(m_event.type == SDL_KEYUP) {
@@ -148,58 +148,58 @@ void Asteroid_game::EventHandler() {
       	     }
       		  if(m_event.key.keysym.sym == SDLK_a ) {
 	            m_shoot = false;
-	            
-	            
+
+
 	          }
     }
-      
+
 }
 void Asteroid_game::enter_game_loop() {
-	
+
 	while(!m_quit) {
-	
+
         EventHandler();//, windows_width, windows_height);
         SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(m_renderer); 
+        SDL_RenderClear(m_renderer);
         m_bakgrunn.moveTo(0,0);
         check_limits<Falling_widget>(m_romskip);
 		m_romskip.updateXY();
-	    
+
 		bool pang = chrash_test(m_asteroids, m_romskip.current_pos()); //Kræsjer romskipet i en asteroide?
 	    if(pang) {
 			std::cout << "PANG!\n";
 			loose();
 			m_quit = true;
 		}
-	    
+
 	    m_romskip.set_rot_angle(m_rot_angle);
 	    Vec2d<double> aksvec(m_trust, (int)m_rot_angle-90);
 	    Vec2d<double> tot_aks = aksvec + m_tyngdekraft;
 	    m_romskip.set_aksellerasjon(tot_aks.xVal(), static_cast<float>(tot_aks.yVal()));
-	    
+
 	    if(m_changeSpr) {animate_romskip(); m_normal_sprite = false;}
 	    else if (m_normal_sprite == false) {m_romskip.change_sprite("ball2.bmp"); m_normal_sprite = true;}
 	    if(m_shoot) {
-	    	
-			m_ammo.emplace_back("ball.bmp", m_renderer, 90, Vec2d<double>{15.0,m_rot_angle-90}, Point{m_romskip.current_pos().X+m_romskipwidget_width/2, m_romskip.current_pos().Y+m_romskipwidget_height/2}, 
+
+			m_ammo.emplace_back("ball.bmp", m_renderer, 90, Vec2d<double>{15.0,m_rot_angle-90}, Point{m_romskip.current_pos().X+m_romskipwidget_width/2, m_romskip.current_pos().Y+m_romskipwidget_height/2},
 										5, 3, m_windows_height, m_windows_width,0);
 			m_shoot = false;
 		}
 		update_asteroids();
 		if(m_asteroids.size()== 0) {
-			std::cout << "WIN!\n";		
+			std::cout << "WIN!\n";
 			winner();
 			m_quit = true;
 		}
-		
+
 		update_ammo();
 		if(m_ammo.size() != 0) check_hit();
 		SDL_RenderPresent(m_renderer);
-		
-		SDL_Delay(m_delay_time); 
-       
-       
-       
+
+		SDL_Delay(m_delay_time);
+
+
+
     }
 }
 
@@ -207,13 +207,13 @@ void Asteroid_game::update_ammo( ) {
 	auto ammo_it = m_ammo.begin();
     while(ammo_it != m_ammo.end()) {
     	ammo_it->updateXY();
-    	
+
     	check_limits<Ammo>(*ammo_it);
     	ammo_it->dec_levetid();
     	if(ammo_it->levetid() == 0) ammo_it = m_ammo.erase(ammo_it);
     	else ++ammo_it;
     }
-    	
+
 }
 void Asteroid_game::update_asteroids( ) {
 	auto ast_it = m_asteroids.begin();
@@ -229,12 +229,12 @@ void Asteroid_game::animate_romskip() {
 	static int counter{0};
 	m_romskip.change_sprite(m_sprites[counter]);
 	++counter;
-	if (counter == 2) counter = 0; 
-	
+	if (counter == 2) counter = 0;
+
 }
 
 template <typename T>
-void Asteroid_game::check_limits(T& romskip) { 
+void Asteroid_game::check_limits(T& romskip) {
 //En slags samleprosedyre
 //Tar seg av hva som skjer når romskipet kommer utenfor kanten eller kjører veldig sakte
 //Ikke helt stuerent å ha flere oppgaver i en funksjon men...
@@ -267,7 +267,7 @@ bool Asteroid_game::chrash_test(T& as, Point p) {
 	points.push_back({p.X+m_asteroidwidget_width/2, p.Y}); //spissen
 	points.push_back({p.X, p.Y+m_asteroidwidget_height});//venstre hjørne
 	points.push_back({p.X+m_asteroidwidget_width, p.Y+m_asteroidwidget_height});//høyre hjørne
-	
+
 	for(auto& a: as) {
 		return std::any_of(begin(points), end(points),[&a, this](Point p) {return hit(a, p);});
 	//	if(std::any_of(begin(points), end(points),[&a, this](Point p) {return hit(a, p);})) return true;
@@ -286,15 +286,15 @@ bool Asteroid_game::hit(T& a, int mx, int my) { // sjekker om en koordinat ligge
          if(mx < xPos) {return false;}
          if(my > yPos+a.height()) {return false;}
          if(my < yPos) {return false;}
-    return true;     
-	
+    return true;
+
 }
 template <typename T>
 bool Asteroid_game::hit(T& a, Point p) { // sjekker om en koordinat ligger inom en widget
 	return hit(a, p.X, p.Y);
 }
 void Asteroid_game::check_hit( ) {
-	
+
 
 	for(auto & am: m_ammo) {
 		auto ast_it = m_asteroids.begin();
@@ -304,7 +304,7 @@ void Asteroid_game::check_hit( ) {
 				int ypos = ast_it->current_pos().Y;
 				//Vec2d<double> v = ast_it->get_hastighet();
 				int start_fart = ast_it->get_start_speed()*1;
-				ast_it = m_asteroids.erase(ast_it); 
+				ast_it = m_asteroids.erase(ast_it);
 				if (ast_it->get_generasjon()>0) {
 					int gen  = ast_it->get_generasjon(); gen--;
 					int fw = ast_it->width()/2;
@@ -314,7 +314,7 @@ void Asteroid_game::check_hit( ) {
 					return;
 				}
 				//std::cout << "HIT " << "\n";
-				
+
 				}
 	    	else ++ast_it;
 	    }

@@ -13,10 +13,10 @@
 using namespace Iderwok;
 
 
-int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
+int main(int argc, char** argv) {
 	Asteroid_game ag("Asteroids", 1300, 700);
 	ag.start_game();
-	
+
     return 0;
 }
- 
+
