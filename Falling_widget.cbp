@@ -31,6 +31,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="SDL2" />
+		</Linker>
 		<Unit filename="Falling_widget.h" />
 		<Unit filename="SDLSuTex_wrap.h" />
 		<Unit filename="aksellerasjon.h" />
