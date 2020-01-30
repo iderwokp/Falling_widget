@@ -9,7 +9,7 @@
 
 namespace Iderwok {
 class  Gravity_interaksjon{
-	
+
 	public:
 		Gravity_interaksjon(std::string navn, int ww, int wh) : windows_width{ww}, windows_height{wh} {
 			SDL_Init(SDL_INIT_VIDEO);
@@ -18,7 +18,7 @@ class  Gravity_interaksjon{
   		    renderer = sdlwrap.renderer();
   		    init_baller();
   			start();
-		
+
 		}
 		void start();
 		double sanitize_angle(Point gjeldende, Point sjekke_mot, double angl);
@@ -35,9 +35,9 @@ class  Gravity_interaksjon{
 		bool quit{false};
 	    const int windows_width {};
 	    const int windows_height {};
-	    
+
 		SDL_Renderer* renderer;
-	    
+
 	    const float speed_konstant{0.1};
 	    const int fwidget_width{13};
 	    const int fwidget_height{12};
@@ -81,15 +81,15 @@ std::pair<double, double> Gravity_interaksjon::endKoord(double startX, double st
 float Gravity_interaksjon::grav_avstand(double avstand, float g) {
 	if(avstand< 5.0f) avstand = 5.0f;
 	//std::cout << "g = " << g << "\n";
-	return g/(avstand*avstand); 
+	return g/(avstand*avstand);
 	//return g;
 }
 
 void Gravity_interaksjon::start() {
 	std::cout << "start()\n";
 	int index{1};
-    
-    
+
+
     while(index >=0 && !quit) {
 
         EventHandler(event, quit);//, windows_width, windows_height);
@@ -104,7 +104,7 @@ void Gravity_interaksjon::start() {
         	double xPos = gjeldende_ball.current_pos().X;
         	double yPos = gjeldende_ball.current_pos().Y;
         	Vec2d<double> acc_vec{0.0, 0.0};
-        	
+
         	Vec2d<double> start_vec {xPos, yPos};
 
 	        double acc_vec_Y{0};
@@ -123,7 +123,7 @@ void Gravity_interaksjon::start() {
         		double temp_angle = angle_deg(temp_vec, x_axe);
         		double temp_angle_sanitized = sanitize_angle(Point{gjeldende_ball.current_pos().X, gjeldende_ball.current_pos().Y}, Point{temp_x, temp_y}, temp_angle);
         		temp_vec = {40000.0/(r*r), static_cast<int> (temp_angle_sanitized)};
-        	
+
         		acc_vec += (temp_vec);
         	}
 //DONE: Avstanden mellom to objekter bør bestemme magnituden på vektorene, og ikke bare på resultant vektoren.
@@ -161,23 +161,23 @@ void Gravity_interaksjon::start() {
 
     }
 
-	
+
 }
 void Gravity_interaksjon::init_baller() {
-	
-	baller.emplace_back("ball.bmp", renderer, Point{250.0, 200.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 1*speed_konstant, 0);
+
+	//baller.emplace_back("ball.bmp", renderer, Point{250.0, 200.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{650.0, 400.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -start_fart*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{550.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 1*speed_konstant, 0);
+   // baller.emplace_back("ball.bmp", renderer, Point{550.0, 600.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, 1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{150.0, 550.0}, fwidget_width, fwidget_height, windows_height, windows_width, start_fart*speed_konstant, start_fart*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{850.0, 200.0}, fwidget_width, fwidget_height, windows_height, windows_width, -start_fart*speed_konstant, -1*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, -1*speed_konstant, 0);
+    //baller.emplace_back("ball.bmp", renderer, Point{700.0, 500.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, -1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{630.0, 555.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, 1*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -1*speed_konstant, 1*speed_konstant, 0);
+  //  baller.emplace_back("ball.bmp", renderer, Point{444.0, 333.0}, fwidget_width, fwidget_height, windows_height, windows_width, -1*speed_konstant, 1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{800.0, 50.0}, fwidget_width, fwidget_height, windows_height, windows_width, -1*speed_konstant, -1*speed_konstant, 0);
     baller.emplace_back("ball.bmp", renderer, Point{250.0, 100.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, 1*speed_konstant, 0);
-    baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, 1*speed_konstant, 0);
-	
-	
+    //baller.emplace_back("ball.bmp", renderer, Point{300.0, 70.0}, fwidget_width, fwidget_height, windows_height, windows_width, 1*speed_konstant, 1*speed_konstant, 0);
+
+
 }
 
 } //namespace

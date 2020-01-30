@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -13,7 +13,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv) {
 
 
 
-	Gravity_interaksjon gi(std::string("Falling"), 1300, 700);
+	Gravity_interaksjon gi(std::string("Falling"), 1300, 600);
 
 
     SDL_Quit();
