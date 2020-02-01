@@ -41,6 +41,10 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
 	        if(event.key.keysym.sym == SDLK_DOWN ) {
 
 	        }
+	        if(event.key.keysym.sym == SDLK_a) {
+	            trust = 6.0/(aksellerasjons_justering/trust_vs_aksjust);
+	            changeSpr = true;
+	        }
 	}
     else if(event.type == SDL_KEYUP) {
         	if(event.key.keysym.sym == SDLK_UP ) {
@@ -49,7 +53,11 @@ void EventHandler(SDL_Event event, bool& quit) {//, int ww, int wh) {
        		 }
        		 if(event.key.keysym.sym == SDLK_DOWN ) {
            		 rot_angle += 180;
-        }
+             }
+             if(event.key.keysym.sym == SDLK_a ) {
+           	 trust = 0.0;
+           	 changeSpr = false;
+       		 }
     }
 
 
